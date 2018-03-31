@@ -4,7 +4,8 @@ use Carbon\Carbon;
 
 Route::get('/', function () {
     $data = getDailyLogs();
-    return view('welcome', compact('data'));
+    $goodweId = \Config::get('services.goodwe.id');
+    return view('welcome', compact('data', 'goodweId'));
 });
 
 Route::get('/api/hourly', 'ApiController@hourly');

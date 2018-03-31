@@ -26,7 +26,7 @@
 
         <div id="app">
             <div class="container">
-                <solar-energy goodwe-id="d170f803-22fd-41e2-81d5-9b039f957e81"></solar-energy>
+                <solar-energy goodwe-id="{{ $goodweId }}"></solar-energy>
                 <weather-time weather-city="Hoofddorp"></weather-time>
 
                 <daily-graph :data="{{ $data }}"></daily-graph>
