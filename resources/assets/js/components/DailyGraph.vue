@@ -45,7 +45,7 @@ export default {
         maintainAspectRatio: false,
         title: {
           display: true,
-          text: "Energy produced per hour (in Watt)"
+          text: "Energy produced today (in Watt)"
         },
         legend: {
           display: false
