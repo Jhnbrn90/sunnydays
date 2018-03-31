@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
                 'temperature'            => $response->temperature,
                 'weather_condition_code' => $response->code,
             ]);
-        })->hourlyAt(0);
+        })->everyFifteenMinutes();
     }
 
     /**
