@@ -25,7 +25,7 @@
 import goodwe from "../services/goodwe/Goodwe";
 
 export default {
-  props: ["goodweId"],
+  props: ["goodweId", "api"],
 
   data() {
     return {
@@ -40,7 +40,7 @@ export default {
 
   methods: {
     async getYield() {
-      const power = await goodwe.current(this.goodweId);
+      const power = await goodwe.current(this.goodweId, this.api);
       this.energy = power;
     }
   },

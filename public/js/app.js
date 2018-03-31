@@ -33202,7 +33202,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["goodweId"],
+  props: ["goodweId", "api"],
 
   data: function data() {
     return {
@@ -33224,7 +33224,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return __WEBPACK_IMPORTED_MODULE_1__services_goodwe_Goodwe__["a" /* default */].current(this.goodweId);
+                return __WEBPACK_IMPORTED_MODULE_1__services_goodwe_Goodwe__["a" /* default */].current(this.goodweId, this.api);
 
               case 2:
                 power = _context.sent;
@@ -33281,14 +33281,14 @@ var Goodwe = function () {
   _createClass(Goodwe, [{
     key: "current",
     value: function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(id) {
+      var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(id, url) {
         var response;
         return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return this.fetchResults(id);
+                return this.fetchResults(id, url);
 
               case 2:
                 response = _context.sent;
@@ -33302,7 +33302,7 @@ var Goodwe = function () {
         }, _callee, this);
       }));
 
-      function current(_x) {
+      function current(_x, _x2) {
         return _ref.apply(this, arguments);
       }
 
@@ -33311,13 +33311,13 @@ var Goodwe = function () {
   }, {
     key: "fetchResults",
     value: function () {
-      var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(id) {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(id, url) {
         var endpoint;
         return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                endpoint = "http://www.goodwe-power.com/Mobile/GetMyPowerStationById?stationID=" + id;
+                endpoint = url + "/api/goodwe";
                 _context2.next = 3;
                 return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(endpoint);
 
@@ -33332,7 +33332,7 @@ var Goodwe = function () {
         }, _callee2, this);
       }));
 
-      function fetchResults(_x2) {
+      function fetchResults(_x3, _x4) {
         return _ref2.apply(this, arguments);
       }
 

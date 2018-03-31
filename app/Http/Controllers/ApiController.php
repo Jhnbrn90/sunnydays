@@ -4,6 +4,13 @@ namespace App\Http\Controllers;
 
 class ApiController extends Controller
 {
+    public function goodwe()
+    {
+        $goodweId = \Config::get('services.goodwe.id');
+        $url = 'http://www.goodwe-power.com/Mobile/GetMyPowerStationById?stationID=' . $goodweId;
+        return json_decode(file_get_contents($url), true);
+    }
+
     public function hourly()
     {
         // get Yahoo data

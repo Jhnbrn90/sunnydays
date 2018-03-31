@@ -1,14 +1,14 @@
 import axios from "axios";
 
 class Goodwe {
-  async current(id) {
-    const response = await this.fetchResults(id);
+  async current(id, url) {
+    const response = await this.fetchResults(id, url);
 
     return response.data;
   }
 
-  async fetchResults(id) {
-    const endpoint = `http://www.goodwe-power.com/Mobile/GetMyPowerStationById?stationID=${id}`;
+  async fetchResults(id, url) {
+    const endpoint = `${url}/api/goodwe`;
 
     return await axios.get(endpoint);
   }

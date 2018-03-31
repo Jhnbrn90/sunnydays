@@ -13,9 +13,6 @@
         <!-- Styles -->
         <link rel="stylesheet" href="css/app.css">
         <link rel="stylesheet" href="css/weather-icons.css">
-        <style>
-
-        </style>
 
         <!-- Scripts -->
 
@@ -26,7 +23,7 @@
 
         <div id="app">
             <div class="container">
-                <solar-energy goodwe-id="{{ $goodweId }}"></solar-energy>
+                <solar-energy goodwe-id="{{ $goodweId }}" api="{{ config('app.url') }}"></solar-energy>
                 <weather-time weather-city="Hoofddorp"></weather-time>
 
                 <daily-graph :data="{{ $data }}"></daily-graph>

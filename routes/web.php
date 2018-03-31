@@ -8,6 +8,8 @@ Route::get('/', function () {
     return view('welcome', compact('data', 'goodweId'));
 });
 
+Route::get('/api/goodwe', 'ApiController@goodWe');
+
 Route::get('/api/hourly', 'ApiController@hourly');
 
 /********************
