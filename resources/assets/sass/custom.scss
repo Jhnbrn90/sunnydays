@@ -28,27 +28,31 @@
 @media only screen and (max-width: 600px) {
   .energy-container {
     display: flex;
-    flex-direction: grid;
+    flex-direction: row;
   }
   .circle-container {
-    height: 150px;
-    width: 100px;
+    height: 100px !important;
+    width: 200px !important;
     margin: 0 auto;
-    padding: 5px;
+    margin-right: 10px;
+    padding: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: auto;
     border-radius: 50%;
+    margin-bottom: 10px;
   }
 
   .circle-content {
     h3 {
-      font-size: 16px;
+      display: none;
+      font-size: 13px;
     }
+    font-weight: 700;
     text-align: center;
     width: 100%;
-    padding: 10px;
+    padding: 5px;
     overflow: auto;
   }
 }

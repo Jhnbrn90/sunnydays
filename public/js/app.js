@@ -33495,6 +33495,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }]
       },
       options: {
+        maintainAspectRatio: false,
         title: {
           display: true,
           text: "Energy produced per hour (in Watt)"
@@ -45877,9 +45878,22 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("canvas", { attrs: { id: "dailyChart", width: "200", height: "50" } })
-    ])
+    return _c(
+      "div",
+      {
+        staticStyle: {
+          margin: "auto",
+          position: "relative",
+          height: "40vh",
+          width: "80vw"
+        }
+      },
+      [
+        _c("canvas", {
+          attrs: { id: "dailyChart", width: "200", height: "50" }
+        })
+      ]
+    )
   }
 ]
 render._withStripped = true

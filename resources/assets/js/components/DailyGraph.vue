@@ -1,5 +1,5 @@
 <template>
-<div>
+<div style="margin: auto; position: relative; height: 40vh; width: 80vw;">
   <canvas id="dailyChart" width="200" height="50"></canvas>
 </div>
 
@@ -42,6 +42,7 @@ export default {
         ]
       },
       options: {
+        maintainAspectRatio: false,
         title: {
           display: true,
           text: "Energy produced per hour (in Watt)"
