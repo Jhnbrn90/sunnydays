@@ -16,6 +16,7 @@ Route::get('/api/hourly', 'ApiController@hourly');
 
 function getDailyLogs()
 {
+    $log = [];
     $powerlogs = \App\Powerlog::where('created_at', '>=', Carbon::today())->get();
 
     foreach ($powerlogs as $powerlog) {
