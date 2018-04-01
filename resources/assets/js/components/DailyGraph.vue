@@ -7,17 +7,24 @@
 
 <script>
 import Chart from "chart.js";
+import axios from "axios";
 
 export default {
   props: ["data"],
 
   data() {
     return {
-      labels: Object.keys(this.data),
+      work: this.data,
       powerArray: [],
-      weatherCondition: {},
-      temperatures: {}
+      weatherCondition: [],
+      temperatures: []
     };
+  },
+
+  computed: {
+    labels() {
+      return Object.keys(this.work);
+    }
   },
 
   created() {
@@ -26,7 +33,7 @@ export default {
 
   mounted() {
     var ctx = document.getElementById("dailyChart");
-    new Chart(ctx, {
+    var myChart = new Chart(ctx, {
       type: "line",
       data: {
         labels: this.labels,
@@ -42,6 +49,7 @@ export default {
         ]
       },
       options: {
+        responsive: true,
         maintainAspectRatio: false,
         title: {
           display: true,
@@ -53,6 +61,9 @@ export default {
         tooltips: {
           callbacks: {
             label: function(tooltipItem, data) {
+              console.log(
+                data.datasets[tooltipItem.datasetIndex].weatherCondition
+              );
               return (
                 tooltipItem.yLabel +
                 " " +
@@ -72,6 +83,16 @@ export default {
         }
       }
     });
+
+    window.Echo.channel("periodic-update").listen("PeriodicLogUpdated", e => {
+      myChart.data.labels.push(e.time);
+      myChart.data.datasets.forEach(dataset => {
+        dataset.data.push(e.power);
+        dataset.weatherCondition[e.time] = e.weather;
+        dataset.temperatures[e.time] = e.temperature;
+      });
+      myChart.update();
+    });
   },
 
   methods: {
@@ -81,6 +102,14 @@ export default {
         this.weatherCondition[String(i)] = this.data[i]["weather_condition"];
         this.temperatures[String(i)] = this.data[i]["temperature"];
       });
+    },
+
+    updateData() {
+      this.powerArray = [];
+      this.weatherCondition = [];
+      this.temperatures = [];
+      axios.get("/api/data").then(response => (this.work = response.data));
+      this.getInitialData();
     }
   }
 };

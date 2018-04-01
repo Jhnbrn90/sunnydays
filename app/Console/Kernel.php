@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Events\PeriodicLogUpdated;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -28,12 +29,14 @@ class Kernel extends ConsoleKernel
             $url = \Config::get('app.url') . '/api/hourly';
             $response = json_decode(file_get_contents($url, true));
 
-            \App\Powerlog::create([
+            $powerlog = \App\Powerlog::create([
                 'current_power'          => $response->power,
                 'weather_condition'      => $response->condition,
                 'temperature'            => $response->temperature,
                 'weather_condition_code' => $response->code,
             ]);
+
+            PeriodicLogUpdated::dispatch($powerlog);
         })->everyFifteenMinutes();
     }
 

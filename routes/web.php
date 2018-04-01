@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use App\Events\PeriodicLogUpdated;
 
 Route::get('/', function () {
     $data = getDailyLogs();
@@ -11,6 +12,14 @@ Route::get('/', function () {
 Route::get('/api/goodwe', 'ApiController@goodWe');
 
 Route::get('/api/hourly', 'ApiController@hourly');
+
+Route::get('/api/data', function () {
+    return getDailyLogs();
+});
+
+Route::get('/newdata', function () {
+    PeriodicLogUpdated::dispatch();
+});
 
 /********************
  * Helper functions
