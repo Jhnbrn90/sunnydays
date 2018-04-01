@@ -1,5 +1,5 @@
 <template>
-<div style="margin: auto; position: relative; height: 40vh; width: 80vw;">
+<div style="margin-left: -40px; padding-right: 20px; height: 50vh; width: 80vw;">
   <canvas id="dailyChart" width="200" height="50"></canvas>
 </div>
 

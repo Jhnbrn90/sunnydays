@@ -38,6 +38,15 @@ class Kernel extends ConsoleKernel
 
             PeriodicLogUpdated::dispatch($powerlog);
         })->everyFifteenMinutes();
+
+        $schedule->call(function () {
+            $url = \Config::get('app.url') . '/api/daily';
+            $response = json_decode(file_get_contents($url, true));
+
+            \App\DailyProductionLog::create([
+                'total_production'  => $response->energy_today,
+            ]);
+        })->dailyAt('23:00');
     }
 
     /**

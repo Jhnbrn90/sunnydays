@@ -17,6 +17,7 @@ window.Vue = require("vue");
 Vue.component("weather-time", require("./components/WeatherTime.vue"));
 Vue.component("solar-energy", require("./components/SolarEnergy.vue"));
 Vue.component("daily-graph", require("./components/DailyGraph.vue"));
+Vue.component("weekly-graph", require("./components/WeeklyGraph.vue"));
 
 const app = new Vue({
   el: "#app"

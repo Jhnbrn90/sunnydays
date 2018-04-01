@@ -2,16 +2,30 @@
 
 use Carbon\Carbon;
 use App\Events\PeriodicLogUpdated;
+use App\DailyProductionLog;
 
 Route::get('/', function () {
     $data = getDailyLogs();
     $goodweId = \Config::get('services.goodwe.id');
-    return view('welcome', compact('data', 'goodweId'));
+
+    // get the past week of values
+    $weeklyGraph = DailyProductionLog::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::today()])->orderBy('created_at', 'ASC')->get();
+
+    $days = $weeklyGraph->map(function ($data) {
+        return $data->created_at->formatLocalized('%A %e %B');
+    });
+
+    $produced = $weeklyGraph->map(function ($data) {
+        return $data->total_production;
+    });
+
+    return view('welcome', compact('data', 'goodweId', 'weeklyGraph', 'days', 'produced'));
 });
 
 Route::get('/api/goodwe', 'ApiController@goodWe');
 
 Route::get('/api/hourly', 'ApiController@hourly');
+Route::get('/api/daily', 'ApiController@daily');
 
 Route::get('/api/data', function () {
     return getDailyLogs();

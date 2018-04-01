@@ -31,4 +31,15 @@ class ApiController extends Controller
 
         return $entry;
     }
+
+    public function daily()
+    {
+        $goodweId = \Config::get('services.goodwe.id');
+        $url = 'http://www.goodwe-power.com/Mobile/GetMyPowerStationById?stationID=' . $goodweId;
+        $response = json_decode(file_get_contents($url), true);
+
+        $entry['energy_today'] = substr($response['eday'], 0, -3) * 1000;
+
+        return $entry;
+    }
 }

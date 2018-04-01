@@ -37,6 +37,10 @@
 
                 <daily-graph :data="{{ $data }}"></daily-graph>
 
+                <hr/>
+
+                <weekly-graph :days="{{ $days }}" :power="{{ $produced }}"></weekly-graph>
+
             </div>
         </div>
 
