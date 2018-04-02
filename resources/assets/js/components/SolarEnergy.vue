@@ -3,20 +3,20 @@
     <div class="card circle-container">
         <div class="circle-content">
           <h3>Today</h3>
-          <div class="power-text">{{ this.energy.eday ? this.energy.eday.split('kWh')[0] : '...'}} </div> kWh
+          <div class="power-text"><span class="power-value">{{ this.energy.eday ? this.energy.eday.split('kWh')[0] : '...'}}</span></div> kWh
         </div>
     </div>
     <div class="card circle-container">
       <div class="circle-content">
         <h3 class="desktop">Generating</h3>
         <h3 class="mobile">Now</h3>
-        {{ nowGenerating }} W
+        <span class="power-value">{{ nowGenerating }}</span> W
       </div>
     </div>
     <div class="card circle-container">
       <div class="circle-content">
         <h3>Total</h3>
-         {{ this.energy.etotal ? this.energy.etotal.split('kWh')[0] : '...' }} kWh
+         <span class="power-value">{{ this.energy.etotal ? this.energy.etotal.split('kWh')[0] : '...' }}</span> kWh
       </div>
     </div>
   </div>

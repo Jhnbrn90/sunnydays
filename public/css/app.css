@@ -10106,7 +10106,7 @@ h3.desktop {
 }
 
 .daily-graph {
-  width: 90vw;
+  width: 80vw;
   height: 40vh;
 }
 
@@ -10132,29 +10132,32 @@ h3.desktop {
 
   .energy-container {
     display: inline-block;
-    height: 80px;
+    height: 110px;
     width: 100%;
     overflow: hidden;
     margin-bottom: 10px;
   }
 
   .circle-container {
-    width: 20vw;
-    border-radius: 30%;
-    top: -20px;
+    width: 30%;
+    border-radius: 0%;
     display: inline-block;
     margin-bottom: 10px;
   }
 
   .circle-content {
-    font-size: 14px;
+    font-size: 12px;
     padding: 0px;
   }
 
   .circle-content h3 {
-    font-size: 13px;
+    font-size: 16px;
     font-weight: normal;
     word-wrap: break-word;
+  }
+
+  .circle-content .power-value {
+    font-size: 21px;
   }
 }
 

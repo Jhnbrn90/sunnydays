@@ -63,27 +63,30 @@ h3 {
 
   .energy-container {
     display: inline-block;
-    height: 80px;
+    height: 110px;
     width: 100%;
     overflow: hidden;
     margin-bottom: 10px;
   }
 
   .circle-container {
-    width: 20vw;
-    border-radius: 30%;
-    top: -20px;
+    width: 30%;
+    border-radius: 0%;
     display: inline-block;
     margin-bottom: 10px;
   }
 
   .circle-content {
     h3 {
-      font-size: 13px;
+      font-size: 16px;
       font-weight: normal;
       word-wrap: break-word;
     }
-    font-size: 14px;
+    font-size: 12px;
     padding: 0px;
+
+    .power-value {
+      font-size: 21px;
+    }
   }
 }
