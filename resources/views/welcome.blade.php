@@ -37,7 +37,9 @@
 
                 <hr/>
 
-                <daily-graph :data="{{ $data }}"></daily-graph>
+                <center>
+                    <daily-graph :data="{{ $data }}"></daily-graph>
+                </center>
 
                 <hr/>
 
