@@ -29,14 +29,16 @@ class Kernel extends ConsoleKernel
             $url = \Config::get('app.url') . '/api/hourly';
             $response = json_decode(file_get_contents($url, true));
 
-            $powerlog = \App\Powerlog::create([
+            if ($response->power !== 0) {
+                $powerlog = \App\Powerlog::create([
                 'current_power'          => $response->power,
                 'weather_condition'      => $response->condition,
                 'temperature'            => $response->temperature,
                 'weather_condition_code' => $response->code,
             ]);
 
-            PeriodicLogUpdated::dispatch($powerlog);
+                PeriodicLogUpdated::dispatch($powerlog);
+            }
         })->everyFifteenMinutes();
 
         $schedule->call(function () {
