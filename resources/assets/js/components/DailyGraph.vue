@@ -109,7 +109,7 @@ export default {
 
         myChart.update();
       });
-    }, 20 * 60 * 1000);
+    }, 3000);
   },
 
   methods: {
