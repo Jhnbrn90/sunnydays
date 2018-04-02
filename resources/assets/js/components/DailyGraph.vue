@@ -61,9 +61,6 @@ export default {
         tooltips: {
           callbacks: {
             label: function(tooltipItem, data) {
-              console.log(
-                data.datasets[tooltipItem.datasetIndex].weatherCondition
-              );
               return (
                 tooltipItem.yLabel +
                 " " +
