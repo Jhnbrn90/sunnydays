@@ -28,12 +28,14 @@
     </head>
     <body>
 
-    <div class="container">
-
         <div id="app">
             <div class="container">
                 <solar-energy goodwe-id="{{ $goodweId }}" api="{{ config('app.url') }}"></solar-energy>
+            </div>
+
                 <weather-time weather-city="Hoofddorp"></weather-time>
+
+                <hr/>
 
                 <daily-graph :data="{{ $data }}"></daily-graph>
 
@@ -41,7 +43,6 @@
 
                 <weekly-graph :days="{{ $days }}" :power="{{ $produced }}"></weekly-graph>
 
-            </div>
         </div>
 
     <script type="text/javascript" src="js/app.js"></script>

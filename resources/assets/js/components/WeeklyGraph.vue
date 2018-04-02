@@ -1,6 +1,6 @@
 <template>
-<div style="margin-left: -80px; padding-right: 10px; height: 50vh; width: 90vw;">
-  <canvas id="weeklyChart" width="200" height="50"></canvas>
+<div class="weekly-graph">
+  <canvas id="weeklyChart" width="600" height="20"></canvas>
 </div>
 </template>
 

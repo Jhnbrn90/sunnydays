@@ -10072,6 +10072,14 @@ body {
           flex-direction: row;
 }
 
+h3.mobile {
+  display: none;
+}
+
+h3.desktop {
+  display: block;
+}
+
 .circle-container {
   height: 250px;
   width: 250px;
@@ -10097,48 +10105,56 @@ body {
   overflow: auto;
 }
 
+.daily-graph {
+  width: 90vw;
+  height: 40vh;
+}
+
+.weekly-graph {
+  width: 90vw;
+  height: 30vh;
+}
+
 @media only screen and (max-width: 600px) {
+  h3.mobile {
+    display: block;
+  }
+
+  h3.desktop {
+    display: none;
+  }
+
+  .weekly-graph {
+    margin-left: -20px;
+    width: 100%;
+    height: 50vh;
+  }
+
   .energy-container {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: row;
-            flex-direction: row;
+    display: inline-block;
+    height: 80px;
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 10px;
   }
 
   .circle-container {
-    height: 100px !important;
-    width: 200px !important;
-    margin: 0 auto;
-    margin-right: 10px;
-    padding: 10px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    overflow: auto;
-    border-radius: 50%;
+    width: 20vw;
+    border-radius: 30%;
+    top: -20px;
+    display: inline-block;
     margin-bottom: 10px;
   }
 
   .circle-content {
-    font-weight: 700;
-    text-align: center;
-    width: 100%;
-    padding: 5px;
-    overflow: auto;
+    font-size: 14px;
+    padding: 0px;
   }
 
   .circle-content h3 {
-    display: none;
     font-size: 13px;
+    font-weight: normal;
+    word-wrap: break-word;
   }
 }
 

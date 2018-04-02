@@ -1,6 +1,6 @@
 <template>
-<div style="margin-left: -40px; padding-right: 20px; height: 50vh; width: 80vw;">
-  <canvas id="dailyChart" width="200" height="50"></canvas>
+<div class="daily-graph">
+  <canvas id="dailyChart"></canvas>
 </div>
 
 </template>

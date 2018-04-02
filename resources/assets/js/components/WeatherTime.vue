@@ -4,7 +4,6 @@
         {{ date }} <br>
         {{ weather.temperature }} &deg;C
         <i class="wi" :class="weather.iconClass"></i>
-        <hr>
     </div>
 </template>
 

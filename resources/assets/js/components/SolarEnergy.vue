@@ -8,7 +8,8 @@
     </div>
     <div class="card circle-container">
       <div class="circle-content">
-        <h3>Generating</h3>
+        <h3 class="desktop">Generating</h3>
+        <h3 class="mobile">Now</h3>
         {{ nowGenerating }} W
       </div>
     </div>

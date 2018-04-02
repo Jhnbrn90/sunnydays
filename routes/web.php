@@ -8,7 +8,7 @@ Route::get('/', function () {
     $goodweId = \Config::get('services.goodwe.id');
 
     // get the past week of values
-    $weeklyGraph = DailyProductionLog::whereBetween('created_at', [Carbon::today()->subDays(4), Carbon::today()])->orderBy('created_at', 'ASC')->get();
+    $weeklyGraph = DailyProductionLog::whereBetween('created_at', [Carbon::today()->subDays(7), Carbon::today()])->orderBy('created_at', 'ASC')->get();
 
     $days = $weeklyGraph->map(function ($data) {
         return $data->created_at->formatLocalized('%A %e %B');
