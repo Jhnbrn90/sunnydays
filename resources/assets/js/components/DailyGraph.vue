@@ -90,6 +90,26 @@ export default {
       });
       myChart.update();
     });
+
+    setInterval(function() {
+      axios.get("/api/data").then(response => {
+        myChart.data.labels = Object.keys(response.data);
+
+        this.powerArray = [];
+
+        myChart.data.datasets.forEach(dataset => {
+          Object.keys(response.data).forEach(i => {
+            this.powerArray.push(response.data[i].power);
+            dataset.weatherCondition[i] = response.data[i].weather_condition;
+            dataset.temperatures[i] = response.data[i].temperature;
+          });
+
+          dataset.data = this.powerArray;
+        });
+
+        myChart.update();
+      });
+    }, 20 * 60 * 1000);
   },
 
   methods: {
@@ -101,12 +121,21 @@ export default {
       });
     },
 
-    updateData() {
-      this.powerArray = [];
-      this.weatherCondition = [];
-      this.temperatures = [];
-      axios.get("/api/data").then(response => (this.work = response.data));
-      this.getInitialData();
+    updateData(myChart) {
+      axios.get("/api/data").then(response => {
+        myChart.data.labels = Object.keys(response.data);
+        this.powerArray = [];
+        Object.keys(response.data).forEach(i => {
+          this.powerArray.push(this.data[i]["power"]);
+        });
+        myChart.data.datasets.forEach(dataset => {
+          dataset.data = this.powerArray;
+          // dataset.weatherCondition[e.time] = e.weather;
+          // dataset.temperatures[e.time] = e.temperature;
+        });
+        console.log(this.powerArray);
+        myChart.update();
+      });
     }
   }
 };
