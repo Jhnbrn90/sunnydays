@@ -1,7 +1,6 @@
 <?php
 
 use Carbon\Carbon;
-use App\Events\PeriodicLogUpdated;
 use App\DailyProductionLog;
 
 Route::get('/', function () {
@@ -16,7 +15,7 @@ Route::get('/', function () {
     });
 
     $produced = $weeklyGraph->map(function ($data) {
-        return $data->total_production;
+        return $data->total_production / 1000;
     });
 
     return view('welcome', compact('data', 'goodweId', 'weeklyGraph', 'days', 'produced'));
@@ -29,10 +28,6 @@ Route::get('/api/daily', 'ApiController@daily');
 
 Route::get('/api/data', function () {
     return getDailyLogs();
-});
-
-Route::get('/newdata', function () {
-    PeriodicLogUpdated::dispatch();
 });
 
 /********************

@@ -36,7 +36,7 @@ export default {
         maintainAspectRatio: false,
         title: {
           display: true,
-          text: "Energy produced per day (in Watt)"
+          text: "Energy produced per day (in kWh)"
         },
         legend: {
           display: false
