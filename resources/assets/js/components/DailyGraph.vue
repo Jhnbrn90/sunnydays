@@ -1,5 +1,10 @@
 <template>
+
 <div class="daily-graph">
+  <span class="daily-graph-date"><center><strong>{{ date }}</strong></center></span>
+  <button class="btn btn-sm btn-outline-secondary" v-on:click="previousDate">Previous</button>
+  <button class="btn btn-sm btn-outline-secondary" v-on:click="nextDate" :disabled="isToday">Next</button>
+  <button class="btn btn-sm" :class="isToday ? 'btn-outline-secondary' : 'btn-outline-primary'" v-on:click="nextDateToday" :disabled="isToday">Today</button>
   <canvas id="dailyChart"></canvas>
 </div>
 
@@ -8,43 +13,58 @@
 <script>
 import Chart from "chart.js";
 import axios from "axios";
+import moment from "moment";
 
 export default {
-  props: ["data"],
-
   data() {
     return {
-      work: this.data,
+      data: [],
       powerArray: [],
       weatherCondition: [],
-      temperatures: []
+      temperatures: [],
+      myChart: "",
+      fetchUpdates: true,
+      date: "",
+      chartInterval: "",
+      updateFrequency: 4000,
+      dateFormat: "dddd DD MMMM YYYY"
     };
   },
 
   computed: {
     labels() {
-      return Object.keys(this.work);
+      return Object.keys(this.data);
+    },
+
+    isToday() {
+      return this.date === this.today;
+    },
+
+    today() {
+      return moment().format("dddd DD MMMM YYYY");
     }
   },
 
   created() {
-    this.getInitialData();
+    this.date = this.today;
+    this.updateChart();
   },
 
   mounted() {
     var ctx = document.getElementById("dailyChart");
-    var myChart = new Chart(ctx, {
+    this.myChart = new Chart(ctx, {
       type: "line",
       data: {
         labels: this.labels,
         datasets: [
           {
-            label: "Watt (W)",
+            label: "(J&L)",
             data: this.powerArray,
             weatherCondition: this.weatherCondition,
             temperatures: this.temperatures,
             fill: false,
-            borderColor: "#ffa500"
+            backgroundColor: "rgba(255, 165, 0, 0.9)",
+            borderColor: "rgba(255, 165, 120, 1.0)"
           }
         ]
       },
@@ -53,17 +73,18 @@ export default {
         maintainAspectRatio: false,
         title: {
           display: true,
-          text: "Energy produced today (in Watt)"
+          text: "Generated energy (W)"
         },
         legend: {
-          display: false
+          display: true,
+          position: "top"
         },
         tooltips: {
           callbacks: {
             label: function(tooltipItem, data) {
               return (
                 tooltipItem.yLabel +
-                " " +
+                " W " +
                 data.datasets[tooltipItem.datasetIndex].label +
                 ", " +
                 data.datasets[tooltipItem.datasetIndex].weatherCondition[
@@ -82,22 +103,77 @@ export default {
     });
 
     window.Echo.channel("periodic-update").listen("PeriodicLogUpdated", e => {
-      myChart.data.labels.push(e.time);
-      myChart.data.datasets.forEach(dataset => {
-        dataset.data.push(e.power);
-        dataset.weatherCondition[e.time] = e.weather;
-        dataset.temperatures[e.time] = e.temperature;
-      });
-      myChart.update();
+      if (this.fetchUpdates) {
+        this.myChart.data.labels.push(e.time);
+        this.myChart.data.datasets.forEach(dataset => {
+          dataset.data.push(e.power);
+          dataset.weatherCondition[e.time] = e.weather;
+          dataset.temperatures[e.time] = e.temperature;
+        });
+        this.myChart.update();
+      }
     });
 
-    setInterval(function() {
-      axios.get("/api/data").then(response => {
-        myChart.data.labels = Object.keys(response.data);
+    this.chartInterval = setInterval(this.updateChart, this.updateFrequency);
+  },
+
+  methods: {
+    setPreviousDay() {
+      this.date = moment(this.date, this.dateFormat)
+        .subtract(1, "days")
+        .format(this.dateFormat);
+    },
+
+    setNextDay() {
+      this.date = moment(this.date, this.dateFormat)
+        .add(1, "days")
+        .format(this.dateFormat);
+    },
+
+    previousDate() {
+      if (this.isToday) {
+        this.disableUpdates();
+      }
+
+      this.setPreviousDay();
+
+      this.updateChart();
+    },
+
+    nextDate() {
+      this.setNextDay();
+
+      this.updateChart();
+
+      if (this.isToday) {
+        this.enableUpdates();
+      }
+    },
+
+    enableUpdates() {
+      this.chartInterval = setInterval(this.updateChart, this.updateFrequency);
+      this.fetchUpdates = true;
+    },
+
+    disableUpdates() {
+      clearInterval(this.chartInterval);
+      this.fetchUpdates = false;
+    },
+
+    nextDateToday() {
+      this.date = this.today;
+      this.updateChart();
+      this.chartInterval = setInterval(this.updateChart, this.updateFrequency);
+      this.fetchUpdates = true;
+    },
+
+    updateChart() {
+      axios.get("/api/dailygraph/" + this.date).then(response => {
+        this.myChart.data.labels = Object.keys(response.data);
 
         this.powerArray = [];
 
-        myChart.data.datasets.forEach(dataset => {
+        this.myChart.data.datasets.forEach(dataset => {
           Object.keys(response.data).forEach(i => {
             this.powerArray.push(response.data[i].power);
             dataset.weatherCondition[i] = response.data[i].weather_condition;
@@ -107,34 +183,7 @@ export default {
           dataset.data = this.powerArray;
         });
 
-        myChart.update();
-      });
-    }, 3000);
-  },
-
-  methods: {
-    getInitialData() {
-      Object.keys(this.data).forEach(i => {
-        this.powerArray.push(this.data[i]["power"]);
-        this.weatherCondition[String(i)] = this.data[i]["weather_condition"];
-        this.temperatures[String(i)] = this.data[i]["temperature"];
-      });
-    },
-
-    updateData(myChart) {
-      axios.get("/api/data").then(response => {
-        myChart.data.labels = Object.keys(response.data);
-        this.powerArray = [];
-        Object.keys(response.data).forEach(i => {
-          this.powerArray.push(this.data[i]["power"]);
-        });
-        myChart.data.datasets.forEach(dataset => {
-          dataset.data = this.powerArray;
-          // dataset.weatherCondition[e.time] = e.weather;
-          // dataset.temperatures[e.time] = e.temperature;
-        });
-        console.log(this.powerArray);
-        myChart.update();
+        this.myChart.update();
       });
     }
   }
