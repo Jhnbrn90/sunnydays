@@ -27,7 +27,7 @@ export default {
             label: "kWh",
             data: this.power,
             fill: false,
-            backgroundColor: "rgba(255, 159, 64, 0.4)"
+            backgroundColor: "rgba(255, 159, 64, 0.75)"
           }
         ]
       },
