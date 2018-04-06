@@ -32,13 +32,14 @@
 
     <div id="app">
 
-        <center>
-            <weather-time weather-city="Hoofddorp"></weather-time>
-        </center>
-
         <div class="container">
             <solar-energy goodwe-id="{{ $goodweId }}" api="{{ config('app.url') }}"></solar-energy>
         </div>
+
+
+        <center>
+            <weather-time weather-city="Hoofddorp"></weather-time>
+        </center>
 
         <center>
             <daily-graph></daily-graph>

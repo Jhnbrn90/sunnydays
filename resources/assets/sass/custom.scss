@@ -1,22 +1,3 @@
-body {
-  margin-top: 0;
-}
-
-weather-time {
-  margin-top: -5px;
-}
-
-[v-cloak] {
-  [v-cloak] > * {
-    display: none;
-    margin-top: 200px;
-  }
-
-  [v-cloak]::before {
-    content: "loading…";
-  }
-}
-
 .grid-container {
   display: flex;
   flex-direction: row;
@@ -41,10 +22,13 @@ weather-time {
   }
 }
 
+.weather-time {
+  margin-bottom: 20px;
+}
+
 .daily-graph {
   width: 80vw;
-  // height: 50vh;
-  height: 17rem;
+  height: 30vw;
   margin-bottom: 80px;
 }
 
@@ -54,11 +38,7 @@ weather-time {
 
 .weekly-graph {
   width: 90vw;
-  height: 12rem;
-}
-
-.weather-time {
-  margin-bottom: 20px;
+  height: 30vw;
 }
 
 @media only screen and (max-width: 600px) {
@@ -80,6 +60,11 @@ weather-time {
     strong {
       font-size: 1.1rem;
     }
+  }
+
+  .daily-graph {
+    width: 80vw;
+    height: 70vw;
   }
 
   .weekly-graph {

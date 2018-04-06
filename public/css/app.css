@@ -10087,14 +10087,23 @@ body {
   font-size: 1.5rem;
 }
 
+.weather-time {
+  margin-bottom: 20px;
+}
+
 .daily-graph {
   width: 80vw;
-  height: 40vh;
+  height: 30vw;
+  margin-bottom: 80px;
+}
+
+.daily-graph-date {
+  font-size: 20px;
 }
 
 .weekly-graph {
   width: 90vw;
-  height: 30vh;
+  height: 30vw;
 }
 
 @media only screen and (max-width: 600px) {
@@ -10116,6 +10125,11 @@ body {
 
   .grid-item strong {
     font-size: 1.1rem;
+  }
+
+  .daily-graph {
+    width: 80vw;
+    height: 70vw;
   }
 
   .weekly-graph {

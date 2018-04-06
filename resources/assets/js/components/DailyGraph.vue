@@ -76,8 +76,7 @@ export default {
           text: "Generated energy (W)"
         },
         legend: {
-          display: true,
-          position: "top"
+          display: true
         },
         tooltips: {
           callbacks: {
