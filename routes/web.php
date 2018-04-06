@@ -30,6 +30,10 @@ Route::get('/api/data', function () {
     return getDailyLogs();
 });
 
+Route::get('/api/dailygraph/{date}', function($date) {
+    return getdailyLogsFor($date);
+});
+
 /********************
  * Helper functions
  ********************/
@@ -44,6 +48,25 @@ function getDailyLogs()
             'power'             => $powerlog->current_power,
             'weather_condition' => $powerlog->weather_condition,
             'temperature'       => $powerlog->temperature
+        ];
+    }
+
+    return collect($log);
+}
+
+function getDailyLogsFor($date)
+{
+    $date = Carbon::parse($date);
+    $start = $date->startOfDay();
+
+    $log = [];
+    $powerlogs = \App\Powerlog::whereDate('created_at', $start)->get();
+
+    foreach ($powerlogs as $powerlog) {
+        $log[(string)$powerlog->created_at->format('H:i')] = [
+            'power' => $powerlog->current_power,
+            'weather_condition' => $powerlog->weather_condition,
+            'temperature' => $powerlog->temperature
         ];
     }
 
