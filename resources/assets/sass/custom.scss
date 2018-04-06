@@ -1,3 +1,22 @@
+body {
+  margin-top: 0;
+}
+
+weather-time {
+  margin-top: -5px;
+}
+
+[v-cloak] {
+  [v-cloak] > * {
+    display: none;
+    margin-top: 200px;
+  }
+
+  [v-cloak]::before {
+    content: "loading…";
+  }
+}
+
 .grid-container {
   display: flex;
   flex-direction: row;
@@ -24,12 +43,22 @@
 
 .daily-graph {
   width: 80vw;
-  height: 40vh;
+  // height: 50vh;
+  height: 17rem;
+  margin-bottom: 80px;
+}
+
+.daily-graph-date {
+  font-size: 20px;
 }
 
 .weekly-graph {
   width: 90vw;
-  height: 30vh;
+  height: 12rem;
+}
+
+.weather-time {
+  margin-bottom: 20px;
 }
 
 @media only screen and (max-width: 600px) {

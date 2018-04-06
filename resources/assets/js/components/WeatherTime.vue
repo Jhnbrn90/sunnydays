@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container weather-time">
         <h1> {{ time }} </h1>
         {{ date }} <br>
         {{ weather.temperature }} &deg;C
