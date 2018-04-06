@@ -63,8 +63,8 @@ export default {
             weatherCondition: this.weatherCondition,
             temperatures: this.temperatures,
             fill: false,
-            backgroundColor: "rgba(255, 165, 0, 0.9)",
-            borderColor: "rgba(255, 165, 120, 1.0)"
+            borderColor: "rgba(255, 165, 120, 1.0)",
+            backgroundColor: "rgba(255, 255, 255, 0.1)"
           }
         ]
       },
