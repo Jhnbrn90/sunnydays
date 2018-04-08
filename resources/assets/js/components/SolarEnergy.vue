@@ -41,7 +41,7 @@ export default {
 
   computed: {
     nowGenerating() {
-      return this.energy.curpower.split("kW")[0] * 1000;
+      return Math.round(this.energy.curpower.split("kW")[0] * 1000);
     }
   }
 };
