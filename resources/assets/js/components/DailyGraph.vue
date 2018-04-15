@@ -84,6 +84,7 @@ export default {
             {
               type: "time",
               time: {
+                round: true,
                 parser: "HH:mm",
                 unit: "minute",
                 unitStepSize: 60,
@@ -213,8 +214,6 @@ export default {
         this.myChart.data.datasets.forEach((dataset, index) => {
           var user = Object.keys(this.powerObject)[index];
           dataset.data = this.powerObject[user];
-
-          console.log(this.weatherObject[user]);
 
           dataset.weatherCondition = this.weatherObject[user];
           dataset.temperatures = this.temperatureObject[user];

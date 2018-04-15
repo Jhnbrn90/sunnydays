@@ -8,7 +8,7 @@ class Goodwe {
   }
 
   async fetchResults(id, url) {
-    const endpoint = `${url}/api/goodwe`;
+    const endpoint = `${url}/api/goodwe/${id}`;
 
     return await axios.get(endpoint);
   }

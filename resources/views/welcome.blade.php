@@ -24,6 +24,16 @@
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/weather-icons.css">
 
+    <style>
+        .LJ {
+            color: rgb(255, 165, 120);
+        }
+
+        .MB {
+            color: rgb(2, 158, 227);
+        }
+    </style>
+
     <!-- Scripts -->
 
 </head>
@@ -31,10 +41,16 @@
 <body>
 
     <div id="app">
-        {{--
+
         <div class="container">
-            <solar-energy goodwe-id="{{ $goodweId }}" api="{{ config('app.url') }}"></solar-energy>
-        </div> --}}
+            <div class="LJ">
+                <solar-energy goodwe-id="{{ $goodweId }}" api="{{ config('app.url') }}"></solar-energy>
+            </div>
+
+            <div class="MB">
+                <solar-energy goodwe-id="{{ $goodweIdMB }}" api="{{ config('app.url') }}"></solar-energy>
+            </div>
+        </div>
 
         <center>
             <weather-time weather-city="Hoofddorp"></weather-time>

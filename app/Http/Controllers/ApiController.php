@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 class ApiController extends Controller
 {
-    public function goodwe()
+    public function goodwe($id)
     {
-        $goodweId = \Config::get('services.goodwe.JL');
-        $url = 'http://www.goodwe-power.com/Mobile/GetMyPowerStationById?stationID=' . $goodweId;
+        $url = 'http://www.goodwe-power.com/Mobile/GetMyPowerStationById?stationID=' . $id;
         return json_decode(file_get_contents($url), true);
     }
 

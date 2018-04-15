@@ -4,7 +4,8 @@ use Carbon\Carbon;
 use App\DailyProductionLog;
 
 Route::get('/', function () {
-    $goodweId = \Config::get('services.goodwe.id');
+    $goodweId = \Config::get('services.goodwe.JL');
+    $goodweIdMB = \Config::get('services.goodwe.MB');
 
     // get the past week of values
     $weeklyGraph = DailyProductionLog::whereBetween('created_at', [Carbon::today()->subDays(7), Carbon::today()])->orderBy('created_at', 'ASC')->get();
@@ -17,10 +18,10 @@ Route::get('/', function () {
         return $data->total_production / 1000;
     });
 
-    return view('welcome', compact('goodweId', 'weeklyGraph', 'days', 'produced'));
+    return view('welcome', compact('goodweId', 'goodweIdMB', 'weeklyGraph', 'days', 'produced'));
 });
 
-Route::get('/api/goodwe', 'ApiController@goodWe');
+Route::get('/api/goodwe/{id}', 'ApiController@goodWe');
 
 Route::get('/api/hourly', 'ApiController@hourly');
 Route::get('/api/daily', 'ApiController@daily');
