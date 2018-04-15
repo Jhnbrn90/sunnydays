@@ -86,7 +86,7 @@ export default {
               time: {
                 parser: "HH:mm",
                 unit: "minute",
-                // unitStepSize: 30,
+                unitStepSize: 60,
                 displayFormats: {
                   minute: "HH:mm",
                   hour: "HH:mm"
