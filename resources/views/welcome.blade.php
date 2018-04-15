@@ -31,11 +31,10 @@
 <body>
 
     <div id="app">
-
+        {{--
         <div class="container">
             <solar-energy goodwe-id="{{ $goodweId }}" api="{{ config('app.url') }}"></solar-energy>
-        </div>
-
+        </div> --}}
 
         <center>
             <weather-time weather-city="Hoofddorp"></weather-time>
@@ -45,9 +44,10 @@
             <daily-graph></daily-graph>
         </center>
 
+        {{--
         <center>
             <weekly-graph :days="{{ $days }}" :power="{{ $produced }}"></weekly-graph>
-        </center>
+        </center> --}}
 
     </div>
 

@@ -4,7 +4,6 @@ use Carbon\Carbon;
 use App\DailyProductionLog;
 
 Route::get('/', function () {
-    $data = getDailyLogs();
     $goodweId = \Config::get('services.goodwe.id');
 
     // get the past week of values
@@ -18,7 +17,7 @@ Route::get('/', function () {
         return $data->total_production / 1000;
     });
 
-    return view('welcome', compact('data', 'goodweId', 'weeklyGraph', 'days', 'produced'));
+    return view('welcome', compact('goodweId', 'weeklyGraph', 'days', 'produced'));
 });
 
 Route::get('/api/goodwe', 'ApiController@goodWe');
@@ -30,7 +29,7 @@ Route::get('/api/data', function () {
     return getDailyLogs();
 });
 
-Route::get('/api/dailygraph/{date}', function($date) {
+Route::get('/api/dailygraph/{date}', function ($date) {
     return getdailyLogsFor($date);
 });
 
@@ -59,16 +58,22 @@ function getDailyLogsFor($date)
     $date = Carbon::parse($date);
     $start = $date->startOfDay();
 
-    $log = [];
-    $powerlogs = \App\Powerlog::whereDate('created_at', $start)->get();
+    $users = ['JL', 'MB'];
 
-    foreach ($powerlogs as $powerlog) {
-        $log[(string)$powerlog->created_at->format('H:i')] = [
-            'power' => $powerlog->current_power,
+    foreach ($users as $user) {
+        $log = [];
+        $powerlogs = \App\Powerlog::where('user', $user)->whereDate('created_at', $start)->get();
+
+        foreach ($powerlogs as $powerlog) {
+            $log[(string)$powerlog->created_at->format('H:i')] = [
+            'power'             => $powerlog->current_power,
             'weather_condition' => $powerlog->weather_condition,
-            'temperature' => $powerlog->temperature
+            'temperature'       => $powerlog->temperature
         ];
+        }
+
+        $collection[$user] = $log;
     }
 
-    return collect($log);
+    return collect($collection);
 }

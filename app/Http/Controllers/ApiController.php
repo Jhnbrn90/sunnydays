@@ -6,7 +6,7 @@ class ApiController extends Controller
 {
     public function goodwe()
     {
-        $goodweId = \Config::get('services.goodwe.id');
+        $goodweId = \Config::get('services.goodwe.JL');
         $url = 'http://www.goodwe-power.com/Mobile/GetMyPowerStationById?stationID=' . $goodweId;
         return json_decode(file_get_contents($url), true);
     }
@@ -19,22 +19,27 @@ class ApiController extends Controller
         $yahoo = $response['query']['results']['channel']['item']['condition'];
 
         // get Goodwe data
-        $goodweId = \Config::get('services.goodwe.id');
-        $url = 'http://www.goodwe-power.com/Mobile/GetMyPowerStationById?stationID=' . $goodweId;
-        $response = json_decode(file_get_contents($url), true);
-        $power = $response['curpower'];
+        $users = ['JL', 'MB'];
 
-        $entry['power'] = substr($power, 0, -2) * 1000;
-        $entry['temperature'] = $yahoo['temp'];
-        $entry['condition'] = $yahoo['text'];
-        $entry['code'] = $yahoo['code'];
+        foreach ($users as $user) {
+            $goodweIds[$user] = \Config::get('services.goodwe.' . $user);
+        }
+
+        foreach ($goodweIds as $user => $goodweId) {
+            $url = 'http://www.goodwe-power.com/Mobile/GetMyPowerStationById?stationID=' . $goodweId;
+            $response = json_decode(file_get_contents($url), true);
+            $entry[$user]['power'] = substr($response['curpower'], 0, -2) * 1000;
+            $entry[$user]['temperature'] = $yahoo['temp'];
+            $entry[$user]['condition'] = $yahoo['text'];
+            $entry[$user]['code'] = $yahoo['code'];
+        }
 
         return $entry;
     }
 
     public function daily()
     {
-        $goodweId = \Config::get('services.goodwe.id');
+        $goodweId = \Config::get('services.goodwe.JL');
         $url = 'http://www.goodwe-power.com/Mobile/GetMyPowerStationById?stationID=' . $goodweId;
         $response = json_decode(file_get_contents($url), true);
 

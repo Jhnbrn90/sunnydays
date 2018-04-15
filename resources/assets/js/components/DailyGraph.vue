@@ -18,10 +18,9 @@ import moment from "moment";
 export default {
   data() {
     return {
-      data: [],
-      powerArray: [],
-      weatherCondition: [],
-      temperatures: [],
+      powerObject: {},
+      weatherObject: {},
+      temperatureObject: {},
       myChart: "",
       fetchUpdates: true,
       date: "",
@@ -32,10 +31,6 @@ export default {
   },
 
   computed: {
-    labels() {
-      return Object.keys(this.data);
-    },
-
     isToday() {
       return this.date === this.today;
     },
@@ -55,15 +50,24 @@ export default {
     this.myChart = new Chart(ctx, {
       type: "line",
       data: {
-        labels: this.labels,
+        labels: "",
         datasets: [
           {
             label: "(J&L)",
-            data: this.powerArray,
-            weatherCondition: this.weatherCondition,
-            temperatures: this.temperatures,
+            data: this.powerObject.JL,
+            weatherCondition: [],
+            temperatures: [],
             fill: false,
             borderColor: "rgba(255, 165, 120, 1.0)",
+            backgroundColor: "rgba(255, 255, 255, 0.1)"
+          },
+          {
+            label: "(M&B)",
+            data: this.powerObject.MB,
+            weatherCondition: [],
+            temperatures: [],
+            fill: false,
+            borderColor: "rgba(2, 158, 227, 1)",
             backgroundColor: "rgba(255, 255, 255, 0.1)"
           }
         ]
@@ -74,6 +78,30 @@ export default {
         title: {
           display: true,
           text: "Generated energy (W)"
+        },
+        scales: {
+          xAxes: [
+            {
+              type: "time",
+              time: {
+                parser: "HH:mm",
+                unit: "minute",
+                unitStepSize: 15,
+                displayFormats: {
+                  minute: "HH:mm",
+                  hour: "HH:mm"
+                }
+              }
+            }
+          ],
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+                max: 3000
+              }
+            }
+          ]
         },
         legend: {
           display: true
@@ -98,18 +126,6 @@ export default {
             }
           }
         }
-      }
-    });
-
-    window.Echo.channel("periodic-update").listen("PeriodicLogUpdated", e => {
-      if (this.fetchUpdates) {
-        this.myChart.data.labels.push(e.time);
-        this.myChart.data.datasets.forEach(dataset => {
-          dataset.data.push(e.power);
-          dataset.weatherCondition[e.time] = e.weather;
-          dataset.temperatures[e.time] = e.temperature;
-        });
-        this.myChart.update();
       }
     });
 
@@ -168,18 +184,40 @@ export default {
 
     updateChart() {
       axios.get("/api/dailygraph/" + this.date).then(response => {
-        this.myChart.data.labels = Object.keys(response.data);
+        var powerArray = [];
+        var weatherArray = [];
+        var temperatureArray = [];
 
-        this.powerArray = [];
+        this.myChart.data.labels = Object.keys(response.data.JL);
 
-        this.myChart.data.datasets.forEach(dataset => {
-          Object.keys(response.data).forEach(i => {
-            this.powerArray.push(response.data[i].power);
-            dataset.weatherCondition[i] = response.data[i].weather_condition;
-            dataset.temperatures[i] = response.data[i].temperature;
+        Object.keys(response.data).forEach(user => {
+          var data = response.data[user];
+          Object.keys(data).forEach(time => {
+            powerArray.push({
+              x: time,
+              y: data[time].power
+            });
+
+            weatherArray[time] = data[time].weather_condition;
+            temperatureArray[time] = data[time].temperature;
           });
 
-          dataset.data = this.powerArray;
+          this.powerObject[user] = powerArray;
+          this.weatherObject[user] = weatherArray;
+          this.temperatureObject[user] = temperatureArray;
+          powerArray = [];
+          weatherArray = [];
+          temperatureArray = [];
+        });
+
+        this.myChart.data.datasets.forEach((dataset, index) => {
+          var user = Object.keys(this.powerObject)[index];
+          dataset.data = this.powerObject[user];
+
+          console.log(this.weatherObject[user]);
+
+          dataset.weatherCondition = this.weatherObject[user];
+          dataset.temperatures = this.temperatureObject[user];
         });
 
         this.myChart.update();
