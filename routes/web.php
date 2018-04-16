@@ -4,35 +4,43 @@ use Carbon\Carbon;
 use App\DailyProductionLog;
 
 Route::get('/', function () {
-    $goodweId = \Config::get('services.goodwe.JL');
-    $goodweIdMB = \Config::get('services.goodwe.MB');
+    $goodweIds = goodweUsers();
 
-    return view('welcome', compact('goodweId', 'goodweIdMB'));
+    return view('welcome', compact('goodweIds'));
 });
 
-Route::get('/api/goodwe/{id}', 'ApiController@goodWe');
+/************************************
+ * API routes
+ ************************************/
+Route::prefix('api')->group(function () {
+    Route::get('goodwe/{id}', 'ApiController@goodWe');
+    Route::get('hourly', 'ApiController@hourly');
+    Route::get('daily', 'ApiController@daily');
 
-Route::get('/api/hourly', 'ApiController@hourly');
-Route::get('/api/daily', 'ApiController@daily');
+    Route::get('production', function () {
+        return getWeeklyLogs();
+    });
 
-Route::get('/api/production', function () {
-    return getWeeklyLogs();
+    Route::get('dailygraph/{date}', function ($date) {
+        return getdailyLogsFor($date);
+    });
 });
 
-Route::get('/api/dailygraph/{date}', function ($date) {
-    return getdailyLogsFor($date);
-});
-
-/********************
+/************************************
  * Helper functions
- ********************/
+ ************************************/
+
+function goodweUsers()
+{
+    return \Config::get('services.goodwe');
+}
 
 function getDailyLogsFor($date)
 {
     $date = Carbon::parse($date);
     $start = $date->startOfDay();
 
-    $users = ['JL', 'MB'];
+    $users = array_keys(goodweUsers());
 
     foreach ($users as $user) {
         $log = [];
@@ -54,7 +62,7 @@ function getDailyLogsFor($date)
 
 function getWeeklyLogs()
 {
-    $users = ['JL', 'MB'];
+    $users = array_keys(goodweUsers());
 
     foreach ($users as $user) {
         $result = [];

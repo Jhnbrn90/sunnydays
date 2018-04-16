@@ -37,5 +37,5 @@ return [
     'goodwe' => [
         'JL'    => env('GOODWE_ID'),
         'MB'    => env('GOODWE_ID_MB'),
-    ]
+    ],
 ];

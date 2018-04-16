@@ -44,11 +44,11 @@
 
         <div class="container">
             <div class="LJ">
-                <solar-energy goodwe-id="{{ $goodweId }}" api="{{ config('app.url') }}"></solar-energy>
+                <solar-energy goodwe-id="{{ $goodweIds['JL'] }}" api="{{ config('app.url') }}"></solar-energy>
             </div>
 
             <div class="MB">
-                <solar-energy goodwe-id="{{ $goodweIdMB }}" api="{{ config('app.url') }}"></solar-energy>
+                <solar-energy goodwe-id="{{ $goodweIds['MB'] }}" api="{{ config('app.url') }}"></solar-energy>
             </div>
         </div>
 
