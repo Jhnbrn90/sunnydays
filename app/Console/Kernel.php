@@ -51,7 +51,7 @@ class Kernel extends ConsoleKernel
                 'user'              => $user,
             ]);
             }
-        })->everyMinute();
+        })->dailyAt('23:00');
     }
 
     /**
