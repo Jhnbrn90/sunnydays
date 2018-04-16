@@ -47,11 +47,11 @@ class Kernel extends ConsoleKernel
 
             foreach ($response as $user => $value) {
                 \App\DailyProductionLog::create([
-                'total_production'  => $response->energy_today,
+                'total_production'  => $value->energy_today,
                 'user'              => $user,
             ]);
             }
-        })->dailyAt('23:00');
+        })->everyMinute();
     }
 
     /**
