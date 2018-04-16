@@ -8,17 +8,22 @@ Route::get('/', function () {
     $goodweIdMB = \Config::get('services.goodwe.MB');
 
     // get the past week of values
-    $weeklyGraph = DailyProductionLog::whereBetween('created_at', [Carbon::today()->subDays(7), Carbon::today()])->orderBy('created_at', 'ASC')->get();
+    $users = ['JL', 'MB'];
 
-    $days = $weeklyGraph->map(function ($data) {
+    foreach($users as $user) {
+        $weeklyGraph[$user] = DailyProductionLog::where('user', $user)->whereBetween('created_at', [Carbon::today()->subDays(7), Carbon::today()])->orderBy('created_at', 'ASC')->get();
+        $produced[$user] = $weeklyGraph[$user]->map(function ($data) {
+            return $data->total_production / 1000;
+        });
+    }
+
+    $produced = json_encode($produced);
+
+    $days = $weeklyGraph[$users[0]]->map(function ($data) {
         return $data->created_at->formatLocalized('%A %e %B');
     });
 
-    $produced = $weeklyGraph->map(function ($data) {
-        return $data->total_production / 1000;
-    });
-
-    return view('welcome', compact('goodweId', 'goodweIdMB', 'weeklyGraph', 'days', 'produced'));
+    return view('welcome', compact('goodweId', 'goodweIdMB', 'days', 'produced'));
 });
 
 Route::get('/api/goodwe/{id}', 'ApiController@goodWe');

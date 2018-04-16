@@ -45,9 +45,12 @@ class Kernel extends ConsoleKernel
             $url = \Config::get('app.url') . '/api/daily';
             $response = json_decode(file_get_contents($url, true));
 
-            \App\DailyProductionLog::create([
+            foreach ($response as $user => $value) {
+                \App\DailyProductionLog::create([
                 'total_production'  => $response->energy_today,
+                'user'              => $user,
             ]);
+            }
         })->dailyAt('23:00');
     }
 

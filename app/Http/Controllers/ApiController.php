@@ -38,11 +38,18 @@ class ApiController extends Controller
 
     public function daily()
     {
-        $goodweId = \Config::get('services.goodwe.JL');
-        $url = 'http://www.goodwe-power.com/Mobile/GetMyPowerStationById?stationID=' . $goodweId;
-        $response = json_decode(file_get_contents($url), true);
+        // get Goodwe data
+        $users = ['JL', 'MB'];
 
-        $entry['energy_today'] = substr($response['eday'], 0, -3) * 1000;
+        foreach ($users as $user) {
+            $goodweIds[$user] = \Config::get('services.goodwe.' . $user);
+        }
+
+        foreach ($goodweIds as $user => $goodweId) {
+            $url = 'http://www.goodwe-power.com/Mobile/GetMyPowerStationById?stationID=' . $goodweId;
+            $response = json_decode(file_get_contents($url), true);
+            $entry[$user]['energy_today'] = substr($response['eday'], 0, -3) * 1000;
+        }
 
         return $entry;
     }

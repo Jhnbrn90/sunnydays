@@ -60,10 +60,9 @@
             <daily-graph></daily-graph>
         </center>
 
-        {{--
         <center>
             <weekly-graph :days="{{ $days }}" :power="{{ $produced }}"></weekly-graph>
-        </center> --}}
+        </center>
 
     </div>
 

@@ -24,10 +24,16 @@ export default {
         labels: this.days,
         datasets: [
           {
-            label: "kWh",
-            data: this.power,
+            label: "(J&L)",
+            data: this.power.JL,
             fill: false,
             backgroundColor: "rgba(255, 159, 64, 0.75)"
+          },
+          {
+            label: "(M&B)",
+            data: this.power.MB,
+            fill: false,
+            backgroundColor: "rgba(2, 158, 227, 1)"
           }
         ]
       },
@@ -39,7 +45,7 @@ export default {
           text: "Energy produced per day (in kWh)"
         },
         legend: {
-          display: false
+          display: true
         },
         scales: {
           yAxes: [
