@@ -6,32 +6,85 @@
 
 <script>
 import Chart from "chart.js";
+import axios from "axios";
+import moment from "moment";
 
 export default {
-  props: ["days", "power"],
-
   data() {
     return {
-      data: ""
+      powerObject: {},
+      days: [],
+      weeklyChart: ""
     };
+  },
+
+  created() {
+    this.setDays();
+    this.getGraphData();
+  },
+
+  methods: {
+    getGraphData() {
+      axios.get("/api/production").then(response => {
+        Object.keys(response.data).forEach(user => {
+          var powerArray = [];
+          var data = response.data[user];
+          Object.keys(data).forEach(day => {
+            powerArray.push({
+              x: day,
+              y: data[day]
+            });
+            if (user === "LJ") {
+              this.days.push(day);
+            }
+          });
+
+          this.powerObject[user] = powerArray;
+        });
+
+        this.weeklyChart.data.labels = this.days;
+
+        this.weeklyChart.data.datasets.forEach((dataset, index) => {
+          var user = Object.keys(this.powerObject)[index];
+          dataset.data = this.powerObject[user];
+        });
+
+        this.weeklyChart.update();
+      });
+    },
+
+    setDays() {
+      var startOfWeek = moment().subtract(7, "days");
+      var endOfWeek = moment();
+
+      var days = [];
+      var day = startOfWeek;
+
+      while (day <= endOfWeek) {
+        days.push(day.format("MM-DD-Y"));
+        day = day.clone().add(1, "d");
+      }
+
+      this.days = days;
+    }
   },
 
   mounted() {
     var ctx = document.getElementById("weeklyChart");
-    var weeklyChart = new Chart(ctx, {
+    this.weeklyChart = new Chart(ctx, {
       type: "bar",
       data: {
-        labels: this.days,
+        labels: "",
         datasets: [
           {
             label: "(J&L)",
-            data: this.power.JL,
+            data: [],
             fill: false,
             backgroundColor: "rgba(255, 159, 64, 0.75)"
           },
           {
             label: "(M&B)",
-            data: this.power.MB,
+            data: [],
             fill: false,
             backgroundColor: "rgba(2, 158, 227, 1)"
           }
@@ -47,7 +100,26 @@ export default {
         legend: {
           display: true
         },
+        tooltips: {
+          callbacks: {
+            label: function(tooltipItem, data) {
+              return tooltipItem.yLabel + " kWh ";
+            }
+          }
+        },
         scales: {
+          xAxes: [
+            {
+              type: "time",
+              time: {
+                unit: "day",
+                unitStepSize: 1,
+                displayFormats: {
+                  day: "dd DD MMM"
+                }
+              }
+            }
+          ],
           yAxes: [
             {
               display: true,
