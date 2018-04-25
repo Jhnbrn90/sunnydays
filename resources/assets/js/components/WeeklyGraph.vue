@@ -87,6 +87,12 @@ export default {
             data: [],
             fill: false,
             backgroundColor: "rgba(2, 158, 227, 1)"
+          },
+          {
+            label: "(B&E)",
+            data: [],
+            fill: false,
+            backgroundColor: "rgba(0, 153, 51, 1)"
           }
         ]
       },

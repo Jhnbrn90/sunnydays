@@ -18,7 +18,7 @@ class ApiController extends Controller
         $yahoo = $response['query']['results']['channel']['item']['condition'];
 
         // get Goodwe data
-        $users = ['JL', 'MB'];
+        $users = ['JL', 'MB', 'BE'];
 
         foreach ($users as $user) {
             $goodweIds[$user] = \Config::get('services.goodwe.' . $user);
@@ -39,7 +39,7 @@ class ApiController extends Controller
     public function daily()
     {
         // get Goodwe data
-        $users = ['JL', 'MB'];
+        $users = ['JL', 'MB', 'BE'];
 
         foreach ($users as $user) {
             $goodweIds[$user] = \Config::get('services.goodwe.' . $user);

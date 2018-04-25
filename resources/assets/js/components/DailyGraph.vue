@@ -69,6 +69,15 @@ export default {
             fill: false,
             borderColor: "rgba(2, 158, 227, 1)",
             backgroundColor: "rgba(255, 255, 255, 0.1)"
+          },
+          {
+            label: "(B&E)",
+            data: this.powerObject.BE,
+            weatherCondition: [],
+            temperatures: [],
+            fill: false,
+            borderColor: "rgba(0, 153, 51, 1)",
+            backgroundColor: "rgba(255, 255, 255, 0.1)"
           }
         ]
       },
@@ -98,8 +107,7 @@ export default {
           yAxes: [
             {
               ticks: {
-                beginAtZero: true,
-                max: 3000
+                beginAtZero: true
               }
             }
           ]

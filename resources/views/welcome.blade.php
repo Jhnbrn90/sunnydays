@@ -32,6 +32,10 @@
         .MB {
             color: rgb(2, 158, 227);
         }
+
+        .BE {
+            color: rgb(0, 153, 51)
+        }
     </style>
 
     <!-- Scripts -->
@@ -49,6 +53,10 @@
 
             <div class="MB">
                 <solar-energy goodwe-id="{{ $goodweIds['MB'] }}" api="{{ config('app.url') }}"></solar-energy>
+            </div>
+
+            <div class="BE">
+                <solar-energy goodwe-id="{{ $goodweIds['BE'] }}" api="{{ config('app.url') }}"></solar-energy>
             </div>
         </div>
 
