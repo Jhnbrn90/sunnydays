@@ -10071,9 +10071,9 @@ body {
 
 .grid-item {
   text-align: center;
-  width: 200px;
-  height: 200px;
-  padding-top: 50px;
+  width: 220px;
+  height: 220px;
+  padding-top: 30px;
   margin: auto;
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 50%;
@@ -10108,13 +10108,13 @@ body {
 
 @media only screen and (max-width: 600px) {
   .grid-container {
-    height: 100px;
+    height: 180px;
   }
 
   .grid-item {
-    padding: 0px;
-    width: 100px;
-    height: 100px;
+    padding: 2px;
+    width: 110px;
+    height: 170px;
     border: none;
     border-radius: 7%;
     margin-right: 2px;

@@ -29,6 +29,10 @@
             color: rgb(255, 165, 120);
         }
 
+        .JL {
+            color: rgb(255, 165, 120);
+        }
+
         .MB {
             color: rgb(2, 158, 227);
         }
@@ -47,17 +51,11 @@
     <div id="app">
 
         <div class="container">
-            <div class="LJ">
-                <solar-energy goodwe-id="{{ $goodweIds['JL'] }}" api="{{ config('app.url') }}"></solar-energy>
+
+            <div>
+                <solar-energy :goodwe-ids="{{ $goodweIds }}" api="{{ config('app.url') }}"></solar-energy>
             </div>
 
-            <div class="MB">
-                <solar-energy goodwe-id="{{ $goodweIds['MB'] }}" api="{{ config('app.url') }}"></solar-energy>
-            </div>
-
-            <div class="BE">
-                <solar-energy goodwe-id="{{ $goodweIds['BE'] }}" api="{{ config('app.url') }}"></solar-energy>
-            </div>
         </div>
 
         <center>

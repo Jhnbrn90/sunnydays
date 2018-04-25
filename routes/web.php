@@ -6,6 +6,8 @@ use App\DailyProductionLog;
 Route::get('/', function () {
     $goodweIds = goodweUsers();
 
+    $goodweIds = json_encode(collect($goodweIds));
+
     return view('welcome', compact('goodweIds'));
 });
 

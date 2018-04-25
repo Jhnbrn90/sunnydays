@@ -1,17 +1,45 @@
 <template>
+  <div>
+    <center><strong>
+      <span class="JL">&mdash; J&amp;L</span>
+      <span class="MB">&mdash; M&amp;B</span>
+      <span class="BE">&mdash; B&amp;E</span>
+      </strong>
+    </center>
+    <br>
   <div class="grid-container">
-    <div class="grid-item">
+      <div class="grid-item">
       <strong>Today</strong><br>
-      <span class="number">{{ this.energy.eday ? this.energy.eday.split('kWh')[0] : '...' }}</span> <br> kWh
+      kWh
+      <div v-for="user in Object.keys(goodweIds)">
+        <span :class='classes(user)'>
+          {{ energy[user] ? energy[user].eday.split('kWh')[0] : '...' }}
+        </span> <br>
+      </div>
+
     </div>
-        <div class="grid-item">
+
+    <div class="grid-item">
       <strong>Now</strong><br>
-      <span class="number">{{ nowGenerating }}</span> <br> W
+      W
+      <div v-for="user in Object.keys(goodweIds)">
+      <span :class="classes(user)">
+        {{ nowGenerating(user) }}
+      </span> <br>
+      </div>
     </div>
-        <div class="grid-item">
+
+    <div class="grid-item">
       <strong>Total</strong><br>
-        <span class="number">{{ this.energy.etotal ? this.energy.etotal.split('kWh')[0] : '...' }}</span> <br> kWh
+      kWh
+      <div v-for="user in Object.keys(goodweIds)">
+        <span :class="classes(user)">
+          {{ energy[user] ? energy[user].etotal.split('kWh')[0] : '...' }}
+        </span> <br>
+      </div>
     </div>
+
+  </div>
   </div>
 </template>
 
@@ -19,29 +47,40 @@
 import goodwe from "../services/goodwe/Goodwe";
 
 export default {
-  props: ["goodweId", "api"],
+  props: ["goodweIds", "api"],
 
   data() {
     return {
-      energy: {}
+      energy: {
+        JL: "",
+        MB: "",
+        BE: ""
+      }
     };
   },
 
   created() {
-    this.getYield();
-    setInterval(this.getYield, 10 * 1000);
+    this.getYields();
+    setInterval(this.getYields, 10 * 1000);
   },
 
   methods: {
-    async getYield() {
-      const power = await goodwe.current(this.goodweId, this.api);
-      this.energy = power;
-    }
-  },
+    async getYieldFor(user) {
+      const power = await goodwe.current(this.goodweIds[user], this.api);
+      this.energy[user] = power;
+    },
 
-  computed: {
-    nowGenerating() {
-      return Math.round(this.energy.curpower.split("kW")[0] * 1000);
+    getYields() {
+      Object.keys(this.goodweIds).forEach(user => {
+        this.getYieldFor(user);
+      });
+    },
+
+    classes(goodweId) {
+      return "number" + " " + goodweId;
+    },
+    nowGenerating(user) {
+      return Math.round(this.energy[user].curpower.split("kW")[0] * 1000);
     }
   }
 };
