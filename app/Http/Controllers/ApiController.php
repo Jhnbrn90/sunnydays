@@ -2,8 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\DailyProductionLog;
+
 class ApiController extends Controller
 {
+
+    public $users;
+
+    public function __construct() {
+        $this->users = \Config::get('services.goodwe');
+    }
+
     public function goodwe($id)
     {
         $url = 'http://www.goodwe-power.com/Mobile/GetMyPowerStationById?stationID=' . $id;
@@ -52,5 +62,47 @@ class ApiController extends Controller
         }
 
         return $entry;
+    }
+
+    public function production()
+    {
+        $users = array_keys($this->users);
+
+        foreach ($users as $user) {
+            $result = [];
+            $weeklyEntries[$user] = DailyProductionLog::where('user', $user)->thisWeek()->orderBy('created_at', 'ASC')->get();
+
+            foreach ($weeklyEntries[$user] as $entry) {
+                $result[(string)$entry->created_at->format('m-d-Y')] = $entry->total_production / 1000;
+            }
+
+            $collection[$user] = $result;
+        }
+
+        return collect($collection);
+    }
+
+    public function dailyGraph($date)
+    {
+        $start = Carbon::parse($date)->startOfDay();
+
+        $users = array_keys($this->users);
+
+        foreach ($users as $user) {
+            $log = [];
+            $powerlogs = \App\Powerlog::where('user', $user)->whereDate('created_at', $start)->get();
+
+            foreach ($powerlogs as $powerlog) {
+                $log[(string)$powerlog->created_at->format('H:i')] = [
+                    'power' => $powerlog->current_power,
+                    'weather_condition' => $powerlog->weather_condition,
+                    'temperature' => $powerlog->temperature
+                ];
+            }
+
+            $collection[$user] = $log;
+        }
+
+        return collect($collection);
     }
 }
