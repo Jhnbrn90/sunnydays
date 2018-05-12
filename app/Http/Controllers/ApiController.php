@@ -11,7 +11,7 @@ class ApiController extends Controller
     public $users;
 
     public function __construct() {
-        $this->users = \Config::get('services.goodwe');
+        $this->users = array_keys(\Config::get('services.goodwe'));
     }
 
     public function goodwe($id)
@@ -27,10 +27,7 @@ class ApiController extends Controller
         $response = json_decode(file_get_contents($url), true);
         $yahoo = $response['query']['results']['channel']['item']['condition'];
 
-        // get Goodwe data
-        $users = ['JL', 'MB', 'BE'];
-
-        foreach ($users as $user) {
+        foreach ($this->users as $user) {
             $goodweIds[$user] = \Config::get('services.goodwe.' . $user);
         }
 
@@ -48,10 +45,7 @@ class ApiController extends Controller
 
     public function daily()
     {
-        // get Goodwe data
-        $users = ['JL', 'MB', 'BE'];
-
-        foreach ($users as $user) {
+        foreach ($this->users as $user) {
             $goodweIds[$user] = \Config::get('services.goodwe.' . $user);
         }
 
@@ -66,9 +60,7 @@ class ApiController extends Controller
 
     public function production()
     {
-        $users = array_keys($this->users);
-
-        foreach ($users as $user) {
+        foreach ($this->users as $user) {
             $result = [];
             $weeklyEntries[$user] = DailyProductionLog::where('user', $user)->thisWeek()->orderBy('created_at', 'ASC')->get();
 
@@ -86,9 +78,7 @@ class ApiController extends Controller
     {
         $start = Carbon::parse($date)->startOfDay();
 
-        $users = array_keys($this->users);
-
-        foreach ($users as $user) {
+        foreach ($this->users as $user) {
             $log = [];
             $powerlogs = \App\Powerlog::where('user', $user)->whereDate('created_at', $start)->get();
 
