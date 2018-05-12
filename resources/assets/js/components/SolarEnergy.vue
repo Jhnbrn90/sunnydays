@@ -39,28 +39,41 @@
       </div>
     </div>
 
+        <div class="grid-item">
+      <strong>Average</strong><br>
+      kWh /day
+      <div v-for="user in Object.keys(goodweIds)">
+        <span :class="classes(user)">
+          {{ average[user] ? average[user] : '' }}
+        </span> <br>
+      </div>
+    </div>
+
   </div>
   </div>
 </template>
 
 <script>
-import goodwe from "../services/goodwe/Goodwe";
+import goodwe from '../services/goodwe/Goodwe';
+import axios from 'axios';
 
 export default {
-  props: ["goodweIds", "api"],
+  props: ['goodweIds', 'api'],
 
   data() {
     return {
       energy: {
-        JL: "",
-        MB: "",
-        BE: ""
-      }
+        JL: '',
+        MB: '',
+        BE: ''
+      },
+      average: {}
     };
   },
 
   created() {
     this.getYields();
+    this.getAverage();
     setInterval(this.getYields, 10 * 1000);
   },
 
@@ -76,11 +89,17 @@ export default {
       });
     },
 
+    getAverage() {
+      axios.get('/api/average').then(({ data }) => {
+        this.average = data;
+      });
+    },
+
     classes(goodweId) {
-      return "number" + " " + goodweId;
+      return 'number' + ' ' + goodweId;
     },
     nowGenerating(user) {
-      return Math.round(this.energy[user].curpower.split("kW")[0] * 1000);
+      return Math.round(this.energy[user].curpower.split('kW')[0] * 1000);
     }
   }
 };

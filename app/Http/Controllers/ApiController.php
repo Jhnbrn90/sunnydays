@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Powerlog;
 use Carbon\Carbon;
 use App\DailyProductionLog;
 
@@ -80,7 +81,7 @@ class ApiController extends Controller
 
         foreach ($this->users as $user) {
             $log = [];
-            $powerlogs = \App\Powerlog::where('user', $user)->whereDate('created_at', $start)->get();
+            $powerlogs = Powerlog::where('user', $user)->whereDate('created_at', $start)->get();
 
             foreach ($powerlogs as $powerlog) {
                 $log[(string)$powerlog->created_at->format('H:i')] = [
@@ -94,5 +95,15 @@ class ApiController extends Controller
         }
 
         return collect($collection);
+    }
+
+    public function getAverage()
+    {
+        foreach($this->users as $user) {
+            $production = DailyProductionLog::where('user', $user)->pluck('total_production');
+            $result[$user] = number_format(array_sum($production->toArray())/$production->count()/1000, 1);
+        }
+
+        return collect($result);
     }
 }

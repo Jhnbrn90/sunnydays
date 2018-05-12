@@ -8,4 +8,5 @@ Route::prefix('api')->group(function () {
     Route::get('daily', 'ApiController@daily');
     Route::get('production', 'ApiController@production');
     Route::get('dailygraph/{date}', 'ApiController@dailyGraph');
+    Route::get('average', 'ApiController@getAverage');
 });

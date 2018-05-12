@@ -66,14 +66,13 @@
             <daily-graph></daily-graph>
         </center>
 
-
         <center>
             <weekly-graph></weekly-graph>
         </center>
 
     </div>
 
-    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/app.js?v=2"></script>
 
 </body>
 
