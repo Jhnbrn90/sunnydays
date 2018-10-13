@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Powerlog;
 use Carbon\Carbon;
+use App\DataRetriever;
 use App\DailyProductionLog;
 
 class ApiController extends Controller
@@ -15,10 +16,21 @@ class ApiController extends Controller
         $this->users = array_keys(\Config::get('services.goodwe'));
     }
 
+    public function getPowerStation($powerstation)
+    {
+        $retriever = new DataRetriever($powerstation);
+
+        return $retriever->getPowerStationData();
+    }
+
     public function goodwe($id)
     {
-        $url = 'http://www.goodwe-power.com/Mobile/GetMyPowerStationById?stationID=' . $id;
-        return json_decode(file_get_contents($url), true);
+        $retriever = new DataRetriever($id);
+        if (request()->wantsJson()) {
+            return response()->json($retriever->getPowerStationData());
+        }
+
+        return $retriever->getPowerStationData();
     }
 
     public function hourly()
@@ -33,9 +45,9 @@ class ApiController extends Controller
         }
 
         foreach ($goodweIds as $user => $goodweId) {
-            $url = 'http://www.goodwe-power.com/Mobile/GetMyPowerStationById?stationID=' . $goodweId;
-            $response = json_decode(file_get_contents($url), true);
-            $entry[$user]['power'] = substr($response['curpower'], 0, -2) * 1000;
+            $data = $this->getPowerStation($goodweId);
+
+            $entry[$user]['power'] = $data->kpi->pac;
             $entry[$user]['temperature'] = $yahoo['temp'];
             $entry[$user]['condition'] = $yahoo['text'];
             $entry[$user]['code'] = $yahoo['code'];
@@ -51,9 +63,9 @@ class ApiController extends Controller
         }
 
         foreach ($goodweIds as $user => $goodweId) {
-            $url = 'http://www.goodwe-power.com/Mobile/GetMyPowerStationById?stationID=' . $goodweId;
-            $response = json_decode(file_get_contents($url), true);
-            $entry[$user]['energy_today'] = substr($response['eday'], 0, -3) * 1000;
+            $data = $this->getPowerStation($goodweId);
+
+            $entry[$user]['energy_today'] = intval($data->inverter[0]->eday) * 1000;
         }
 
         return $entry;
