@@ -25,12 +25,22 @@ class ApiController extends Controller
 
     public function goodwe($id)
     {
-        $retriever = new DataRetriever($id);
-        if (request()->wantsJson()) {
-            return response()->json($retriever->getPowerStationData());
+        return collect($this->getPowerStation($id));
+    }
+
+    public function goodWeAll()
+    {
+        $data = [];
+
+        foreach ($this->users as $user) {
+            $goodweIds[$user] = \Config::get('services.goodwe.' . $user);
         }
 
-        return $retriever->getPowerStationData();
+        foreach ($goodweIds as $user => $goodweId) {
+            $data[$user] = $this->getPowerStation($goodweId);
+        }
+
+        return collect($data);
     }
 
     public function hourly()
