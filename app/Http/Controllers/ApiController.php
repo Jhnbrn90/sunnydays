@@ -48,7 +48,7 @@ class ApiController extends Controller
         $data = $this->retriever->getPowerstationData($goodweId);
 
         if ($data == null) {
-            return $this->getData();
+            return $this->getData($goodweId);
         }
         
         return $data;
