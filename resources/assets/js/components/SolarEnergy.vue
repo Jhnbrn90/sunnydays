@@ -133,27 +133,21 @@ export default {
   },
 
   created() {
-    
-    axios.get('/api/goodwe/all')
-      .then(response => {
-        this.energy = response.data;
-        this.loading = false;
-    });
+    this.initialize();
+  },
 
-    this.getAverage();
-    // setInterval(this.getYields, 60 * 1000);
+  mounted() {
+    setInterval(this.initialize, 20 * 1000);
   },
 
   methods: {
-    async getYieldFor(user) {
-      const power = await goodwe.current(this.goodweIds[user], this.api);
-      this.energy[user] = power;
-      console.log(power)
-    },
+    initialize() {
+      this.getAverage();
 
-    getYields() {
-      Object.keys(this.goodweIds).forEach(user => {
-        this.getYieldFor(user);
+      axios.get('/api/goodwe/all')
+        .then(response => {
+          this.energy = response.data;
+          this.loading = false;
       });
     },
 
