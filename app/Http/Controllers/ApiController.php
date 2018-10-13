@@ -37,10 +37,21 @@ class ApiController extends Controller
         }
 
         foreach ($goodweIds as $user => $goodweId) {
-            $data[$user] = $this->retriever->getPowerstationData($goodweId);
+            $data[$user] = $this->getData($goodweId);
         }
 
         return collect($data);
+    }
+
+    public function getData($goodweId)
+    {
+        $data = $this->retriever->getPowerstationData($goodweId);
+
+        if ($data == null) {
+            return $this->getData();
+        }
+        
+        return $data;
     }
 
     public function hourly()
@@ -55,7 +66,7 @@ class ApiController extends Controller
         }
 
         foreach ($goodweIds as $user => $goodweId) {
-            $data = $this->retriever->getPowerstationData($goodweId);
+            $data = $this->getData($goodweId);
 
             $entry[$user]['power'] = $data->kpi->pac;
             $entry[$user]['temperature'] = $yahoo['temp'];
@@ -73,7 +84,7 @@ class ApiController extends Controller
         }
 
         foreach ($goodweIds as $user => $goodweId) {
-            $data = $this->retriever->getPowerstationData($goodweId);
+            $data = $this->getData($goodweId);
 
             $entry[$user]['energy_today'] = intval($data->inverter[0]->eday) * 1000;
         }
