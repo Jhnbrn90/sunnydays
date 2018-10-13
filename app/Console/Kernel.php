@@ -51,7 +51,7 @@ class Kernel extends ConsoleKernel
                 'user'              => $user,
             ]);
             }
-        })->dailyAt('23:00');
+        })->daily();
     }
 
     /**
