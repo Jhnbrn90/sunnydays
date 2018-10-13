@@ -4,7 +4,6 @@ namespace App;
 
 class DataRetriever 
 {
-    protected $powerstationId;
     protected $token;
     protected $uid;
     protected $timestamp;
@@ -14,32 +13,27 @@ class DataRetriever
     protected $loginUrl = 'https://globalapi.sems.com.cn/api/v1/Common/CrossLogin';
     protected $powerStationUrl = 'https://euapi.sems.com.cn/api/v1/PowerStation/GetMonitorDetailByPowerstationId';
 
-    public function __construct($powerstationId)
+    public function __construct()
     {
-        $this->powerstationId = $powerstationId;
         $this->username = config('goodwe.account');
         $this->password = config('goodwe.password');
+
+        $this->setAccessTokens();
     }
 
-    public function getData()
+    public function getPowerstationData($goodweId)
     {
-        return $this->setAccessTokens()
-            ->getPowerStationData();
-    }
-
-    public function getPowerstationData()
-    {
-        $response = $this->setAccessTokens()
+        $response = $this
             ->initializeCurl()
             ->setUrl($this->powerStationUrl)
             ->setHeaders($this->getPowerStationHeaders())
-            ->setPostAttributes(['powerStationId' => $this->powerstationId])
+            ->setPostAttributes(['powerStationId' => $goodweId])
             ->getCurlResponse();
 
         return $response->data;
     }
 
-    public function setAccessTokens()
+    protected function setAccessTokens()
     {
         $response = $this->initializeCurl()
             ->login($this->username, $this->password)

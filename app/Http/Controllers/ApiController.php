@@ -11,21 +11,21 @@ class ApiController extends Controller
 {
 
     public $users;
+    protected $retriever;
 
-    public function __construct() {
+    public function __construct(DataRetriever $retriever) {
         $this->users = array_keys(\Config::get('services.goodwe'));
+        $this->retriever = $retriever;
     }
 
     public function getPowerStation($powerstation)
     {
-        $retriever = new DataRetriever($powerstation);
-
-        return $retriever->getPowerStationData();
+        return $this->retriever->getPowerStationData($powerstation);
     }
 
     public function goodwe($id)
     {
-        return collect($this->getPowerStation($id));
+        return collect($this->retriever->getPowerstationData($id));
     }
 
     public function goodWeAll()
@@ -37,7 +37,7 @@ class ApiController extends Controller
         }
 
         foreach ($goodweIds as $user => $goodweId) {
-            $data[$user] = $this->getPowerStation($goodweId);
+            $data[$user] = $this->retriever->getPowerstationData($goodweId);
         }
 
         return collect($data);
@@ -55,7 +55,7 @@ class ApiController extends Controller
         }
 
         foreach ($goodweIds as $user => $goodweId) {
-            $data = $this->getPowerStation($goodweId);
+            $data = $this->retriever->getPowerstationData($goodweId);
 
             $entry[$user]['power'] = $data->kpi->pac;
             $entry[$user]['temperature'] = $yahoo['temp'];
@@ -73,7 +73,7 @@ class ApiController extends Controller
         }
 
         foreach ($goodweIds as $user => $goodweId) {
-            $data = $this->getPowerStation($goodweId);
+            $data = $this->retriever->getPowerstationData($goodweId);
 
             $entry[$user]['energy_today'] = intval($data->inverter[0]->eday) * 1000;
         }
