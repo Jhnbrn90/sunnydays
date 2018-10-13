@@ -74,13 +74,14 @@ export default {
   created() {
     this.getYields();
     this.getAverage();
-    setInterval(this.getYields, 10 * 1000);
+    setInterval(this.getYields, 60 * 1000);
   },
 
   methods: {
     async getYieldFor(user) {
       const power = await goodwe.current(this.goodweIds[user], this.api);
       this.energy[user] = power;
+      console.log(power)
     },
 
     getYields() {
