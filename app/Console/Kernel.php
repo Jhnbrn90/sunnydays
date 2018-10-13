@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
             $response = json_decode(file_get_contents($url, true));
 
             foreach ($response as $user => $value) {
-                if ($value->power !== 0) {
+                if ($value->power > 50) {
                     $powerlog = \App\Powerlog::create([
                         'current_power'          => $value->power,
                         'weather_condition'      => $value->condition,
