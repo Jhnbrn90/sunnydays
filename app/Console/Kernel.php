@@ -51,7 +51,7 @@ class Kernel extends ConsoleKernel
                 'user'              => $user,
             ]);
             }
-        })->dailyAt('22:00');
+        })->timezone('Europe/Amsterdam')->dailyAt('23:00');
     }
 
     /**
