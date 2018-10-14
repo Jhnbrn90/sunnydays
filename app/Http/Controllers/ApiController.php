@@ -12,9 +12,13 @@ class ApiController extends Controller
 
     public $users;
     protected $retriever;
+    protected $lookup;
 
     public function __construct(DataRetriever $retriever) {
         $this->users = array_keys(\Config::get('services.goodwe'));
+        
+        $this->lookup = array_flip(\Config::get('services.goodwe'));
+
         $this->retriever = $retriever;
     }
 
@@ -29,18 +33,14 @@ class ApiController extends Controller
     }
 
     public function goodWeAll()
-    {
-        $data = [];
+    {   
+        $powerstations = collect($this->retriever->getAllPowerStationData()->data);
 
-        foreach ($this->users as $user) {
-            $goodweIds[$user] = \Config::get('services.goodwe.' . $user);
+        foreach ($powerstations as $powerstation) {
+            $data[$this->lookup[$powerstation->powerstation_id]] = $powerstation;
         }
 
-        foreach ($goodweIds as $user => $goodweId) {
-            $data[$user] = $this->getData($goodweId);
-        }
-
-        return collect($data);
+        return $data;
     }
 
     public function getData($goodweId)
@@ -61,17 +61,13 @@ class ApiController extends Controller
         $response = json_decode(file_get_contents($url), true);
         $yahoo = $response['query']['results']['channel']['item']['condition'];
 
-        foreach ($this->users as $user) {
-            $goodweIds[$user] = \Config::get('services.goodwe.' . $user);
-        }
+        $powerstations = collect($this->retriever->getAllPowerStationData()->data);
 
-        foreach ($goodweIds as $user => $goodweId) {
-            $data = $this->getData($goodweId);
-
-            $entry[$user]['power'] = $data->kpi->pac;
-            $entry[$user]['temperature'] = $yahoo['temp'];
-            $entry[$user]['condition'] = $yahoo['text'];
-            $entry[$user]['code'] = $yahoo['code'];
+        foreach ($powerstations as $powerstation) {
+            $entry[$this->lookup[$powerstation->powerstation_id]]['power'] = $powerstation->pac;
+            $entry[$this->lookup[$powerstation->powerstation_id]]['temperature'] = $yahoo['temp'];
+            $entry[$this->lookup[$powerstation->powerstation_id]]['condition'] = $yahoo['text'];
+            $entry[$this->lookup[$powerstation->powerstation_id]]['code'] = $yahoo['code'];
         }
 
         return $entry;
@@ -79,14 +75,10 @@ class ApiController extends Controller
 
     public function daily()
     {
-        foreach ($this->users as $user) {
-            $goodweIds[$user] = \Config::get('services.goodwe.' . $user);
-        }
+        $powerstations = collect($this->retriever->getAllPowerStationData()->data);
 
-        foreach ($goodweIds as $user => $goodweId) {
-            $data = $this->getData($goodweId);
-
-            $entry[$user]['energy_today'] = intval($data->inverter[0]->eday) * 1000;
+        foreach ($powerstations as $powerstation) {
+            $entry[$this->lookup[$powerstation->powerstation_id]]['energy_today'] = intval($powerstation->eday) * 1000;
         }
 
         return $entry;

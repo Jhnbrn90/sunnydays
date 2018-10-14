@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\Cache;
+
 class DataRetriever 
 {
     protected $token;
@@ -17,8 +19,68 @@ class DataRetriever
     {
         $this->username = config('goodwe.account');
         $this->password = config('goodwe.password');
+    }
 
-        $this->setAccessTokens();
+    public function getAllPowerStationData()
+    {
+        if(Cache::has('all-powerstations')) {
+            return Cache::get('all-powerstations');
+        }
+
+        if(Cache::has('token')) {
+            $this->token = Cache::get('token');
+            $this->uid = Cache::get('uid');
+            $this->timestamp = Cache::get('timestamp');
+        } else {
+            $this->setAccessTokens();
+        }
+
+        $response = $this
+             ->initializeCurl()
+             ->setUrl("https://euapi.sems.com.cn/api/PowerStationMonitor/QueryPowerStationMonitorForApp")
+             ->setHeaders($this->getAllPowerStationHeaders())
+             ->setPostAttributes([
+                 'page_size' => '5',
+                 'order_by'  => '',
+                 'powerstation_status' => '',
+                 'key'   => '',
+                 'page_index' => '1',
+                 'powerstation_id'   => '',
+                 'power_station_type'    => ''
+             ])
+             ->getCurlResponse();
+
+        if ($response->data == null) {
+            $response = $this
+                 ->initializeCurl()
+                 ->setUrl("https://euapi.sems.com.cn/api/PowerStationMonitor/QueryPowerStationMonitorForApp")
+                 ->setHeaders($this->getAllPowerStationHeaders())
+                 ->setPostAttributes([
+                     'page_size' => '5',
+                     'order_by'  => '',
+                     'powerstation_status' => '',
+                     'key'   => '',
+                     'page_index' => '1',
+                     'powerstation_id'   => '',
+                     'power_station_type'    => ''
+                 ])
+                 ->getCurlResponse();
+        }
+
+            Cache::put('all-powerstations', $response, 2);
+
+        return $response;
+    }
+
+    public function getAllPowerStationHeaders()
+    {
+        return [
+            "Content-Type: application/json", 
+            "Accept: */*", 
+            "User-Agent: PVMaster/2.1.0 (iPhone; iOS 12.0; Scale/2.00)", 
+            "Accept-Language: nl-BE;q=1",
+            "Token: {\"language\":\"en\",\"timestamp\":". $this->timestamp .",\"uid\":\"". $this->uid ."\",\"client\":\"ios\",\"token\":\"". $this->token ."\",\"version\":\"v2.1.0\"}"
+        ];
     }
 
     public function getPowerstationData($goodweId)
@@ -42,6 +104,10 @@ class DataRetriever
         $this->token = $response->data->token;
         $this->uid = $response->data->uid;
         $this->timestamp = $response->data->timestamp;
+
+        Cache::put('token', $this->token, 2);
+        Cache::put('uid', $this->uid, 2);
+        Cache::put('timestamp', $this->timestamp, 2);
 
         return $this;
     }
@@ -122,6 +188,11 @@ class DataRetriever
             'Token: {"version":"v2.1.0","client":"ios","language":"en","timestamp":'.$this->timestamp.',"uid":"'.$this->uid.'","token":"'.$this->token.'"}',
             'User-Agent:  PVMaster/2.1.0 (iPhone; iOS 12.0; Scale/2.00)',
         ];
+    }
+
+    public function __toString()
+    {
+        return collect($this);
     }
 
 }

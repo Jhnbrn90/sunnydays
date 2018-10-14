@@ -13,7 +13,7 @@
       kWh
       <div v-for="user in Object.keys(goodweIds)" v-if="!loading">
         <span :class='classes(user)'>
-          {{ energy[user] ? energy[user].inverter[0].eday : '...' }}
+          {{ energy[user] ? energy[user].eday : '...' }}
         </span> <br>
       </div>
       <div v-if="loading">
@@ -60,7 +60,7 @@
       kWh
       <div v-for="user in Object.keys(goodweIds)"  v-if="!loading">
         <span :class="classes(user)">
-          {{ energy[user] ? energy[user].kpi.total_power : '...' }}
+          {{ energy[user] ? energy[user].etotal : '...' }}
         </span> <br>
       </div>
       
@@ -162,7 +162,7 @@ export default {
     },
 
     nowGenerating(user) {
-      return Math.round(this.energy[user].kpi.pac);
+      return Math.round(this.energy[user].pac);
     }
 
   }
