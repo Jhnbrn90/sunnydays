@@ -11,4 +11,5 @@ Route::prefix('api')->group(function () {
     Route::get('production', 'ApiController@production');
     Route::get('dailygraph/{date}', 'ApiController@dailyGraph');
     Route::get('average', 'ApiController@getAverage');
+    Route::get('weather', 'ApiController@weather');
 });

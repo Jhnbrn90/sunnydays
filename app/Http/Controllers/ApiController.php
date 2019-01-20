@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Powerlog;
 use Carbon\Carbon;
+use App\YahooWeather;
 use App\DataRetriever;
 use App\DailyProductionLog;
 
@@ -54,20 +55,28 @@ class ApiController extends Controller
         return $data;
     }
 
+    public function weather()
+    {
+        $yahoo = new YahooWeather();
+        return [
+            'text'          => $yahoo->currentCondition()->text,
+            'temperature'   => $yahoo->currentCondition()->temperature,
+            'code'          => $yahoo->currentCondition()->code,
+        ];   
+    }
+
     public function hourly()
     {
-        // get Yahoo data
-        $url = 'https://query.yahooapis.com/v1/public/yql?q=select%20item.condition%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text=%27Hoofddorp%27)%20and%20u=%27c%27&format=json';
-        $response = json_decode(file_get_contents($url), true);
-        $yahoo = $response['query']['results']['channel']['item']['condition'];
+        $yahoo = new YahooWeather();
+        $currentWeather = $yahoo->currentCondition();
 
         $powerstations = collect($this->retriever->getAllPowerStationData()->data);
 
         foreach ($powerstations as $powerstation) {
             $entry[$this->lookup[$powerstation->powerstation_id]]['power'] = $powerstation->pac;
-            $entry[$this->lookup[$powerstation->powerstation_id]]['temperature'] = $yahoo['temp'];
-            $entry[$this->lookup[$powerstation->powerstation_id]]['condition'] = $yahoo['text'];
-            $entry[$this->lookup[$powerstation->powerstation_id]]['code'] = $yahoo['code'];
+            $entry[$this->lookup[$powerstation->powerstation_id]]['temperature'] = $currentWeather->temperature;
+            $entry[$this->lookup[$powerstation->powerstation_id]]['condition'] = $currentWeather->text;
+            $entry[$this->lookup[$powerstation->powerstation_id]]['code'] = $currentWeather->code;
         }
 
         return $entry;

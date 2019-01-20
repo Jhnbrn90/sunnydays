@@ -9,10 +9,10 @@
 
 <script>
 import moment from "moment";
-import weather from "../services/weather/Weather";
+
+import axios from "axios";
 
 export default {
-  props: ["weatherCity"],
 
   data() {
     return {
@@ -33,6 +33,8 @@ export default {
     this.fetchWeather();
 
     setInterval(this.fetchWeather, 15 * 60 * 1000);
+
+    
   },
 
   methods: {
@@ -40,12 +42,13 @@ export default {
       this.time = moment().format("HH:mm");
     },
 
-    async fetchWeather() {
-      const conditions = await weather.conditions(this.weatherCity);
-
-      this.weather.temperature = conditions.temp;
-      this.weather.iconClass = `wi-yahoo-${conditions.code}`;
+    fetchWeather() {
+      axios.get('/api/weather').then(response => {
+        this.weather.temperature = response.data.temperature;
+        this.weather.iconClass = `wi-yahoo-${response.data.code}`;
+      });
     }
+
   }
 };
 </script>
