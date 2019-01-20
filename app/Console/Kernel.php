@@ -39,7 +39,7 @@ class Kernel extends ConsoleKernel
                     ]);
                 }
             }
-        })->everyMinute();
+        })->everyFifteenMinutes();
 
         $schedule->call(function () {
             $url = \Config::get('app.url') . '/api/daily';
