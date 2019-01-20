@@ -32,14 +32,14 @@ class Kernel extends ConsoleKernel
                 if ($value->power > 50) {
                     $powerlog = \App\Powerlog::create([
                         'current_power'          => $value->power,
-                        'weather_condition'      => $value->text,
+                        'weather_condition'      => $value->condition,
                         'temperature'            => $value->temperature,
                         'weather_condition_code' => $value->code,
                         'user'                   => $user
                     ]);
                 }
             }
-        })->everyFifteenMinutes();
+        })->everyMinute();
 
         $schedule->call(function () {
             $url = \Config::get('app.url') . '/api/daily';
