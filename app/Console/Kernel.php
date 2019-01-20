@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
                 if ($value->power > 50) {
                     $powerlog = \App\Powerlog::create([
                         'current_power'          => $value->power,
-                        'weather_condition'      => $value->condition,
+                        'weather_condition'      => $value->text,
                         'temperature'            => $value->temperature,
                         'weather_condition_code' => $value->code,
                         'user'                   => $user
