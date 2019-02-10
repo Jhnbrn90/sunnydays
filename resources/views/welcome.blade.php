@@ -72,7 +72,7 @@
 
     </div>
 
-    <script type="text/javascript" src="js/app.js?v=4"></script>
+    <script type="text/javascript" src="js/app.js?v=6"></script>
 
 </body>
 

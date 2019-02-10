@@ -61,7 +61,7 @@ export default {
       var day = startOfWeek;
 
       while (day <= endOfWeek) {
-        days.push(day.format("MM-DD-Y"));
+        days.push(day.format("DD-MM-Y"));
         day = day.clone().add(1, "d");
       }
 
@@ -70,7 +70,7 @@ export default {
   },
 
   mounted() {
-    var ctx = document.getElementById("weeklyChart");
+    var ctx = document.getElementById("weeklyChart").getContext('2d');
     this.weeklyChart = new Chart(ctx, {
       type: "bar",
       data: {
@@ -116,14 +116,14 @@ export default {
         scales: {
           xAxes: [
             {
-              type: "time",
-              time: {
-                unit: "day",
-                unitStepSize: 1,
-                displayFormats: {
-                  day: "dd DD MMM"
-                }
-              }
+              // type: "time",
+              // time: {
+              //   unit: "day",
+              //   unitStepSize: 1,
+              //   displayFormats: {
+              //     day: "dd DD MMM"
+              //   }
+              // }
             }
           ],
           yAxes: [
