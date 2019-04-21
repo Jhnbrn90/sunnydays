@@ -6,8 +6,8 @@
 
 .grid-item {
   text-align: center;
-  width: 220px;
-  height: 220px;
+  width: 260px;
+  height: 260px;
   padding-top: 30px;
   margin: auto;
   border: 1px solid rgba(0, 0, 0, 0.125);
@@ -46,9 +46,10 @@
     height: 180px;
   }
   .grid-item {
+    display: block;
     padding: 2px;
     width: 110px;
-    height: 170px;
+    height: 220px;
     border: none;
     border-radius: 7%;
     margin-right: 2px;

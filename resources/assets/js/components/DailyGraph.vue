@@ -78,6 +78,15 @@ export default {
             fill: false,
             borderColor: "rgba(0, 153, 51, 1)",
             backgroundColor: "rgba(255, 255, 255, 0.1)"
+          },
+          {
+            label: "(Ron)",
+            data: this.powerObject.RB,
+            weatherCondition: [],
+            temperatures: [],
+            fill: false,
+            borderColor: "rgba(95, 66, 244, 1)",
+            backgroundColor: "rgba(255, 255, 255, 0.1)"
           }
         ]
       },

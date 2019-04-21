@@ -40,6 +40,10 @@
         .BE {
             color: rgb(0, 153, 51)
         }
+
+        .RB {
+            color: rgb(95, 66, 244);
+        }
     </style>
 
     <!-- Scripts -->
@@ -49,16 +53,13 @@
 <body>
 
     <div id="app">
-
         <div class="container">
-
             <div>
                 <solar-energy :goodwe-ids="{{ $goodweIds }}" api="{{ config('app.url') }}"></solar-energy>
             </div>
-
         </div>
-
-        <center>
+        
+        <center style="margin-top: 60px;">
             <weather-time weather-city="Hoofddorp"></weather-time>
         </center>
 

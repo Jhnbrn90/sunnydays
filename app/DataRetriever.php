@@ -100,7 +100,7 @@ class DataRetriever
         $response = $this->initializeCurl()
             ->login($this->username, $this->password)
             ->getCurlResponse();
-        
+
         $this->token = $response->data->token;
         $this->uid = $response->data->uid;
         $this->timestamp = $response->data->timestamp;

@@ -4,6 +4,7 @@
       <span class="JL">&mdash; J&amp;L</span>
       <span class="MB">&mdash; M&amp;B</span>
       <span class="BE">&mdash; B&amp;E</span>
+      <span class="RB">&mdash; Ron</span>
       </strong>
     </center>
     <br>
@@ -126,7 +127,8 @@ export default {
       energy: {
         JL: '',
         MB: '',
-        BE: ''
+        BE: '',
+        RB: '',
       },
       average: {}
     };

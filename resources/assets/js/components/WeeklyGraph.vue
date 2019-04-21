@@ -93,6 +93,12 @@ export default {
             data: [],
             fill: false,
             backgroundColor: "rgba(0, 153, 51, 1)"
+          },
+          {
+            label: "(Ron)",
+            data: [],
+            fill: false,
+            backgroundColor: "rgba(95, 66, 244, 1)"
           }
         ]
       },
