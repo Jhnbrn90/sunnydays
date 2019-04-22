@@ -134,8 +134,11 @@ class ApiController extends Controller
     public function getAverage()
     {
         foreach($this->users as $user) {
-            $production = DailyProductionLog::where('user', $user)->pluck('total_production');
-            $result[$user] = number_format(array_sum($production->toArray())/$production->count()/1000, 1);
+            $production = collect(DailyProductionLog::where('user', $user)->where('total_production', '>', 0)->pluck('total_production'));
+            
+            // $result[$user] = number_format(array_sum($production->toArray())/$production->count()/1000, 1);
+            $result[$user] = number_format($production->sum() / 1000 / $production->count(), 1);
+
         }
 
         return collect($result);
