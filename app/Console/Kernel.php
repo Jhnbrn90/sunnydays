@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Mail\StatisticsMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -45,12 +47,17 @@ class Kernel extends ConsoleKernel
             $url = \Config::get('app.url') . '/api/daily';
             $response = json_decode(file_get_contents($url, true));
 
+            $log = [];
+
             foreach ($response as $user => $value) {
-                \App\DailyProductionLog::create([
-                'total_production'  => $value->energy_today,
-                'user'              => $user,
-            ]);
+                $logs[$user] = \App\DailyProductionLog::create([
+                    'total_production'  => $value->energy_today,
+                    'user'              => $user,
+                ]);    
             }
+
+            Mail::to(config('app.mail'))->send(new StatisticsMail($logs));
+
         })->timezone('Europe/Amsterdam')->dailyAt('23:00');
     }
 
