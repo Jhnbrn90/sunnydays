@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Mail\HeartbeatMail;
 use App\Mail\StatisticsMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Console\Scheduling\Schedule;
@@ -26,6 +27,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        /**
+         * Get currently generated power (hourly)
+         */
         $schedule->call(function () {
             $url = \Config::get('app.url') . '/api/hourly';
             $response = json_decode(file_get_contents($url, true));
@@ -43,6 +47,9 @@ class Kernel extends ConsoleKernel
             }
         })->everyFifteenMinutes();
 
+        /**
+         * Log produced energy daily
+         */
         $schedule->call(function () {
             $url = \Config::get('app.url') . '/api/daily';
             $response = json_decode(file_get_contents($url, true));
@@ -59,6 +66,25 @@ class Kernel extends ConsoleKernel
             Mail::to(config('app.mail'))->send(new StatisticsMail($logs));
 
         })->timezone('Europe/Amsterdam')->dailyAt('23:00');
+
+        /**
+         * Heartbeat
+         */
+        $schedule->call(function () {
+            $url = \Config::get('app.url') . '/api/hourly';
+            $response = json_decode(file_get_contents($url, true));
+
+            $values = [];
+
+            foreach ($response as $user => $value) {
+                $values[$user] = $value->power;
+                $weather['condition'] = $value->condition;
+                $weather['temperature'] = $value->temperature;
+            }
+
+            Mail::to(config('app.mail'))->send(new HeartbeatMail($values, $weather));
+
+        })->timezone('Europe/Amsterdam')->dailyAt('12:00');
     }
 
     /**
