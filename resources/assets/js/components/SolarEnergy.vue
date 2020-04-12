@@ -109,7 +109,6 @@
 </template>
 
 <script>
-import goodwe from '../services/goodwe/Goodwe';
 import axios from 'axios';
 import { BreedingRhombusSpinner } from 'epic-spinners'
 
