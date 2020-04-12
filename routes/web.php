@@ -1,6 +1,6 @@
 <?php
 
-Route::get('/', 'IndexController@show');
+Route::get('/', 'IndexController');
 
 Route::prefix('api')->group(function () {
     Route::get('powerstation/{powerstation}', 'ApiController@getPowerstation');
