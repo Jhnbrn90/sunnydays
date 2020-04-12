@@ -67,7 +67,7 @@ class DataRetriever
                  ->getCurlResponse();
         }
 
-            Cache::put('all-powerstations', $response, 2);
+            Cache::put('all-powerstations', $response, 120);
 
         return $response;
     }
@@ -105,9 +105,9 @@ class DataRetriever
         $this->uid = $response->data->uid;
         $this->timestamp = $response->data->timestamp;
 
-        Cache::put('token', $this->token, 2);
-        Cache::put('uid', $this->uid, 2);
-        Cache::put('timestamp', $this->timestamp, 2);
+        Cache::put('token', $this->token, 120);
+        Cache::put('uid', $this->uid, 120);
+        Cache::put('timestamp', $this->timestamp, 120);
 
         return $this;
     }
