@@ -3,13 +3,11 @@
 Route::get('/', 'IndexController');
 
 Route::prefix('api')->group(function () {
-    Route::get('powerstation/{powerstation}', 'ApiController@getPowerstation');
-    Route::get('goodwe/all', 'ApiController@goodWeAll');
-    Route::get('goodwe/{id}', 'ApiController@goodWe');
-    Route::get('hourly', 'ApiController@hourly');
-    Route::get('daily', 'ApiController@daily');
-    Route::get('production', 'ApiController@production');
-    Route::get('dailygraph/{date}', 'ApiController@dailyGraph');
-    Route::get('average', 'ApiController@getAverage');
-    Route::get('weather', 'ApiController@weather');
+    Route::get('goodwe/all', 'PowerstationsOverview');
+    Route::get('hourly', 'CurrentlyGeneratedPower');
+    Route::get('daily', 'DailyGeneratedPower');
+    Route::get('production', 'WeeklyGeneratedPower');
+    Route::get('dailygraph/{date}', 'ShowGraphForDate');
+    Route::get('average', 'ShowAverage');
+    Route::get('weather', 'WeatherData');
 });

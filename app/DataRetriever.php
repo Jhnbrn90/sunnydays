@@ -67,9 +67,9 @@ class DataRetriever
                  ->getCurlResponse();
         }
 
-            Cache::put('all-powerstations', $response, 120);
+            Cache::put('all-powerstations', $response->data, 120);
 
-        return $response;
+        return $response->data;
     }
 
     public function getAllPowerStationHeaders()
