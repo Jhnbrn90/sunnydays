@@ -2,9 +2,9 @@
 
 namespace App\Console;
 
-use App\Mail\HeartbeatMail;
-use App\Mail\StatisticsMail;
-use Illuminate\Support\Facades\Mail;
+use App\Console\Commands\FetchPowerValues;
+use App\Console\Commands\LogDailyProducedEnergy;
+use App\Console\Commands\SendDailyMail;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -16,7 +16,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        FetchPowerValues::class,
+        LogDailyProducedEnergy::class,
+        SendDailyMail::class,
     ];
 
     /**
@@ -28,63 +30,27 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         /**
-         * Get currently generated power (hourly)
+         * Get currently generated power for each system.
          */
-        $schedule->call(function () {
-            $url = \Config::get('app.url') . '/api/hourly';
-            $response = json_decode(file_get_contents($url, true));
-
-            foreach ($response as $user => $value) {
-                if ($value->power > 50) {
-                    $powerlog = \App\Powerlog::create([
-                        'current_power'          => $value->power,
-                        'weather_condition'      => $value->condition,
-                        'temperature'            => $value->temperature,
-                        'weather_condition_code' => $value->code,
-                        'user'                   => $user
-                    ]);
-                }
-            }
-        })->everyFifteenMinutes();
+        $schedule
+            ->command('sunnydays:store-currently-generating')
+            ->everyFifteenMinutes();
 
         /**
-         * Log produced energy daily
+         * Log the total energy produced today for each system.
          */
-        $schedule->call(function () {
-            $url = \Config::get('app.url') . '/api/daily';
-            $response = json_decode(file_get_contents($url, true));
-
-            $log = [];
-
-            foreach ($response as $user => $value) {
-                $logs[$user] = \App\DailyProductionLog::create([
-                    'total_production'  => $value->energy_today,
-                    'user'              => $user,
-                ]);    
-            }
-
-            Mail::to(config('app.mail'))->send(new StatisticsMail($logs));
-
-        })->timezone('Europe/Amsterdam')->dailyAt('23:00');
+        $schedule
+            ->command('sunnydays:store-daily-produced-energy')
+            ->timezone('Europe/Amsterdam')
+            ->dailyAt('23:00');
 
         /**
-         * Heartbeat
+         * Daily mail at noon to check if all systems are operational.
          */
-        $schedule->call(function () {
-            $url = \Config::get('app.url') . '/api/hourly';
-            $response = json_decode(file_get_contents($url, true));
-
-            $values = [];
-
-            foreach ($response as $user => $value) {
-                $values[$user] = $value->power;
-                $weather['condition'] = $value->condition;
-                $weather['temperature'] = $value->temperature;
-            }
-
-            Mail::to(config('app.mail'))->send(new HeartbeatMail($values, $weather));
-
-        })->timezone('Europe/Amsterdam')->dailyAt('12:00');
+        $schedule
+            ->command('sunnydays:send-daily-mail')
+            ->timezone('Europe/Amsterdam')
+            ->dailyAt('12:00');
     }
 
     /**
