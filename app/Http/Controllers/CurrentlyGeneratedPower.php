@@ -14,10 +14,10 @@ class CurrentlyGeneratedPower extends Controller
         $powerStations = collect($retriever->getAllPowerStationData());
 
         return $powerStations->flatMap(function ($powerStation) use ($weather) {
-            $label = PowerStation::getOwner($powerStation->powerstation_id);
+            $label = PowerStation::getOwner($powerStation['powerstation_id']);
 
             return [
-                $label => array_merge(['power' => $powerStation->pac], $weather)
+                $label => array_merge(['power' => $powerStation['pac']], $weather)
             ];
         });
     }

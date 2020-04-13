@@ -13,8 +13,8 @@ class DailyGeneratedPower extends Controller
         $powerStations = collect($retriever->getAllPowerStationData());
 
         return $powerStations->flatMap(function ($powerStation) {
-            $label = PowerStation::getOwner($powerStation->powerstation_id);
-            $energy = (int) $powerStation->eday * 1000;
+            $label = PowerStation::getOwner($powerStation['powerstation_id']);
+            $energy = (int) $powerStation['eday'] * 1000;
 
             return [$label => ['energy_today' => $energy]];
         });

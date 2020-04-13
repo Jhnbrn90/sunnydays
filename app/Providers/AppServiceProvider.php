@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\DataRetriever;
 use App\Services\YahooWeatherApi;
 use App\Services\YahooWeatherProvider;
 use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
+use Symfony\Component\VarDumper\Cloner\Data;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +28,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->singleton('httpClient', function ($app) {
+            return new Client();
+        });
+
+        $this->app->singleton(DataRetriever::class, function ($app) {
+            return new DataRetriever($app->make('httpClient'));
+        });
+
         $this->app->singleton(YahooWeatherApi::class, function ($app) {
             return new YahooWeatherApi(
                 $appId = config('yahoo.app_id'),
@@ -34,7 +44,7 @@ class AppServiceProvider extends ServiceProvider
                 $consumerSecret = config('yahoo.consumer_secret'),
                 $temperatureUnit = config('yahoo.temperature_unit'),
                 $weatherLocation = config('yahoo.location'),
-                $httpClient = new Client()
+                $httpClient = $app->make('httpClient')
             );
         });
 
