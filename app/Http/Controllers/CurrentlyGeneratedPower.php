@@ -4,25 +4,20 @@ namespace App\Http\Controllers;
 
 use App\DataRetriever;
 use App\Services\PowerStation;
-use App\YahooWeather;
+use App\Services\YahooWeatherProvider;
 
 class CurrentlyGeneratedPower extends Controller
 {
-    public function __invoke(DataRetriever $retriever)
+    public function __invoke(DataRetriever $retriever, YahooWeatherProvider $yahoo)
     {
-        $weather = (new YahooWeather())->currentCondition();
+        $weather = $yahoo->condition();
         $powerStations = collect($retriever->getAllPowerStationData());
 
         return $powerStations->flatMap(function ($powerStation) use ($weather) {
             $label = PowerStation::getOwner($powerStation->powerstation_id);
 
             return [
-                $label => [
-                    'power' => $powerStation->pac,
-                    'temperature' => $weather->temperature,
-                    'condition'=> $weather->text,
-                    'code' => $weather->code,
-                ]
+                $label => array_merge(['power' => $powerStation->pac], $weather)
             ];
         });
     }

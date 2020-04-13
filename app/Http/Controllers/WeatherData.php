@@ -2,18 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\YahooWeather;
+use App\Services\YahooWeatherProvider;
 
 class WeatherData extends Controller
 {
-    public function __invoke()
+    public function __invoke(YahooWeatherProvider $yahoo)
     {
-        $yahoo = new YahooWeather();
-        
-        return [
-            'text'          => $yahoo->currentCondition()->text,
-            'temperature'   => $yahoo->currentCondition()->temperature,
-            'code'          => $yahoo->currentCondition()->code,
-        ];
+        return $yahoo->condition();
     }
 }
