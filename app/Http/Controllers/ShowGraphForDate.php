@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Powerlog;
 use Carbon\Carbon;
 
-class ShowGraphForDate extends Controller
+class ShowGraphForDate
 {
     public function __invoke(string $date)
     {

@@ -6,7 +6,7 @@ use App\DataRetriever;
 use App\Services\PowerStation;
 use App\Services\YahooWeatherProvider;
 
-class CurrentlyGeneratedPower extends Controller
+class CurrentlyGeneratedPower
 {
     public function __invoke(DataRetriever $retriever, YahooWeatherProvider $yahoo)
     {

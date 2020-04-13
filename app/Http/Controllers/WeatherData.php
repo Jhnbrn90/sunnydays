@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\YahooWeatherProvider;
 
-class WeatherData extends Controller
+class WeatherData
 {
     public function __invoke(YahooWeatherProvider $yahoo)
     {

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\DataRetriever;
 use App\Services\PowerStation;
 
-class PowerstationsOverview extends Controller
+class PowerstationsOverview
 {
     public function __invoke(DataRetriever $retriever)
     {

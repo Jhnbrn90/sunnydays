@@ -115,13 +115,9 @@ class DataRetriever
     {
         $url = config('goodwe.powerstation_monitor_url');
 
-        $headers = $this->getAllPowerStationHeaders();
-
-        $parameters = $this->allPowerStationPostAttributes();
-
         $response = $this->httpClient->request('POST', $url, [
-            'headers' => $headers,
-            'json' => $parameters,
+            'headers' => $this->getAllPowerStationHeaders(),
+            'json' => $this->allPowerStationPostAttributes(),
         ]);
 
         return json_decode($response->getBody(), true);

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DailyProductionLog;
 
-class WeeklyGeneratedPower extends Controller
+class WeeklyGeneratedPower
 {
     public function __invoke()
     {

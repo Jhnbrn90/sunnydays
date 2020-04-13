@@ -11,8 +11,10 @@ class DailyProductionLog extends Model
 
     public function scopeThisWeek($query)
     {
+        $interval = [Carbon::today()->subDays(7), Carbon::today()];
+
         return $query
-            ->whereBetween('created_at', [Carbon::today()->subDays(7), Carbon::today()])
+            ->whereBetween('created_at', $interval)
             ->orderBy('created_at', 'ASC');
     }
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DailyProductionLog;
 
-class ShowAverage extends Controller
+class ShowAverage
 {
     public function __invoke()
     {
