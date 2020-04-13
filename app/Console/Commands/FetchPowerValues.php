@@ -45,7 +45,7 @@ class FetchPowerValues extends Command
             if ($value->power > 50) {
                 Powerlog::create([
                     'current_power'          => $value->power,
-                    'weather_condition'      => $value->condition,
+                    'weather_condition'      => $value->text,
                     'temperature'            => $value->temperature,
                     'weather_condition_code' => $value->code,
                     'user'                   => $user

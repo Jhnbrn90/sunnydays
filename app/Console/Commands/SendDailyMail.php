@@ -46,7 +46,7 @@ class SendDailyMail extends Command
 
         foreach ($response as $user => $value) {
             $values[$user] = $value->power;
-            $weather['condition'] = $value->condition;
+            $weather['condition'] = $value->text;
             $weather['temperature'] = $value->temperature;
         }
 
