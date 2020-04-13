@@ -1,11 +1,4 @@
 /*!
-	 * The buffer module from node.js, for the browser.
-	 *
-	 * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
-	 * @license  MIT
-	 */
-
-/*!
  * Chart.js v2.9.3
  * https://www.chartjs.org
  * (c) 2019 Chart.js Contributors
@@ -17,14 +10,6 @@
  *
  * @author   Feross Aboukhadijeh <https://feross.org>
  * @license  MIT
- */
-
-/*!
- * Pusher JavaScript Library v4.4.0
- * https://pusher.com/
- *
- * Copyright 2017, Pusher
- * Released under the MIT licence.
  */
 
 /*!
