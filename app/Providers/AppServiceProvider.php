@@ -5,9 +5,7 @@ namespace App\Providers;
 use App\GoodWeApi;
 use App\Services\YahooWeatherApi;
 use App\Services\YahooWeatherProvider;
-use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
-use Symfony\Component\VarDumper\Cloner\Data;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,12 +26,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('httpClient', function ($app) {
-            return new Client();
-        });
-
         $this->app->singleton(GoodWeApi::class, function ($app) {
-            return new GoodWeApi($app->make('httpClient'));
+            return new GoodWeApi(
+                config('goodwe.account'), config('goodwe.password')
+            );
         });
 
         $this->app->singleton(YahooWeatherApi::class, function ($app) {
@@ -43,13 +39,14 @@ class AppServiceProvider extends ServiceProvider
                 $consumerKey = config('yahoo.consumer_key'),
                 $consumerSecret = config('yahoo.consumer_secret'),
                 $temperatureUnit = config('yahoo.temperature_unit'),
-                $weatherLocation = config('yahoo.location'),
-                $httpClient = $app->make('httpClient')
+                $weatherLocation = config('yahoo.location')
             );
         });
 
         $this->app->singleton(YahooWeatherProvider::class, function ($app) {
-            return new YahooWeatherProvider($app->make(YahooWeatherApi::class));
+            return new YahooWeatherProvider(
+                $app->make(YahooWeatherApi::class)
+            );
         });
     }
 }

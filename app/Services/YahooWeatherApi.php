@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use GuzzleHttp\Client;
+use Zttp\Zttp;
 
 class YahooWeatherApi
 {
@@ -12,7 +12,6 @@ class YahooWeatherApi
     private $consumerSecret;
     private $temperatureUnit;
     private $weatherLocation;
-    private $httpClient;
 
     public function __construct(
         string $appId,
@@ -20,8 +19,7 @@ class YahooWeatherApi
         string $consumerKey,
         string $consumerSecret,
         string $temperatureUnit,
-        string $weatherLocation,
-        Client $httpClient
+        string $weatherLocation
     )
     {
 
@@ -31,20 +29,15 @@ class YahooWeatherApi
         $this->consumerSecret = $consumerSecret;
         $this->temperatureUnit = $temperatureUnit;
         $this->weatherLocation = $weatherLocation;
-        $this->httpClient = $httpClient;
     }
 
     public function fetch()
     {
         [$url, $headers] = $this->prepareRequest();
 
-        $response = $this->httpClient->request(
-            'GET',
-            $url,
-            ['headers' => $headers]
-        );
+        $response = Zttp::withHeaders($headers)->get($url);
 
-        return json_decode($response->getBody(), true);
+        return $response->json();
     }
 
     private function prepareRequest()

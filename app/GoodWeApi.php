@@ -2,26 +2,27 @@
 
 namespace App;
 
-use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
+use Zttp\Zttp;
 
 class GoodWeApi
 {
-    private $httpClient;
+    const LOGIN_URL = 'https://globalapi.sems.com.cn/api/v1/Common/CrossLogin';
+    const RESOURCE_URL = 'https://euapi.sems.com.cn/api/PowerStationMonitor/QueryPowerStationMonitorForApp';
 
-    public function __construct(Client $httpClient)
+    protected $account;
+    protected $password;
+
+    public function __construct(string $account, string $password)
     {
-        $this->httpClient = $httpClient;
+        $this->account = $account;
+        $this->password = $password;
     }
 
     public function getPowerStations()
     {
         if(Cache::has('all-powerstations')) {
             return Cache::get('all-powerstations');
-        }
-
-        if(Cache::missing('token')) {
-            $this->refreshAccessToken();
         }
 
         $response = $this->makeRequest();
@@ -41,14 +42,25 @@ class GoodWeApi
 
     private function makeRequest()
     {
-        $url = config('goodwe.powerstation_monitor_url');
+        if (Cache::missing('token')) {
+            $this->login();
+        }
 
-        $response = $this->httpClient->request('POST', $url, [
-            'headers' => $this->getAllPowerStationHeaders(),
-            'json' => $this->allPowerStationPostAttributes(),
-        ]);
+        $response = Zttp::withHeaders($this->resourceHeaders())
+            ->post(self::RESOURCE_URL, $this->resourceAttributes());
 
-        return json_decode($response->getBody(), true);
+        return $response->json();
+    }
+
+    private function login()
+    {
+        $response = Zttp::withHeaders($this->loginHeaders())
+            ->post(self::LOGIN_URL, ['account' => $this->account, 'pwd' => $this->password])
+            ->json();
+
+        Cache::put('token', $response['data']['token'], 120);
+        Cache::put('uid', $response['data']['uid'], 120);
+        Cache::put('timestamp', $response['data']['timestamp'], 120);
     }
 
     private function retryRequest()
@@ -56,7 +68,7 @@ class GoodWeApi
         return $this->makeRequest();
     }
 
-    private function getAllPowerStationHeaders()
+    private function resourceHeaders()
     {
         $token = sprintf(
             "{%s,%s,%s,%s,%s,%s}",
@@ -77,7 +89,7 @@ class GoodWeApi
         ];
     }
 
-    private function allPowerStationPostAttributes()
+    private function resourceAttributes()
     {
         return [
             'page_size' => '5',
@@ -90,33 +102,7 @@ class GoodWeApi
         ];
     }
 
-    private function refreshAccessToken()
-    {
-        $response = $this->login();
-
-        Cache::put('token', $response['data']['token'], 120);
-        Cache::put('uid', $response['data']['uid'], 120);
-        Cache::put('timestamp', $response['data']['timestamp'], 120);
-    }
-
-    private function login()
-    {
-        $response = $this->httpClient->request(
-            'POST',
-            config('goodwe.login_url'),
-            [
-                'headers' => $this->getLoginHeaders(),
-                'json' => [
-                    'account' => config('goodwe.account'),
-                    'pwd' => config('goodwe.password')
-                ]
-            ]
-        );
-
-        return json_decode($response->getBody(), true);
-    }
-
-    private function getLoginHeaders()
+    private function loginHeaders()
     {
         return [
             'Accept-Encoding' => 'gzip, deflate',
