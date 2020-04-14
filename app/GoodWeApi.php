@@ -21,17 +21,13 @@ class GoodWeApi
 
     public function getPowerStations()
     {
-        if(Cache::has('all-powerstations')) {
+        if (Cache::has('all-powerstations')) {
             return Cache::get('all-powerstations');
         }
 
         $response = $this->makeRequest();
 
-        if ($response['data'] == null) {
-            $response = $this->retryRequest();
-        }
-
-        $powerStations = collect($response['data'])->map(function ($powerStation) {
+        $powerStations = collect($response['data'])->map(function (array $powerStation) {
             return new PowerStation($powerStation);
         });
 
@@ -47,9 +43,34 @@ class GoodWeApi
         }
 
         $response = Zttp::withHeaders($this->resourceHeaders())
-            ->post(self::RESOURCE_URL, $this->resourceAttributes());
+            ->post(self::RESOURCE_URL, [
+                'page_index' => '1'
+            ]);
+
+        if ($response->json()['data'] == null) {
+            $response = $this->makeRequest();
+        }
 
         return $response->json();
+    }
+
+    private function resourceHeaders()
+    {
+        return [
+            "Content-Type" => "application/json",
+            "Accept" => "*/*",
+            "User-Agent" => "PVMaster/2.1.0 (iPhone; iOS 12.0; Scale/2.00)",
+            "Accept-Language" => "nl-BE;q=1",
+            "Token" => sprintf(
+                "{%s,%s,%s,%s,%s,%s}",
+                '"language":"en"',
+                '"timestamp":' . Cache::get('timestamp'),
+                '"uid":"' . Cache::get('uid') . '"',
+                '"token":"' . Cache::get('token') . '"',
+                '"client":"ios"',
+                '"version":"v2.1.0"'
+            )
+        ];
     }
 
     private function login()
@@ -61,45 +82,6 @@ class GoodWeApi
         Cache::put('token', $response['data']['token'], 120);
         Cache::put('uid', $response['data']['uid'], 120);
         Cache::put('timestamp', $response['data']['timestamp'], 120);
-    }
-
-    private function retryRequest()
-    {
-        return $this->makeRequest();
-    }
-
-    private function resourceHeaders()
-    {
-        $token = sprintf(
-            "{%s,%s,%s,%s,%s,%s}",
-            '"language":"en"',
-            '"timestamp":' . Cache::get('timestamp'),
-            '"uid":"' . Cache::get('uid') . '"',
-            '"client":"ios"',
-            '"token":"' . Cache::get('token') . '"',
-            '"version":"v2.1.0"'
-        );
-
-        return [
-            "Content-Type" => "application/json",
-            "Accept" => "*/*",
-            "User-Agent" => "PVMaster/2.1.0 (iPhone; iOS 12.0; Scale/2.00)",
-            "Accept-Language" => "nl-BE;q=1",
-            "Token" => $token
-        ];
-    }
-
-    private function resourceAttributes()
-    {
-        return [
-            'page_size' => '5',
-            'order_by'  => '',
-            'powerstation_status' => '',
-            'key' => '',
-            'page_index' => '1',
-            'powerstation_id' => '',
-            'power_station_type' => ''
-        ];
     }
 
     private function loginHeaders()
