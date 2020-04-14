@@ -10,37 +10,26 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
-    /**
-     * The Artisan commands provided by your application.
-     *
-     * @var array
-     */
     protected $commands = [
         FetchPowerValues::class,
         LogDailyProducedEnergy::class,
         SendDailyMail::class,
     ];
 
-    /**
-     * Define the application's command schedule.
-     *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
-     * @return void
-     */
     protected function schedule(Schedule $schedule)
     {
         /**
          * Get currently generated power for each system.
          */
         $schedule
-            ->command('sunnydays:store-currently-generating')
+            ->command(FetchPowerValues::class)
             ->everyFifteenMinutes();
 
         /**
          * Log the total energy produced today for each system.
          */
         $schedule
-            ->command('sunnydays:store-daily-produced-energy')
+            ->command(LogDailyProducedEnergy::class)
             ->timezone('Europe/Amsterdam')
             ->dailyAt('23:00');
 
@@ -48,16 +37,11 @@ class Kernel extends ConsoleKernel
          * Daily mail at noon to check if all systems are operational.
          */
         $schedule
-            ->command('sunnydays:send-daily-mail')
+            ->command(SendDailyMail::class)
             ->timezone('Europe/Amsterdam')
             ->dailyAt('12:00');
     }
 
-    /**
-     * Register the commands for the application.
-     *
-     * @return void
-     */
     protected function commands()
     {
         $this->load(__DIR__ . '/Commands');

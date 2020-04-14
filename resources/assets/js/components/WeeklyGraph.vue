@@ -25,7 +25,7 @@ export default {
 
   methods: {
     getGraphData() {
-      axios.get("/api/production").then(response => {
+      axios.get("/api/week-overview").then(response => {
         Object.keys(response.data).forEach(user => {
           var powerArray = [];
           var data = response.data[user];

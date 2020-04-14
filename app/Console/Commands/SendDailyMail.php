@@ -2,55 +2,39 @@
 
 namespace App\Console\Commands;
 
+use App\GoodWeApi;
 use App\Mail\HeartbeatMail;
+use App\PowerStation;
+use App\Services\YahooWeatherProvider;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 
 class SendDailyMail extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'sunnydays:send-daily-mail';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
+    protected $signature = 'sunnydays:daily-mail';
     protected $description = 'Send a daily mail reporting the currently generated power';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    private $retriever;
+    private $yahoo;
+
+    public function __construct(GoodWeApi $retriever, YahooWeatherProvider $yahoo)
     {
         parent::__construct();
+
+        $this->retriever = $retriever;
+        $this->yahoo = $yahoo;
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle()
     {
-        $url = config('app.url') . '/api/hourly';
-        $response = json_decode(file_get_contents($url, true));
+        $weather = $this->yahoo->condition();
+        $powerStations = $this->retriever->getPowerStations();
 
-        $values = [];
+        $currentStats = $powerStations->flatMap(function (PowerStation $powerStation) {
+            return [$powerStation->owner() => $powerStation->nowGenerating()];
+        });
 
-        foreach ($response as $user => $value) {
-            $values[$user] = $value->power;
-            $weather['condition'] = $value->text;
-            $weather['temperature'] = $value->temperature;
-        }
-
-        Mail::to(config('app.mail'))->send(new HeartbeatMail($values, $weather));
+        Mail::to(config('app.mail'))->send(new HeartbeatMail($currentStats, $weather));
 
         return $this->info('Done');
     }

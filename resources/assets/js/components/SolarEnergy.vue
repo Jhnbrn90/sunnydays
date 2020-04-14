@@ -145,7 +145,7 @@ export default {
     initialize() {
       this.getAverage();
 
-      axios.get('/api/goodwe/all')
+      axios.get('/api/powerstations')
         .then(response => {
           this.energy = response.data;
           this.loading = false;
@@ -153,7 +153,7 @@ export default {
     },
 
     getAverage() {
-      axios.get('/api/average').then(({ data }) => {
+      axios.get('/api/average-yield').then(({ data }) => {
         this.average = data;
       });
     },

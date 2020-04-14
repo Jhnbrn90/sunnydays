@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\DataRetriever;
+use App\GoodWeApi;
 use App\Services\YahooWeatherApi;
 use App\Services\YahooWeatherProvider;
 use GuzzleHttp\Client;
@@ -32,8 +32,8 @@ class AppServiceProvider extends ServiceProvider
             return new Client();
         });
 
-        $this->app->singleton(DataRetriever::class, function ($app) {
-            return new DataRetriever($app->make('httpClient'));
+        $this->app->singleton(GoodWeApi::class, function ($app) {
+            return new GoodWeApi($app->make('httpClient'));
         });
 
         $this->app->singleton(YahooWeatherApi::class, function ($app) {

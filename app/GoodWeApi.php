@@ -5,7 +5,7 @@ namespace App;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
 
-class DataRetriever 
+class GoodWeApi
 {
     private $httpClient;
 
@@ -14,25 +14,46 @@ class DataRetriever
         $this->httpClient = $httpClient;
     }
 
-    public function getAllPowerStationData()
+    public function getPowerStations()
     {
         if(Cache::has('all-powerstations')) {
             return Cache::get('all-powerstations');
         }
 
         if(Cache::missing('token')) {
-            $this->setAccessTokens();
+            $this->refreshAccessToken();
         }
 
-        $response = $this->makeApiRequest();
+        $response = $this->makeRequest();
 
         if ($response['data'] == null) {
-            $response = $this->retryApiRequest();
+            $response = $this->retryRequest();
         }
 
-        Cache::put('all-powerstations', $response['data'], 120);
+        $powerStations = collect($response['data'])->map(function ($powerStation) {
+            return new PowerStation($powerStation);
+        });
 
-        return $response['data'];
+        Cache::put('all-powerstations', $powerStations, 120);
+
+        return $powerStations;
+    }
+
+    private function makeRequest()
+    {
+        $url = config('goodwe.powerstation_monitor_url');
+
+        $response = $this->httpClient->request('POST', $url, [
+            'headers' => $this->getAllPowerStationHeaders(),
+            'json' => $this->allPowerStationPostAttributes(),
+        ]);
+
+        return json_decode($response->getBody(), true);
+    }
+
+    private function retryRequest()
+    {
+        return $this->makeRequest();
     }
 
     private function getAllPowerStationHeaders()
@@ -56,19 +77,29 @@ class DataRetriever
         ];
     }
 
-    private function setAccessTokens()
+    private function allPowerStationPostAttributes()
     {
-        $username = config('goodwe.account');
-        $password = config('goodwe.password');
+        return [
+            'page_size' => '5',
+            'order_by'  => '',
+            'powerstation_status' => '',
+            'key' => '',
+            'page_index' => '1',
+            'powerstation_id' => '',
+            'power_station_type' => ''
+        ];
+    }
 
-        $response = $this->login($username, $password);
+    private function refreshAccessToken()
+    {
+        $response = $this->login();
 
         Cache::put('token', $response['data']['token'], 120);
         Cache::put('uid', $response['data']['uid'], 120);
         Cache::put('timestamp', $response['data']['timestamp'], 120);
     }
 
-    private function logIn($username, $password)
+    private function login()
     {
         $response = $this->httpClient->request(
             'POST',
@@ -76,8 +107,8 @@ class DataRetriever
             [
                 'headers' => $this->getLoginHeaders(),
                 'json' => [
-                    'account' => $username,
-                    'pwd' => $password
+                    'account' => config('goodwe.account'),
+                    'pwd' => config('goodwe.password')
                 ]
             ]
         );
@@ -96,35 +127,5 @@ class DataRetriever
             'Token' => '{"version":"v2.1.0","client":"ios","language":"en"}',
             'User-Agent' => 'PVMaster/2.1.0 (iPhone; iOS 12.0; Scale/2.00)',
         ];
-    }
-
-    private function allPowerStationPostAttributes()
-    {
-        return [
-            'page_size' => '5',
-            'order_by'  => '',
-            'powerstation_status' => '',
-            'key' => '',
-            'page_index' => '1',
-            'powerstation_id' => '',
-            'power_station_type' => ''
-        ];
-    }
-
-    private function makeApiRequest()
-    {
-        $url = config('goodwe.powerstation_monitor_url');
-
-        $response = $this->httpClient->request('POST', $url, [
-            'headers' => $this->getAllPowerStationHeaders(),
-            'json' => $this->allPowerStationPostAttributes(),
-        ]);
-
-        return json_decode($response->getBody(), true);
-    }
-
-    private function retryApiRequest()
-    {
-        return $this->makeApiRequest();
     }
 }

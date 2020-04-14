@@ -1,22 +1,18 @@
 <?php
 
-use App\Http\Controllers\CurrentlyGeneratedPower;
-use App\Http\Controllers\DailyGeneratedPower;
 use App\Http\Controllers\IndexController;
-use App\Http\Controllers\PowerstationsOverview;
-use App\Http\Controllers\ShowAverage;
+use App\Http\Controllers\ShowPowerStations;
+use App\Http\Controllers\ShowAverageYield;
 use App\Http\Controllers\ShowGraphForDate;
-use App\Http\Controllers\WeatherData;
-use App\Http\Controllers\WeeklyGeneratedPower;
+use App\Http\Controllers\ShowCurrentWeather;
+use App\Http\Controllers\ShowWeekOverview;
 
 Route::get('/', IndexController::class);
 
 Route::prefix('api')->group(function () {
-    Route::get('goodwe/all', PowerstationsOverview::class);
-    Route::get('hourly', CurrentlyGeneratedPower::class);
-    Route::get('daily', DailyGeneratedPower::class);
-    Route::get('production', WeeklyGeneratedPower::class);
+    Route::get('powerstations', ShowPowerStations::class);
+    Route::get('week-overview', ShowWeekOverview::class);
     Route::get('dailygraph/{date}', ShowGraphForDate::class);
-    Route::get('average', ShowAverage::class);
-    Route::get('weather', WeatherData::class);
+    Route::get('average-yield', ShowAverageYield::class);
+    Route::get('weather', ShowCurrentWeather::class);
 });

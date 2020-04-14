@@ -2,56 +2,43 @@
 
 namespace App\Console\Commands;
 
+use App\GoodWeApi;
 use App\Powerlog;
+use App\PowerStation;
+use App\Services\YahooWeatherProvider;
 use Illuminate\Console\Command;
 
 class FetchPowerValues extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'sunnydays:store-currently-generating';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
+    protected $signature = 'sunnydays:snapshot';
     protected $description = 'Get the current power values from Goodwe';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    private $retriever;
+    private $yahoo;
+
+    public function __construct(GoodWeApi $retriever, YahooWeatherProvider $yahoo)
     {
         parent::__construct();
+        $this->retriever = $retriever;
+        $this->yahoo = $yahoo;
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle()
     {
-        $url = config('app.url') . '/api/hourly';
-        $response = json_decode(file_get_contents($url, true));
+        $weather = $this->yahoo->condition();
+        $powerStations = $this->retriever->getPowerStations();
 
-        foreach ($response as $user => $value) {
-            if ($value->power > 50) {
-                Powerlog::create([
-                    'current_power'          => $value->power,
-                    'weather_condition'      => $value->text,
-                    'temperature'            => $value->temperature,
-                    'weather_condition_code' => $value->code,
-                    'user'                   => $user
-                ]);
-            }
-        }
+        $powerStations->each(function (PowerStation $powerStation) use ($weather) {
+           if ($powerStation->isWorking()) {
+               Powerlog::create([
+                   'current_power' => $powerStation->nowGenerating(),
+                   'user' => $powerStation->owner(),
+                   'weather_condition' => $weather['text'],
+                   'temperature' => $weather['temperature'],
+                   'weather_condition_code' => $weather['code']
+               ]);
+           }
+        });
 
         return $this->info('Done');
     }
