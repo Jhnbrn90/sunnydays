@@ -11,12 +11,23 @@ class PowerStation
         $this->rawData = $rawData;
     }
 
-    public function id()
+    /**
+     * Returns the GoodWe power station ID
+     *
+     * @return string
+     */
+    public function id(): string
     {
         return $this->rawData['powerstation_id'];
     }
 
-    public function owner()
+    /**
+     * Find the owner in a list of predefined users by
+     * the GoodWe power station ID
+     *
+     * @return string
+     */
+    public function owner(): string
     {
         $userMap = array_flip(
             config('goodwe.users')
@@ -25,18 +36,36 @@ class PowerStation
         return $userMap[$this->id()];
     }
 
-    public function nowGenerating()
+    /**
+     * Returns the energy currently being produced in W.
+     *
+     * @return int
+     */
+    public function nowGenerating(): int
     {
         return $this->rawData['pac'];
     }
 
-    public function energyProducedToday()
+    /**
+     * Returns the energy produced today in kWh.
+     *
+     * @return int
+     */
+    public function energyProducedToday(): int
     {
         return $this->rawData['eday'];
     }
 
-    public function isWorking()
+    /**
+     * Determine if the power station is currently working,
+     * by comparing the currently generated energy to a threshold.
+     *
+     * @return bool
+     */
+    public function isWorking(): bool
     {
-        return $this->nowGenerating() > 50;
+        $thresholdInWatts = 50;
+
+        return $this->nowGenerating() > $thresholdInWatts;
     }
 }
