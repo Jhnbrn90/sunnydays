@@ -29,7 +29,7 @@ class LogDailyProducedEnergy extends Command
 
         $logs = $powerStations->reduce(function ($logs, PowerStation $powerStation) {
             $logs[$powerStation->owner()] = DailyProductionLog::create([
-                'total_production'  => $powerStation->energyProducedToday(),
+                'total_production'  => $powerStation->energyProducedToday() * 1000,
                 'user'              => $powerStation->owner(),
             ]);
 
