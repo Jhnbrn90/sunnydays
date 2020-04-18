@@ -1,7 +1,7 @@
 @component('mail::message')
 # Vandaag opgebracht
 @foreach ($logs as $user => $data)
-* {{ $user }}: {{ $data->total_production }} kWh
+* {{ $user }}: {{ $data->total_production / 1000 }} kWh
 @endforeach
 
 @component('mail::button', ['url' => 'https://sunnydays.johnny.digital'])
