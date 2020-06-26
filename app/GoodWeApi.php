@@ -42,7 +42,7 @@ class GoodWeApi
             $this->login();
         }
 
-        $response = Zttp::withHeaders($this->resourceHeaders())
+        $response = Zttp::withoutVerifying()->withHeaders($this->resourceHeaders())
             ->post(self::RESOURCE_URL, [
                 'page_index' => '1'
             ]);
@@ -75,7 +75,7 @@ class GoodWeApi
 
     private function login()
     {
-        $response = Zttp::withHeaders($this->loginHeaders())
+        $response = Zttp::withoutVerifying()->withHeaders($this->loginHeaders())
             ->post(self::LOGIN_URL, ['account' => $this->account, 'pwd' => $this->password])
             ->json();
 
