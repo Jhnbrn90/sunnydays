@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\GoodWeApi;
+use App\Models\GoodWeApi;
 use App\Mail\HeartbeatMail;
-use App\PowerStation;
+use App\Models\PowerStation;
 use App\Services\YahooWeatherProvider;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\DailyProductionLog;
+use App\Models\DailyProductionLog;
 
 class ShowAverageYield
 {

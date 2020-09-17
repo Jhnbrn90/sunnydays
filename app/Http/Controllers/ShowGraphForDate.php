@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Powerlog;
+use App\Models\Powerlog;
 use Carbon\Carbon;
 
 class ShowGraphForDate

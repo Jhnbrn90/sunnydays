@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\DailyProductionLog;
-use App\GoodWeApi;
+use App\Models\DailyProductionLog;
+use App\Models\GoodWeApi;
 use App\Mail\StatisticsMail;
-use App\PowerStation;
+use App\Models\PowerStation;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 
