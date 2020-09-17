@@ -23,7 +23,7 @@ class LogDailyProducedEnergy extends Command
         $this->retriever = $retriever;
     }
 
-    public function handle()
+    public function handle(): void
     {
         $powerStations = $this->retriever->getPowerStations();
 
@@ -38,6 +38,6 @@ class LogDailyProducedEnergy extends Command
 
         Mail::to(config('app.mail'))->send(new StatisticsMail($logs));
 
-        return $this->info('Done');
+        $this->info('Done');
     }
 }

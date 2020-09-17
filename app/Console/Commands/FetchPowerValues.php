@@ -23,7 +23,7 @@ class FetchPowerValues extends Command
         $this->yahoo = $yahoo;
     }
 
-    public function handle()
+    public function handle(): void
     {
         $weather = $this->yahoo->condition();
         $powerStations = $this->retriever->getPowerStations();
@@ -40,6 +40,6 @@ class FetchPowerValues extends Command
            }
         });
 
-        return $this->info('Done');
+        $this->info('Done');
     }
 }

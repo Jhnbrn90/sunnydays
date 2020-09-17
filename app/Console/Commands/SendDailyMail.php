@@ -25,7 +25,7 @@ class SendDailyMail extends Command
         $this->yahoo = $yahoo;
     }
 
-    public function handle()
+    public function handle(): void
     {
         $weather = $this->yahoo->condition();
         $powerStations = $this->retriever->getPowerStations();
@@ -36,6 +36,6 @@ class SendDailyMail extends Command
 
         Mail::to(config('app.mail'))->send(new HeartbeatMail($currentStats, $weather));
 
-        return $this->info('Done');
+        $this->info('Done');
     }
 }
