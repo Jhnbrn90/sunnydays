@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Collection;
 
 class StatisticsMail extends Mailable
 {
@@ -18,7 +19,7 @@ class StatisticsMail extends Mailable
      *
      * @return void
      */
-    public function __construct($logs)
+    public function __construct(Collection $logs)
     {
         $this->logs = $logs;
     }

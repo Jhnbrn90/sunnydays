@@ -2,42 +2,52 @@
 
 namespace App\Console;
 
-use App\Console\Commands\FetchPowerValues;
-use App\Console\Commands\LogDailyProducedEnergy;
-use App\Console\Commands\SendDailyMail;
+use App\Console\Commands\MailDailyYield;
+use App\Console\Commands\StoreCurrentYield;
+use App\Console\Commands\StoreDailyYield;
+use App\Console\Commands\MailCurrentYield;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
     protected $commands = [
-        FetchPowerValues::class,
-        LogDailyProducedEnergy::class,
-        SendDailyMail::class,
+        StoreCurrentYield::class,
+        StoreDailyYield::class,
+        MailCurrentYield::class,
     ];
 
     protected function schedule(Schedule $schedule)
     {
         /**
-         * Get currently generated power for each system.
+         * Get the power that is currently generated from each power station.
          */
         $schedule
-            ->command(FetchPowerValues::class)
+            ->command(StoreCurrentYield::class)
             ->everyFifteenMinutes();
 
         /**
-         * Log the total energy produced today for each system.
+         * Log the total yield (so far) for today per system.
          */
         $schedule
-            ->command(LogDailyProducedEnergy::class)
+            ->command(StoreDailyYield::class)
+            ->timezone('Europe/Amsterdam')
+            ->hourly()
+            ->between('09:00', '23:00');
+
+        /**
+         * Send (daily) e-mail report of the total produced energy for each system.
+         */
+        $schedule
+            ->command(MailDailyYield::class)
             ->timezone('Europe/Amsterdam')
             ->dailyAt('23:00');
 
         /**
-         * Daily mail at noon to check if all systems are operational.
+         * Send (daily) e-mail to check that all systems are operational.
          */
         $schedule
-            ->command(SendDailyMail::class)
+            ->command(MailCurrentYield::class)
             ->timezone('Europe/Amsterdam')
             ->dailyAt('12:00');
     }

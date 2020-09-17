@@ -8,12 +8,14 @@ use App\Models\PowerStation;
 use App\Services\YahooWeatherProvider;
 use Illuminate\Console\Command;
 
-class FetchPowerValues extends Command
+class StoreCurrentYield extends Command
 {
-    protected $signature = 'sunnydays:snapshot';
+    protected $signature = 'sunnydays:store-snapshot';
+
     protected $description = 'Get the current power values from Goodwe';
 
     private $retriever;
+
     private $yahoo;
 
     public function __construct(GoodWeApi $retriever, YahooWeatherProvider $yahoo)
