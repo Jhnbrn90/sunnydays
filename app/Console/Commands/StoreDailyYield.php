@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\DailyProductionLog;
-use App\Models\GoodWeApi;
+use App\Services\GoodWeApi;
 use App\Models\PowerStation;
 use Carbon\Carbon;
 use Illuminate\Console\Command;

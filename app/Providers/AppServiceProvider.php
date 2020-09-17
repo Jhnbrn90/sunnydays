@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\GoodWeApi;
+use App\Services\GoodWeApi;
 use App\Services\YahooWeatherApi;
 use App\Services\YahooWeatherProvider;
 use Illuminate\Support\ServiceProvider;

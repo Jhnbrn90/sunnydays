@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\GoodWeApi;
+use App\Services\GoodWeApi;
 use App\Models\Powerlog;
 use App\Models\PowerStation;
 use App\Services\YahooWeatherProvider;

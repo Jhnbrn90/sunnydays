@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\GoodWeApi;
 use App\Models\PowerStation;
+use App\Services\GoodWeApi;
 
 class ShowPowerStations
 {
