@@ -10,7 +10,8 @@
         "kitetail/zttp": "^0.6.0",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
-        "pusher/pusher-php-server": "^3.0"
+        "pusher/pusher-php-server": "^3.0",
+        "spatie/browsershot": "^3.40"
     },
     "require-dev": {
         "filp/whoops": "^2.0",
