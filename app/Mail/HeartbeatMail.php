@@ -34,6 +34,6 @@ class HeartbeatMail extends Mailable
     {
         return $this
             ->subject('Status - Sunny Days')
-            ->markdown('emails.heartbeat');
+            ->view('emails.heartbeat');
     }
 }

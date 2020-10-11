@@ -33,6 +33,6 @@ class StatisticsMail extends Mailable
     {
         return $this
             ->subject('Opbrengsten - SunnyDays')
-            ->markdown('emails.statistics');
+            ->view('emails.statistics');
     }
 }
