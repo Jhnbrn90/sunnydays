@@ -16,3 +16,17 @@ Route::prefix('api')->group(function () {
     Route::get('average-yield', ShowAverageYield::class);
     Route::get('weather', ShowCurrentWeather::class);
 });
+
+Route::prefix('snapshot')->group(function () {
+    Route::get('statistics', function () {
+        return view('statistics');
+    })->name('statistics');
+
+    Route::get('graph', function () {
+        return view ('graph');
+    })->name('graph');
+
+    Route::get('weekly', function () {
+        return view('weekly');
+    })->name('weekly');
+});
