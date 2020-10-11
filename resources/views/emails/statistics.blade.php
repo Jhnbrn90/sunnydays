@@ -1,13 +1,21 @@
-@component('mail::message')
-# Vandaag opgebracht
+<body>
+
+<h1>Dagelijks overzicht</h1>
+<ul>
 @foreach ($logs as $log)
-* {{ $log->user }}: {{ $log->total_production / 1000 }} kWh
+    <li>
+        {{ $log->user }}: {{ $log->total_production / 1000 }} kWh
+    </li>
 @endforeach
+</ul>
 
-@component('mail::button', ['url' => 'https://sunnydays.johnny.digital'])
-Check de site
-@endcomponent
+<div style="text-align:center;">
+    <h2>Opbrengst</h2>
+    <img src="{{ $message->embed(public_path('images/weekly.png')) }}">
 
-<br>
-{{ config('app.name') }}
-@endcomponent
+    <h2>Grafiek</h2>
+    <img src="{{ $message->embed(public_path('images/graph.png')) }}">
+</div>
+
+</body>
+
