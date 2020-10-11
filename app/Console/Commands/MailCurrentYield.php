@@ -29,6 +29,8 @@ class MailCurrentYield extends Command
 
     public function handle(): void
     {
+        $this->call('sunnydays:browsershot');
+
         $weather = $this->yahoo->condition();
         $powerStations = $this->retriever->getPowerStations();
 

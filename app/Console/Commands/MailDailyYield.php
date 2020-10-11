@@ -21,6 +21,8 @@ class MailDailyYield extends Command
 
     public function handle()
     {
+        $this->call('sunnydays:browsershot');
+
         $logs = DailyProductionLog::whereDate('created_at', Carbon::today())->get();
 
         Mail::to(config('app.mail'))->send(new StatisticsMail($logs));
