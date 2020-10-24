@@ -1741,6 +1741,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['data'],
   data: function data() {
     return {
       powerObject: {},
@@ -1771,40 +1772,7 @@ __webpack_require__.r(__webpack_exports__);
     this.myChart = new chart_js__WEBPACK_IMPORTED_MODULE_0___default.a(ctx, {
       type: "line",
       data: {
-        labels: "",
-        datasets: [{
-          label: "(J&L)",
-          data: this.powerObject.JL,
-          weatherCondition: [],
-          temperatures: [],
-          fill: false,
-          borderColor: "rgba(255, 165, 120, 1.0)",
-          backgroundColor: "rgba(255, 255, 255, 0.1)"
-        }, {
-          label: "(M&B)",
-          data: this.powerObject.MB,
-          weatherCondition: [],
-          temperatures: [],
-          fill: false,
-          borderColor: "rgba(2, 158, 227, 1)",
-          backgroundColor: "rgba(255, 255, 255, 0.1)"
-        }, {
-          label: "(B&E)",
-          data: this.powerObject.BE,
-          weatherCondition: [],
-          temperatures: [],
-          fill: false,
-          borderColor: "rgba(0, 153, 51, 1)",
-          backgroundColor: "rgba(255, 255, 255, 0.1)"
-        }, {
-          label: "(Ron)",
-          data: this.powerObject.RB,
-          weatherCondition: [],
-          temperatures: [],
-          fill: false,
-          borderColor: "rgba(95, 66, 244, 1)",
-          backgroundColor: "rgba(255, 255, 255, 0.1)"
-        }]
+        datasets: this.data
       },
       options: {
         responsive: true,
@@ -1836,13 +1804,6 @@ __webpack_require__.r(__webpack_exports__);
         },
         legend: {
           display: true
-        },
-        tooltips: {
-          callbacks: {
-            label: function label(tooltipItem, data) {
-              return tooltipItem.yLabel + " W " + data.datasets[tooltipItem.datasetIndex].label + ", " + data.datasets[tooltipItem.datasetIndex].weatherCondition[tooltipItem.xLabel] + ", " + data.datasets[tooltipItem.datasetIndex].temperatures[tooltipItem.xLabel] + " °C";
-            }
-          }
         }
       }
     });
@@ -1889,34 +1850,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/api/dailygraph/" + this.date).then(function (response) {
-        var powerArray = [];
-        var weatherArray = [];
-        var temperatureArray = [];
-        _this.myChart.data.labels = Object.keys(response.data.JL);
-        Object.keys(response.data).forEach(function (user) {
-          var data = response.data[user];
-          Object.keys(data).forEach(function (time) {
-            powerArray.push({
-              x: time,
-              y: data[time].power
-            });
-            weatherArray[time] = data[time].weather_condition;
-            temperatureArray[time] = data[time].temperature;
-          });
-          _this.powerObject[user] = powerArray;
-          _this.weatherObject[user] = weatherArray;
-          _this.temperatureObject[user] = temperatureArray;
-          powerArray = [];
-          weatherArray = [];
-          temperatureArray = [];
-        });
-
-        _this.myChart.data.datasets.forEach(function (dataset, index) {
-          var user = Object.keys(_this.powerObject)[index];
-          dataset.data = _this.powerObject[user];
-          dataset.weatherCondition = _this.weatherObject[user];
-          dataset.temperatures = _this.temperatureObject[user];
-        });
+        _this.myChart.data.datasets = response.data;
 
         _this.myChart.update();
       });
@@ -58619,8 +58553,6 @@ module.exports = function(module) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./bootstrap */ "./resources/assets/js/bootstrap.js");
-
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 Vue.component("weather-time", __webpack_require__(/*! ./components/WeatherTime.vue */ "./resources/assets/js/components/WeatherTime.vue")["default"]);
 Vue.component("solar-energy", __webpack_require__(/*! ./components/SolarEnergy.vue */ "./resources/assets/js/components/SolarEnergy.vue")["default"]);
@@ -58629,17 +58561,6 @@ Vue.component("weekly-graph", __webpack_require__(/*! ./components/WeeklyGraph.v
 var app = new Vue({
   el: "#app"
 });
-
-/***/ }),
-
-/***/ "./resources/assets/js/bootstrap.js":
-/*!******************************************!*\
-  !*** ./resources/assets/js/bootstrap.js ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-
 
 /***/ }),
 

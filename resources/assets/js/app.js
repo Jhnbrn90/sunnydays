@@ -1,5 +1,3 @@
-require("./bootstrap");
-
 window.Vue = require("vue");
 
 Vue.component("weather-time", require("./components/WeatherTime.vue").default);
