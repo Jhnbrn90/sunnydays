@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PowerStation;
+use App\DTO\PowerStation;
 use App\Services\GoodWeApi;
 
 class ShowPowerStations

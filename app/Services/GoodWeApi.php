@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\PowerStation;
+use App\DTO\PowerStation;
 use Illuminate\Support\Facades\Cache;
 use Zttp\Zttp;
 
