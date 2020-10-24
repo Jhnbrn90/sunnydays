@@ -64,7 +64,7 @@
         </center>
 
         <center>
-            <daily-graph :data="{{ $liveGraphData }}"></daily-graph>
+            <live-chart :data="{{ $liveGraphData }}" />
         </center>
 
         <center>

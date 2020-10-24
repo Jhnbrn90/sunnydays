@@ -1710,10 +1710,10 @@ module.exports = function isBuffer (obj) {
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/DailyGraph.vue?vue&type=script&lang=js&":
-/*!****************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/DailyGraph.vue?vue&type=script&lang=js& ***!
-  \****************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LiveChart.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/LiveChart.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1725,6 +1725,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _charts_config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../charts/config */ "./resources/assets/js/charts/config.js");
 //
 //
 //
@@ -1737,6 +1738,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -1744,115 +1763,74 @@ __webpack_require__.r(__webpack_exports__);
   props: ['data'],
   data: function data() {
     return {
-      powerObject: {},
-      weatherObject: {},
-      temperatureObject: {},
-      myChart: "",
-      fetchUpdates: true,
-      date: "",
+      liveChart: {},
+      date: moment__WEBPACK_IMPORTED_MODULE_2___default()(),
       chartInterval: "",
-      updateFrequency: 4000,
+      updateFrequency: 10000,
+      // update frequency in ms
       dateFormat: "dddd DD MMMM YYYY"
     };
   },
   computed: {
     isToday: function isToday() {
-      return this.date === this.today;
+      return this.date.format(this.dateFormat) === this.today;
     },
     today: function today() {
-      return moment__WEBPACK_IMPORTED_MODULE_2___default()().format("dddd DD MMMM YYYY");
+      return moment__WEBPACK_IMPORTED_MODULE_2___default()().format(this.dateFormat);
+    },
+    endpoint: function endpoint() {
+      return "api/live-chart/".concat(this.date.format(this.dateFormat));
     }
   },
-  created: function created() {
-    this.date = this.today;
-    this.updateChart();
-  },
   mounted: function mounted() {
-    var ctx = document.getElementById("dailyChart");
-    this.myChart = new chart_js__WEBPACK_IMPORTED_MODULE_0___default.a(ctx, {
+    this.liveChart = new chart_js__WEBPACK_IMPORTED_MODULE_0___default.a(this.$refs.dailyChart, {
       type: "line",
       data: {
         datasets: this.data
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        title: {
-          display: true,
-          text: "Generated energy (W)"
-        },
-        scales: {
-          xAxes: [{
-            type: "time",
-            time: {
-              round: true,
-              parser: "HH:mm",
-              unit: "minute",
-              unitStepSize: 60,
-              displayFormats: {
-                minute: "HH:mm",
-                hour: "HH:mm"
-              }
-            }
-          }],
-          yAxes: [{
-            ticks: {
-              beginAtZero: true,
-              max: 3500
-            }
-          }]
-        },
-        legend: {
-          display: true
-        }
-      }
+      options: _charts_config__WEBPACK_IMPORTED_MODULE_3__["LiveChartOptions"]
     });
-    this.chartInterval = setInterval(this.updateChart, this.updateFrequency);
+    this.enableUpdates();
   },
   methods: {
     setPreviousDay: function setPreviousDay() {
-      this.date = moment__WEBPACK_IMPORTED_MODULE_2___default()(this.date, this.dateFormat).subtract(1, "days").format(this.dateFormat);
+      this.date = this.date.clone().subtract(1, "days");
     },
     setNextDay: function setNextDay() {
-      this.date = moment__WEBPACK_IMPORTED_MODULE_2___default()(this.date, this.dateFormat).add(1, "days").format(this.dateFormat);
+      this.date = this.date.clone().add(1, "days");
     },
     previousDate: function previousDate() {
-      if (this.isToday) {
-        this.disableUpdates();
-      }
-
       this.setPreviousDay();
+      this.disableUpdates();
       this.updateChart();
     },
     nextDate: function nextDate() {
       this.setNextDay();
-      this.updateChart();
 
       if (this.isToday) {
         this.enableUpdates();
       }
+
+      this.updateChart();
     },
     enableUpdates: function enableUpdates() {
       this.chartInterval = setInterval(this.updateChart, this.updateFrequency);
-      this.fetchUpdates = true;
     },
     disableUpdates: function disableUpdates() {
       clearInterval(this.chartInterval);
-      this.fetchUpdates = false;
     },
-    nextDateToday: function nextDateToday() {
-      this.date = this.today;
-      this.updateChart();
+    setDateToday: function setDateToday() {
+      this.date = moment__WEBPACK_IMPORTED_MODULE_2___default()();
       this.chartInterval = setInterval(this.updateChart, this.updateFrequency);
-      this.fetchUpdates = true;
+      this.updateChart();
     },
     updateChart: function updateChart() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/api/dailygraph/" + this.date).then(function (response) {
-        _this.myChart.data.datasets = response.data;
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(this.endpoint).then(function (response) {
+        _this.liveChart.data.datasets = response.data;
 
-        _this.myChart.update();
+        _this.liveChart.update();
       });
     }
   }
@@ -46000,10 +45978,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/DailyGraph.vue?vue&type=template&id=1601c5ac&":
-/*!********************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/DailyGraph.vue?vue&type=template&id=1601c5ac& ***!
-  \********************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LiveChart.vue?vue&type=template&id=2f679daa&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/LiveChart.vue?vue&type=template&id=2f679daa& ***!
+  \*******************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -46019,7 +45997,11 @@ var render = function() {
     _c(
       "span",
       { staticClass: "daily-graph-date" },
-      [_c("center", [_c("strong", [_vm._v(_vm._s(_vm.date))])])],
+      [
+        _c("center", [
+          _c("strong", [_vm._v(_vm._s(_vm.date.format(_vm.dateFormat)))])
+        ])
+      ],
       1
     ),
     _vm._v(" "),
@@ -46029,7 +46011,7 @@ var render = function() {
         staticClass: "btn btn-sm btn-outline-secondary",
         on: { click: _vm.previousDate }
       },
-      [_vm._v("Previous")]
+      [_vm._v("\n    Previous\n  ")]
     ),
     _vm._v(" "),
     _c(
@@ -46039,7 +46021,7 @@ var render = function() {
         attrs: { disabled: _vm.isToday },
         on: { click: _vm.nextDate }
       },
-      [_vm._v("Next")]
+      [_vm._v("\n    Next\n  ")]
     ),
     _vm._v(" "),
     _c(
@@ -46048,12 +46030,12 @@ var render = function() {
         staticClass: "btn btn-sm",
         class: _vm.isToday ? "btn-outline-secondary" : "btn-outline-primary",
         attrs: { disabled: _vm.isToday },
-        on: { click: _vm.nextDateToday }
+        on: { click: _vm.setDateToday }
       },
       [_vm._v("Today")]
     ),
     _vm._v(" "),
-    _c("canvas", { attrs: { id: "dailyChart" } })
+    _c("canvas", { ref: "dailyChart" })
   ])
 }
 var staticRenderFns = []
@@ -58556,7 +58538,7 @@ module.exports = function(module) {
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 Vue.component("weather-time", __webpack_require__(/*! ./components/WeatherTime.vue */ "./resources/assets/js/components/WeatherTime.vue")["default"]);
 Vue.component("solar-energy", __webpack_require__(/*! ./components/SolarEnergy.vue */ "./resources/assets/js/components/SolarEnergy.vue")["default"]);
-Vue.component("daily-graph", __webpack_require__(/*! ./components/DailyGraph.vue */ "./resources/assets/js/components/DailyGraph.vue")["default"]);
+Vue.component("live-chart", __webpack_require__(/*! ./components/LiveChart.vue */ "./resources/assets/js/components/LiveChart.vue")["default"]);
 Vue.component("weekly-graph", __webpack_require__(/*! ./components/WeeklyGraph.vue */ "./resources/assets/js/components/WeeklyGraph.vue")["default"]);
 var app = new Vue({
   el: "#app"
@@ -58564,17 +58546,62 @@ var app = new Vue({
 
 /***/ }),
 
-/***/ "./resources/assets/js/components/DailyGraph.vue":
-/*!*******************************************************!*\
-  !*** ./resources/assets/js/components/DailyGraph.vue ***!
-  \*******************************************************/
+/***/ "./resources/assets/js/charts/config.js":
+/*!**********************************************!*\
+  !*** ./resources/assets/js/charts/config.js ***!
+  \**********************************************/
+/*! exports provided: LiveChartOptions */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LiveChartOptions", function() { return LiveChartOptions; });
+var LiveChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  title: {
+    display: true,
+    text: "Generated energy (W)"
+  },
+  scales: {
+    xAxes: [{
+      type: "time",
+      time: {
+        round: true,
+        parser: "HH:mm",
+        unit: "minute",
+        unitStepSize: 60,
+        displayFormats: {
+          minute: "HH:mm",
+          hour: "HH:mm"
+        }
+      }
+    }],
+    yAxes: [{
+      ticks: {
+        beginAtZero: true,
+        max: 3500
+      }
+    }]
+  },
+  legend: {
+    display: true
+  }
+};
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/LiveChart.vue":
+/*!******************************************************!*\
+  !*** ./resources/assets/js/components/LiveChart.vue ***!
+  \******************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _DailyGraph_vue_vue_type_template_id_1601c5ac___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DailyGraph.vue?vue&type=template&id=1601c5ac& */ "./resources/assets/js/components/DailyGraph.vue?vue&type=template&id=1601c5ac&");
-/* harmony import */ var _DailyGraph_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DailyGraph.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/DailyGraph.vue?vue&type=script&lang=js&");
+/* harmony import */ var _LiveChart_vue_vue_type_template_id_2f679daa___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LiveChart.vue?vue&type=template&id=2f679daa& */ "./resources/assets/js/components/LiveChart.vue?vue&type=template&id=2f679daa&");
+/* harmony import */ var _LiveChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LiveChart.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/LiveChart.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -58584,9 +58611,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _DailyGraph_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _DailyGraph_vue_vue_type_template_id_1601c5ac___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _DailyGraph_vue_vue_type_template_id_1601c5ac___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _LiveChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _LiveChart_vue_vue_type_template_id_2f679daa___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _LiveChart_vue_vue_type_template_id_2f679daa___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -58596,38 +58623,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/assets/js/components/DailyGraph.vue"
+component.options.__file = "resources/assets/js/components/LiveChart.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/assets/js/components/DailyGraph.vue?vue&type=script&lang=js&":
-/*!********************************************************************************!*\
-  !*** ./resources/assets/js/components/DailyGraph.vue?vue&type=script&lang=js& ***!
-  \********************************************************************************/
+/***/ "./resources/assets/js/components/LiveChart.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/assets/js/components/LiveChart.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DailyGraph_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./DailyGraph.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/DailyGraph.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DailyGraph_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LiveChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./LiveChart.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LiveChart.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LiveChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/assets/js/components/DailyGraph.vue?vue&type=template&id=1601c5ac&":
-/*!**************************************************************************************!*\
-  !*** ./resources/assets/js/components/DailyGraph.vue?vue&type=template&id=1601c5ac& ***!
-  \**************************************************************************************/
+/***/ "./resources/assets/js/components/LiveChart.vue?vue&type=template&id=2f679daa&":
+/*!*************************************************************************************!*\
+  !*** ./resources/assets/js/components/LiveChart.vue?vue&type=template&id=2f679daa& ***!
+  \*************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DailyGraph_vue_vue_type_template_id_1601c5ac___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./DailyGraph.vue?vue&type=template&id=1601c5ac& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/DailyGraph.vue?vue&type=template&id=1601c5ac&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DailyGraph_vue_vue_type_template_id_1601c5ac___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LiveChart_vue_vue_type_template_id_2f679daa___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./LiveChart.vue?vue&type=template&id=2f679daa& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LiveChart.vue?vue&type=template&id=2f679daa&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LiveChart_vue_vue_type_template_id_2f679daa___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DailyGraph_vue_vue_type_template_id_1601c5ac___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LiveChart_vue_vue_type_template_id_2f679daa___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

@@ -12,7 +12,7 @@ Route::get('/', IndexController::class);
 Route::prefix('api')->group(function () {
     Route::get('powerstations', ShowPowerStations::class);
     Route::get('week-overview', ShowWeekOverview::class);
-    Route::get('dailygraph/{date}', ShowGraphForDate::class);
+    Route::get('live-chart/{date}', ShowGraphForDate::class);
     Route::get('average-yield', ShowAverageYield::class);
     Route::get('weather', ShowCurrentWeather::class);
 });
