@@ -64,7 +64,7 @@
         </center>
 
         <center>
-            <daily-graph></daily-graph>
+            <daily-graph :data="{{ $liveGraphData }}"></daily-graph>
         </center>
 
         <center>
@@ -76,5 +76,4 @@
     <script type="text/javascript" src="{{ mix('js/app.js') }}"></script>
 
 </body>
-
 </html>

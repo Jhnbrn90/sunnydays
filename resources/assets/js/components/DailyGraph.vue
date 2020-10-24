@@ -16,6 +16,8 @@ import axios from "axios";
 import moment from "moment";
 
 export default {
+  props: ['data'],
+
   data() {
     return {
       powerObject: {},
@@ -46,49 +48,12 @@ export default {
   },
 
   mounted() {
-    var ctx = document.getElementById("dailyChart");
+    let ctx = document.getElementById("dailyChart");
+
     this.myChart = new Chart(ctx, {
       type: "line",
       data: {
-        labels: "",
-        datasets: [
-          {
-            label: "(J&L)",
-            data: this.powerObject.JL,
-            weatherCondition: [],
-            temperatures: [],
-            fill: false,
-            borderColor: "rgba(255, 165, 120, 1.0)",
-            backgroundColor: "rgba(255, 255, 255, 0.1)"
-          },
-          {
-            label: "(M&B)",
-            data: this.powerObject.MB,
-            weatherCondition: [],
-            temperatures: [],
-            fill: false,
-            borderColor: "rgba(2, 158, 227, 1)",
-            backgroundColor: "rgba(255, 255, 255, 0.1)"
-          },
-          {
-            label: "(B&E)",
-            data: this.powerObject.BE,
-            weatherCondition: [],
-            temperatures: [],
-            fill: false,
-            borderColor: "rgba(0, 153, 51, 1)",
-            backgroundColor: "rgba(255, 255, 255, 0.1)"
-          },
-          {
-            label: "(Ron)",
-            data: this.powerObject.RB,
-            weatherCondition: [],
-            temperatures: [],
-            fill: false,
-            borderColor: "rgba(95, 66, 244, 1)",
-            backgroundColor: "rgba(255, 255, 255, 0.1)"
-          }
-        ]
+        datasets: this.data
       },
       options: {
         responsive: true,
@@ -125,26 +90,6 @@ export default {
         legend: {
           display: true
         },
-        tooltips: {
-          callbacks: {
-            label: function(tooltipItem, data) {
-              return (
-                tooltipItem.yLabel +
-                " W " +
-                data.datasets[tooltipItem.datasetIndex].label +
-                ", " +
-                data.datasets[tooltipItem.datasetIndex].weatherCondition[
-                  tooltipItem.xLabel
-                ] +
-                ", " +
-                data.datasets[tooltipItem.datasetIndex].temperatures[
-                  tooltipItem.xLabel
-                ] +
-                " °C"
-              );
-            }
-          }
-        }
       }
     });
 
@@ -203,39 +148,7 @@ export default {
 
     updateChart() {
       axios.get("/api/dailygraph/" + this.date).then(response => {
-        var powerArray = [];
-        var weatherArray = [];
-        var temperatureArray = [];
-
-        this.myChart.data.labels = Object.keys(response.data.JL);
-
-        Object.keys(response.data).forEach(user => {
-          var data = response.data[user];
-          Object.keys(data).forEach(time => {
-            powerArray.push({
-              x: time,
-              y: data[time].power
-            });
-
-            weatherArray[time] = data[time].weather_condition;
-            temperatureArray[time] = data[time].temperature;
-          });
-
-          this.powerObject[user] = powerArray;
-          this.weatherObject[user] = weatherArray;
-          this.temperatureObject[user] = temperatureArray;
-          powerArray = [];
-          weatherArray = [];
-          temperatureArray = [];
-        });
-
-        this.myChart.data.datasets.forEach((dataset, index) => {
-          var user = Object.keys(this.powerObject)[index];
-          dataset.data = this.powerObject[user];
-
-          dataset.weatherCondition = this.weatherObject[user];
-          dataset.temperatures = this.temperatureObject[user];
-        });
+        this.myChart.data.datasets = response.data;
 
         this.myChart.update();
       });
