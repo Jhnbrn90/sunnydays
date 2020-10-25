@@ -7,14 +7,14 @@
 // Bootstrap
 @import "~bootstrap/scss/bootstrap";
 
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-}
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
 
 html,
 body {
-  background-color: #fff;
   color: #636b6f;
   font-family: "Raleway", sans-serif;
   font-weight: 100;
@@ -26,25 +26,25 @@ body {
   height: 100vh;
 }
 
-.flex-center {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-}
-
-.position-ref {
-  position: relative;
-}
-
-.top-right {
-  position: absolute;
-  right: 10px;
-  top: 18px;
-}
-
-.content {
-  text-align: center;
-}
+//.flex-center {
+//  align-items: center;
+//  display: flex;
+//  justify-content: center;
+//}
+//
+//.position-ref {
+//  position: relative;
+//}
+//
+//.top-right {
+//  position: absolute;
+//  right: 10px;
+//  top: 18px;
+//}
+//
+//.content {
+//  text-align: center;
+//}
 
 .title {
   font-size: 84px;
@@ -60,8 +60,8 @@ body {
   text-transform: uppercase;
 }
 
-.m-b-md {
-  margin-bottom: 30px;
-}
+//.m-b-md {
+//  margin-bottom: 30px;
+//}
 
 @import "custom";
