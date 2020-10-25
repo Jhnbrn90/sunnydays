@@ -33,42 +33,40 @@ import moment from "moment";
 import { LiveChartOptions } from '../charts/config';
 
 export default {
-  props: ['data'],
+  props: ['data', 'initialDate'],
 
   data() {
     return {
       liveChart: {},
-      date: moment(),
-      chartInterval: "",
+      date: moment(this.initialDate, 'DD-MM-YYYY'),
+      chartInterval: null,
       updateFrequency: 10000, // update frequency in ms
       dateFormat: "dddd DD MMMM YYYY"
     };
   },
 
+  watch: {
+    date() {
+      this.updateChart();
+    }
+  },
+
   computed: {
-    isToday() {
-      return this.date.format(this.dateFormat) === this.today;
+    endpoint() {
+      return `api/live-chart/${this.date.format(this.dateFormat)}`;
     },
 
     today() {
-      return moment().format(this.dateFormat);
+      return moment(this.initialDate, 'DD-MM-YYYY').format(this.dateFormat);
     },
 
-    endpoint() {
-      return `api/live-chart/${this.date.format(this.dateFormat)}`;
+    isToday() {
+      return this.date.format(this.dateFormat) === this.today;
     }
   },
 
   mounted() {
-    this.liveChart = new Chart(this.$refs.dailyChart, {
-      type: "line",
-      data: {
-        datasets: this.data
-      },
-      options: LiveChartOptions
-    });
-
-    this.enableUpdates();
+    this.initializeChart();
   },
 
   methods: {
@@ -83,7 +81,6 @@ export default {
     previousDate() {
       this.setPreviousDay();
       this.disableUpdates();
-      this.updateChart();
     },
 
     nextDate() {
@@ -92,8 +89,6 @@ export default {
       if (this.isToday) {
         this.enableUpdates();
       }
-
-      this.updateChart();
     },
 
     enableUpdates() {
@@ -105,9 +100,8 @@ export default {
     },
 
     setDateToday() {
-      this.date = moment();
+      this.date = moment(this.initialDate, 'DD-MM-YYYY');
       this.chartInterval = setInterval(this.updateChart, this.updateFrequency);
-      this.updateChart();
     },
 
     updateChart() {
@@ -115,6 +109,18 @@ export default {
         this.liveChart.data.datasets = response.data;
         this.liveChart.update();
       });
+    },
+
+    initializeChart() {
+      this.liveChart = new Chart(this.$refs.dailyChart, {
+        type: "line",
+        data: {
+          datasets: this.data
+        },
+        options: LiveChartOptions
+      });
+
+      this.enableUpdates();
     }
   }
 };
