@@ -109,7 +109,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { BreedingRhombusSpinner } from 'epic-spinners'
 
 export default {

@@ -29,7 +29,6 @@
 
 <script>
 import Chart from "chart.js";
-import axios from "axios";
 import moment from "moment";
 import { LiveChartOptions } from '../charts/config';
 
