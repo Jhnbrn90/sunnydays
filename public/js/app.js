@@ -1971,44 +1971,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['goodweIds', 'api'],
@@ -46160,79 +46122,238 @@ var render = function() {
   return _c("div", [
     _vm._m(0),
     _vm._v(" "),
-    _c("div", { staticClass: "w-full flex items-center justify-center" }, [
-      _c("div", { staticClass: "w-1/3 flex justify-center" }, [
-        _c(
-          "div",
-          {
-            staticClass:
-              "rounded-xl border border-gray-600 shadow px-3 py-2 sm:p-4 text-center"
-          },
-          [
+    _c(
+      "div",
+      {
+        staticClass:
+          "sm:w-1/2 w-full sm:mx-auto flex items-center justify-center"
+      },
+      [
+        _c("div", { staticClass: "flex-1 flex justify-center" }, [
+          _c(
+            "div",
+            { staticClass: "py-2 px-4 text-center" },
+            [
+              _c(
+                "span",
+                {
+                  staticClass:
+                    "font-semibold sm:font-medium block text-lg sm:text-2xl tracking-wider"
+                },
+                [_vm._v("\n          Today\n        ")]
+              ),
+              _vm._v(" "),
+              _c("span", { staticClass: "font-hairline" }, [
+                _vm._v("\n          kWh\n        ")
+              ]),
+              _vm._v(" "),
+              _vm.loading
+                ? _c(
+                    "div",
+                    { staticClass: "py-6 w-full flex justify-center" },
+                    [
+                      _c("breeding-rhombus-spinner", {
+                        attrs: {
+                          "animation-duration": 2000,
+                          size: 30,
+                          color: "#029ee3"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                : _vm._l(Object.keys(_vm.goodweIds), function(user) {
+                    return _c("div", { staticClass: "sm:text-2xl font-thin" }, [
+                      _c("span", { class: _vm.classes(user) }, [
+                        _vm._v(
+                          "\n            " +
+                            _vm._s(
+                              _vm.energy[user] ? _vm.energy[user].eday : "..."
+                            ) +
+                            "\n          "
+                        )
+                      ])
+                    ])
+                  })
+            ],
+            2
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "flex-1 flex justify-center" }, [
+          _c("div", [
             _c(
-              "span",
-              {
-                staticClass:
-                  "font-semibold sm:font-medium d-block text-lg sm:text-2xl tracking-wider"
-              },
-              [_vm._v("Today")]
-            ),
-            _vm._v(" "),
-            _c("span", { staticClass: "font-thin" }, [_vm._v("kWh")]),
-            _vm._v(" "),
-            _vm._l(Object.keys(_vm.goodweIds), function(user) {
-              return !_vm.loading
-                ? _c("div", [
-                    _c("span", { class: _vm.classes(user) }, [
-                      _vm._v(
-                        "\n            " +
-                          _vm._s(
-                            _vm.energy[user] ? _vm.energy[user].eday : "..."
-                          ) +
-                          "\n          "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("br")
-                  ])
-                : _vm._e()
-            }),
-            _vm._v(" "),
-            _vm.loading
-              ? _c(
-                  "div",
-                  [
-                    _c("br"),
-                    _vm._v(" "),
-                    _c(
-                      "center",
+              "div",
+              { staticClass: "py-2 px-4 sm:p-4 text-center" },
+              [
+                _c(
+                  "span",
+                  {
+                    staticClass:
+                      "font-semibold sm:font-medium block text-lg sm:text-2xl tracking-wider"
+                  },
+                  [_vm._v("\n          Now\n        ")]
+                ),
+                _vm._v(" "),
+                _c("span", { staticClass: "font-hairline" }, [
+                  _vm._v("\n          W\n        ")
+                ]),
+                _vm._v(" "),
+                _vm.loading
+                  ? _c(
+                      "div",
+                      { staticClass: "py-6 w-full flex justify-center" },
                       [
                         _c("breeding-rhombus-spinner", {
                           attrs: {
                             "animation-duration": 2000,
                             size: 30,
-                            color: "#029ee3"
+                            color: "#ffa578"
                           }
                         })
                       ],
                       1
-                    ),
-                    _vm._v(" "),
-                    _c("br"),
-                    _vm._v("\n          Loading...\n        ")
-                  ],
-                  1
-                )
-              : _vm._e()
-          ],
-          2
-        )
-      ]),
-      _vm._v(" "),
-      _vm._m(1),
-      _vm._v(" "),
-      _vm._m(2)
-    ])
+                    )
+                  : _vm._l(Object.keys(_vm.goodweIds), function(user) {
+                      return _c(
+                        "div",
+                        { staticClass: "sm:text-2xl font-thin" },
+                        [
+                          _c("span", { class: _vm.classes(user) }, [
+                            _vm._v(
+                              "\n              " +
+                                _vm._s(_vm.nowGenerating(user)) +
+                                "\n            "
+                            )
+                          ])
+                        ]
+                      )
+                    })
+              ],
+              2
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "flex-1 flex justify-center" }, [
+          _c("div", [
+            _c(
+              "div",
+              { staticClass: "py-2 px-4 sm:p-4 text-center" },
+              [
+                _c(
+                  "span",
+                  {
+                    staticClass:
+                      "font-semibold sm:font-medium block text-lg sm:text-2xl tracking-wider"
+                  },
+                  [_vm._v("\n            Total\n          ")]
+                ),
+                _vm._v(" "),
+                _c("span", { staticClass: "font-hairline" }, [
+                  _vm._v("\n            kWh\n          ")
+                ]),
+                _vm._v(" "),
+                _vm.loading
+                  ? _c(
+                      "div",
+                      { staticClass: "py-6 w-full flex justify-center" },
+                      [
+                        _c("breeding-rhombus-spinner", {
+                          attrs: {
+                            "animation-duration": 2000,
+                            size: 30,
+                            color: "#009933"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  : _vm._l(Object.keys(_vm.goodweIds), function(user) {
+                      return _c(
+                        "div",
+                        { staticClass: "sm:text-2xl font-thin" },
+                        [
+                          _c("span", { class: _vm.classes(user) }, [
+                            _vm._v(
+                              "\n              " +
+                                _vm._s(
+                                  _vm.energy[user]
+                                    ? _vm.energy[user].etotal
+                                    : "..."
+                                ) +
+                                "\n            "
+                            )
+                          ])
+                        ]
+                      )
+                    })
+              ],
+              2
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "flex-1 flex justify-center" }, [
+          _c("div", [
+            _c(
+              "div",
+              { staticClass: "py-2 px-4 text-center" },
+              [
+                _c(
+                  "span",
+                  {
+                    staticClass:
+                      "font-semibold sm:font-medium block text-lg sm:text-2xl tracking-wider"
+                  },
+                  [_vm._v("\n            Average\n          ")]
+                ),
+                _vm._v(" "),
+                _c("span", { staticClass: "font-hairline" }, [
+                  _vm._v("\n            kWh /day\n          ")
+                ]),
+                _vm._v(" "),
+                _vm.loading
+                  ? _c(
+                      "div",
+                      { staticClass: "py-6 w-full flex justify-center" },
+                      [
+                        _c("breeding-rhombus-spinner", {
+                          attrs: {
+                            "animation-duration": 2000,
+                            size: 30,
+                            color: "#992300"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm._l(Object.keys(_vm.goodweIds), function(user) {
+                  return !_vm.loading
+                    ? _c("div", { staticClass: "sm:text-2xl font-thin" }, [
+                        _c("span", { class: _vm.classes(user) }, [
+                          _vm._v(
+                            "\n              " +
+                              _vm._s(
+                                _vm.energy[user]
+                                  ? _vm.energy[user].etotal
+                                  : "..."
+                              ) +
+                              "\n            "
+                          )
+                        ])
+                      ])
+                    : _vm._e()
+                })
+              ],
+              2
+            )
+          ])
+        ])
+      ]
+    )
   ])
 }
 var staticRenderFns = [
@@ -46248,22 +46369,6 @@ var staticRenderFns = [
       _c("span", { staticClass: "BE" }, [_vm._v("— B&E")]),
       _vm._v(" "),
       _c("span", { staticClass: "RB" }, [_vm._v("— Ron")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "w-1/3 flex justify-center" }, [
-      _c("div", [_vm._v("\n        2\n      ")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "w-1/3 flex justify-center" }, [
-      _c("div", [_vm._v("\n        3\n      ")])
     ])
   }
 ]

@@ -1,6 +1,6 @@
 <x-layout>
     <div class="container">
-        <div class="w-full mb-4">
+        <div class="w-full py-10">
             <solar-energy
                 :goodwe-ids="{{ $goodweIds }}"
                 api="{{ config('app.url') }}"
