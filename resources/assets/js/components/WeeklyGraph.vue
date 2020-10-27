@@ -1,12 +1,11 @@
 <template>
-<div class="weekly-graph">
-  <canvas id="weeklyChart" width="600" height="20"></canvas>
-</div>
+  <div class="weekly-graph">
+    <canvas ref="weeklyChart"></canvas>
+  </div>
 </template>
 
 <script>
 import Chart from "chart.js";
-import axios from "axios";
 import moment from "moment";
 
 export default {
@@ -70,8 +69,7 @@ export default {
   },
 
   mounted() {
-    var ctx = document.getElementById("weeklyChart").getContext('2d');
-    this.weeklyChart = new Chart(ctx, {
+    this.weeklyChart = new Chart(this.$refs.weeklyChart, {
       type: "bar",
       data: {
         labels: "",

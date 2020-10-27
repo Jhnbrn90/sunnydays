@@ -12,46 +12,26 @@ body {
   font-weight: 100;
 }
 
-//.full-height {
-//  height: 100vh;
-//}
+.live-chart {
+  width: 80vw;
+  height: 70vw;
+}
 
-//.flex-center {
-//  align-items: center;
-//  display: flex;
-//  justify-content: center;
-//}
-//
-//.position-ref {
-//  position: relative;
-//}
-//
-//.top-right {
-//  position: absolute;
-//  right: 10px;
-//  top: 18px;
-//}
-//
-//.content {
-//  text-align: center;
-//}
+.weekly-graph {
+  margin-left: -20px;
+  width: 100%;
+  height: 50vh;
+}
 
-//.title {
-//  font-size: 84px;
-//}
-//
-//.links > a {
-//  color: #636b6f;
-//  padding: 0 25px;
-//  font-size: 12px;
-//  font-weight: 600;
-//  letter-spacing: 0.1rem;
-//  text-decoration: none;
-//  text-transform: uppercase;
-//}
+@screen sm {
+  .live-chart {
+    width: 80vw;
+    height: 30vw;
+  }
 
-//.m-b-md {
-//  margin-bottom: 30px;
-//}
+  .weekly-graph {
+    width: 90vw;
+    height: 30vw;
+  }
+}
 
-//@import "custom";

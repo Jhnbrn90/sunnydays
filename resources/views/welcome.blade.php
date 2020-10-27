@@ -1,22 +1,25 @@
 <x-layout>
-    <div class="container">
-        <div class="w-full py-10">
+    <div>
+        <div class="w-full pt-5 mb-5">
             <solar-energy
                 :goodwe-ids="{{ $goodweIds }}"
-                api="{{ config('app.url') }}"
-            />
+                api="{{ config('app.url') }}">
+            </solar-energy>
         </div>
 
-        <div class="w-full text-center mt-4">
-            <weather-time weather-city="Hoofddorp"/>
+        <div class="w-full text-center mb-5">
+            <weather-time weather-city="Hoofddorp"></weather-time>
         </div>
 
-        <center>
-            <live-chart initial-date="{{ now()->format('d-m-Y') }}" :data="{{ $liveGraphData }}"/>
-        </center>
+        <div class="w-full flex justify-center mb-5 pb-4">
+            <live-chart
+                initial-date="{{ now()->format('d-m-Y') }}"
+                :data="{{ $liveGraphData }}">
+            </live-chart>
+        </div>
 
-        <center>
+        <div class="flex max-w-sm sm:max-w-full mx-auto justify-center pt-12 pb-10">
             <weekly-graph></weekly-graph>
-        </center>
+        </div>
     </div>
 </x-layout>

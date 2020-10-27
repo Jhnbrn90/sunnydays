@@ -21434,6 +21434,29 @@ body {
   font-weight: 100;
 }
 
+.live-chart {
+  width: 80vw;
+  height: 70vw;
+}
+
+.weekly-graph {
+  margin-left: -20px;
+  width: 100%;
+  height: 50vh;
+}
+
+@media (min-width: 640px) {
+  .live-chart {
+    width: 80vw;
+    height: 30vw;
+  }
+
+  .weekly-graph {
+    width: 90vw;
+    height: 30vw;
+  }
+}
+
 @media (min-width: 640px){
   .sm\:container{
     width: 100%;

@@ -1,30 +1,39 @@
 <template>
+  <div class="live-chart">
+    <h2 class="text-center font-medium tracking-wide text-lg text-gray-700">
+      {{ date.format(dateFormat) }}
+    </h2>
 
-<div class="daily-graph">
+    <div class="my-2 text-center">
+      <button
+          class="text-xs bg-transparent hover:bg-gray-700 text-gray-700 hover:text-white py-1 px-2 border border-gray-700 hover:border-transparent rounded"
+          v-on:click="previousDate"
+      >
+        Previous
+      </button>
 
-  <span class="daily-graph-date">
-    <center>
-      <strong>{{ date.format(dateFormat) }}</strong>
-    </center>
-  </span>
+      <button
+          class="text-xs bg-transparent py-1 px-2 border rounded text-gray-700 border-gray-700"
+          :class="isToday ? 'opacity-50 cursor-not-allowed' : 'hover:border-transparent hover:text-white hover:bg-gray-700 text-gray-700 border-gray-700'"
+          v-on:click="nextDate"
+          :disabled="isToday"
+      >
+        Next
+      </button>
 
-  <button class="btn btn-sm btn-outline-secondary" v-on:click="previousDate">
-    Previous
-  </button>
+      <button
+          class="text-xs bg-transparent py-1 px-2 border rounded"
+          :class="isToday ? 'text-gray-700 border-gray-700 opacity-50 cursor-not-allowed' : 'hover:border-transparent hover:text-white hover:bg-blue-600 text-blue-700 border-blue-700'"
+          v-on:click="setDateToday"
+          :disabled="isToday"
+      >
+        Today
+      </button>
+    </div>
 
-  <button class="btn btn-sm btn-outline-secondary" v-on:click="nextDate" :disabled="isToday">
-    Next
-  </button>
+    <canvas ref="dailyChart"></canvas>
 
-  <button
-      class="btn btn-sm"
-      :class="isToday ? 'btn-outline-secondary' : 'btn-outline-primary'"
-      v-on:click="setDateToday"
-      :disabled="isToday"
-  >Today</button>
-
-  <canvas ref="dailyChart"></canvas>
-</div>
+  </div>
 </template>
 
 <script>
@@ -125,4 +134,3 @@ export default {
   }
 };
 </script>
-

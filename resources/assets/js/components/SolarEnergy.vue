@@ -25,7 +25,7 @@
               />
           </div>
 
-          <div class="sm:text-2xl font-thin" v-for="user in Object.keys(goodweIds)" v-else>
+          <div class="sm:text-2xl text-xl font-thin" v-for="user in Object.keys(goodweIds)" v-else>
             <span :class='classes(user)'>
               {{ energy[user] ? energy[user].eday : '...' }}
             </span>
@@ -52,7 +52,7 @@
               />
             </div>
 
-            <div class="sm:text-2xl font-thin" v-for="user in Object.keys(goodweIds)" v-else>
+            <div class="sm:text-2xl text-xl font-thin" v-for="user in Object.keys(goodweIds)" v-else>
               <span :class="classes(user)">
                 {{ nowGenerating(user) }}
               </span>
@@ -80,7 +80,7 @@
               />
             </div>
 
-            <div class="sm:text-2xl font-thin" v-for="user in Object.keys(goodweIds)" v-else>
+            <div class="sm:text-2xl text-xl font-thin" v-for="user in Object.keys(goodweIds)" v-else>
               <span :class="classes(user)">
                 {{ energy[user] ? energy[user].etotal : '...' }}
               </span>
@@ -107,9 +107,9 @@
               />
             </div>
 
-            <div class="sm:text-2xl font-thin" v-for="user in Object.keys(goodweIds)"  v-if="!loading">
+            <div class="sm:text-2xl text-xl font-thin" v-for="user in Object.keys(goodweIds)"  v-if="!loading">
               <span :class="classes(user)">
-                {{ energy[user] ? energy[user].etotal : '...' }}
+                {{ average[user] ? average[user] : '' }}
               </span>
             </div>
 

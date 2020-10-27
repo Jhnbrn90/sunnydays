@@ -1,16 +1,23 @@
 <template>
-    <div class="container weather-time">
-        <h1> {{ time }} </h1>
-        {{ date }} <br>
+    <div>
+        <h3 class="text-lg font-medium">
+          {{ time }}
+        </h3>
+
+      <span class="block">
+        {{ date }}
+      </span>
+
+      <span>
         {{ weather.temperature }} &deg;C
-        <i class="wi" :class="weather.iconClass"></i>
+      </span>
+
+      <i class="wi" :class="weather.iconClass"></i>
     </div>
 </template>
 
 <script>
 import moment from "moment";
-
-import axios from "axios";
 
 export default {
 
@@ -18,23 +25,20 @@ export default {
     return {
       time: "",
       date: "",
-      weather: {
-        temperature: "",
-        iconClass: ""
-      }
+      weather: {},
     };
   },
 
   created() {
     this.refreshTime();
+
     setInterval(this.refreshTime, 1000);
+
     this.date = moment().format("dddd, DD MMMM YYYY");
 
     this.fetchWeather();
 
     setInterval(this.fetchWeather, 15 * 60 * 1000);
-
-    
   },
 
   methods: {
@@ -44,8 +48,10 @@ export default {
 
     fetchWeather() {
       axios.get('/api/weather').then(response => {
-        this.weather.temperature = response.data.temperature;
-        this.weather.iconClass = `wi-yahoo-${response.data.code}`;
+        this.weather = {
+          'temperature': response.data.temperature,
+          'iconClass': `wi-yahoo-${response.data.code}`
+        };
       });
     }
 

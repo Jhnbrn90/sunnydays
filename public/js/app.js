@@ -1753,6 +1753,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2035,8 +2044,6 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -2046,17 +2053,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       time: "",
       date: "",
-      weather: {
-        temperature: "",
-        iconClass: ""
-      }
+      weather: {}
     };
   },
   created: function created() {
@@ -2073,9 +2085,11 @@ __webpack_require__.r(__webpack_exports__);
     fetchWeather: function fetchWeather() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/weather').then(function (response) {
-        _this.weather.temperature = response.data.temperature;
-        _this.weather.iconClass = "wi-yahoo-".concat(response.data.code);
+      axios.get('/api/weather').then(function (response) {
+        _this.weather = {
+          'temperature': response.data.temperature,
+          'iconClass': "wi-yahoo-".concat(response.data.code)
+        };
       });
     }
   }
@@ -2094,17 +2108,14 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var chart_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! chart.js */ "./node_modules/chart.js/dist/Chart.js");
 /* harmony import */ var chart_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(chart_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
 //
 //
 //
-
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2123,7 +2134,7 @@ __webpack_require__.r(__webpack_exports__);
     getGraphData: function getGraphData() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/api/week-overview").then(function (response) {
+      axios.get("/api/week-overview").then(function (response) {
         Object.keys(response.data).forEach(function (user) {
           var powerArray = [];
           var data = response.data[user];
@@ -2150,8 +2161,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     setDays: function setDays() {
-      var startOfWeek = moment__WEBPACK_IMPORTED_MODULE_2___default()().subtract(7, "days");
-      var endOfWeek = moment__WEBPACK_IMPORTED_MODULE_2___default()();
+      var startOfWeek = moment__WEBPACK_IMPORTED_MODULE_1___default()().subtract(7, "days");
+      var endOfWeek = moment__WEBPACK_IMPORTED_MODULE_1___default()();
       var days = [];
       var day = startOfWeek;
 
@@ -2164,8 +2175,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    var ctx = document.getElementById("weeklyChart").getContext('2d');
-    this.weeklyChart = new chart_js__WEBPACK_IMPORTED_MODULE_0___default.a(ctx, {
+    this.weeklyChart = new chart_js__WEBPACK_IMPORTED_MODULE_0___default.a(this.$refs.weeklyChart, {
       type: "bar",
       data: {
         labels: "",
@@ -46052,47 +46062,54 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "daily-graph" }, [
+  return _c("div", { staticClass: "live-chart" }, [
     _c(
-      "span",
-      { staticClass: "daily-graph-date" },
-      [
-        _c("center", [
-          _c("strong", [_vm._v(_vm._s(_vm.date.format(_vm.dateFormat)))])
-        ])
-      ],
-      1
+      "h2",
+      {
+        staticClass:
+          "text-center font-medium tracking-wide text-lg text-gray-700"
+      },
+      [_vm._v("\n    " + _vm._s(_vm.date.format(_vm.dateFormat)) + "\n  ")]
     ),
     _vm._v(" "),
-    _c(
-      "button",
-      {
-        staticClass: "btn btn-sm btn-outline-secondary",
-        on: { click: _vm.previousDate }
-      },
-      [_vm._v("\n    Previous\n  ")]
-    ),
-    _vm._v(" "),
-    _c(
-      "button",
-      {
-        staticClass: "btn btn-sm btn-outline-secondary",
-        attrs: { disabled: _vm.isToday },
-        on: { click: _vm.nextDate }
-      },
-      [_vm._v("\n    Next\n  ")]
-    ),
-    _vm._v(" "),
-    _c(
-      "button",
-      {
-        staticClass: "btn btn-sm",
-        class: _vm.isToday ? "btn-outline-secondary" : "btn-outline-primary",
-        attrs: { disabled: _vm.isToday },
-        on: { click: _vm.setDateToday }
-      },
-      [_vm._v("Today")]
-    ),
+    _c("div", { staticClass: "my-2 text-center" }, [
+      _c(
+        "button",
+        {
+          staticClass:
+            "text-xs bg-transparent hover:bg-gray-700 text-gray-700 hover:text-white py-1 px-2 border border-gray-700 hover:border-transparent rounded",
+          on: { click: _vm.previousDate }
+        },
+        [_vm._v("\n      Previous\n    ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass:
+            "text-xs bg-transparent py-1 px-2 border rounded text-gray-700 border-gray-700",
+          class: _vm.isToday
+            ? "opacity-50 cursor-not-allowed"
+            : "hover:border-transparent hover:text-white hover:bg-gray-700 text-gray-700 border-gray-700",
+          attrs: { disabled: _vm.isToday },
+          on: { click: _vm.nextDate }
+        },
+        [_vm._v("\n      Next\n    ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "text-xs bg-transparent py-1 px-2 border rounded",
+          class: _vm.isToday
+            ? "text-gray-700 border-gray-700 opacity-50 cursor-not-allowed"
+            : "hover:border-transparent hover:text-white hover:bg-blue-600 text-blue-700 border-blue-700",
+          attrs: { disabled: _vm.isToday },
+          on: { click: _vm.setDateToday }
+        },
+        [_vm._v("\n      Today\n    ")]
+      )
+    ]),
     _vm._v(" "),
     _c("canvas", { ref: "dailyChart" })
   ])
@@ -46163,17 +46180,21 @@ var render = function() {
                     1
                   )
                 : _vm._l(Object.keys(_vm.goodweIds), function(user) {
-                    return _c("div", { staticClass: "sm:text-2xl font-thin" }, [
-                      _c("span", { class: _vm.classes(user) }, [
-                        _vm._v(
-                          "\n            " +
-                            _vm._s(
-                              _vm.energy[user] ? _vm.energy[user].eday : "..."
-                            ) +
-                            "\n          "
-                        )
-                      ])
-                    ])
+                    return _c(
+                      "div",
+                      { staticClass: "sm:text-2xl text-xl font-thin" },
+                      [
+                        _c("span", { class: _vm.classes(user) }, [
+                          _vm._v(
+                            "\n            " +
+                              _vm._s(
+                                _vm.energy[user] ? _vm.energy[user].eday : "..."
+                              ) +
+                              "\n          "
+                          )
+                        ])
+                      ]
+                    )
                   })
             ],
             2
@@ -46217,7 +46238,7 @@ var render = function() {
                   : _vm._l(Object.keys(_vm.goodweIds), function(user) {
                       return _c(
                         "div",
-                        { staticClass: "sm:text-2xl font-thin" },
+                        { staticClass: "sm:text-2xl text-xl font-thin" },
                         [
                           _c("span", { class: _vm.classes(user) }, [
                             _vm._v(
@@ -46272,7 +46293,7 @@ var render = function() {
                   : _vm._l(Object.keys(_vm.goodweIds), function(user) {
                       return _c(
                         "div",
-                        { staticClass: "sm:text-2xl font-thin" },
+                        { staticClass: "sm:text-2xl text-xl font-thin" },
                         [
                           _c("span", { class: _vm.classes(user) }, [
                             _vm._v(
@@ -46332,19 +46353,21 @@ var render = function() {
                 _vm._v(" "),
                 _vm._l(Object.keys(_vm.goodweIds), function(user) {
                   return !_vm.loading
-                    ? _c("div", { staticClass: "sm:text-2xl font-thin" }, [
-                        _c("span", { class: _vm.classes(user) }, [
-                          _vm._v(
-                            "\n              " +
-                              _vm._s(
-                                _vm.energy[user]
-                                  ? _vm.energy[user].etotal
-                                  : "..."
-                              ) +
-                              "\n            "
-                          )
-                        ])
-                      ])
+                    ? _c(
+                        "div",
+                        { staticClass: "sm:text-2xl text-xl font-thin" },
+                        [
+                          _c("span", { class: _vm.classes(user) }, [
+                            _vm._v(
+                              "\n              " +
+                                _vm._s(
+                                  _vm.average[user] ? _vm.average[user] : ""
+                                ) +
+                                "\n            "
+                            )
+                          ])
+                        ]
+                      )
                     : _vm._e()
                 })
               ],
@@ -46393,11 +46416,19 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container weather-time" }, [
-    _c("h1", [_vm._v(" " + _vm._s(_vm.time) + " ")]),
-    _vm._v("\n    " + _vm._s(_vm.date) + " "),
-    _c("br"),
-    _vm._v("\n    " + _vm._s(_vm.weather.temperature) + " °C\n    "),
+  return _c("div", [
+    _c("h3", { staticClass: "text-lg font-medium" }, [
+      _vm._v("\n      " + _vm._s(_vm.time) + "\n    ")
+    ]),
+    _vm._v(" "),
+    _c("span", { staticClass: "block" }, [
+      _vm._v("\n    " + _vm._s(_vm.date) + "\n  ")
+    ]),
+    _vm._v(" "),
+    _c("span", [
+      _vm._v("\n    " + _vm._s(_vm.weather.temperature) + " °C\n  ")
+    ]),
+    _vm._v(" "),
     _c("i", { staticClass: "wi", class: _vm.weather.iconClass })
   ])
 }
@@ -46423,18 +46454,11 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "weekly-graph" }, [
+    _c("canvas", { ref: "weeklyChart" })
+  ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "weekly-graph" }, [
-      _c("canvas", { attrs: { id: "weeklyChart", width: "600", height: "20" } })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
