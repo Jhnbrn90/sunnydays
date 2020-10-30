@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Contracts\RetrieverInterface;
 use App\Models\DailyProductionLog;
-use App\Services\GoodWeApi;
 use App\Models\PowerStation;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -16,7 +16,7 @@ class StoreDailyYield extends Command
 
     private $retriever;
 
-    public function __construct(GoodWeApi $retriever)
+    public function __construct(RetrieverInterface $retriever)
     {
         parent::__construct();
 

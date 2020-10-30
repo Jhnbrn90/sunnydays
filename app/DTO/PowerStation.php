@@ -2,6 +2,8 @@
 
 namespace App\DTO;
 
+use App\Models\PowerStation as PowerStationModel;
+
 class PowerStation
 {
     public $rawData;
@@ -67,5 +69,10 @@ class PowerStation
         $thresholdInWatts = 50;
 
         return $this->nowGenerating() > $thresholdInWatts;
+    }
+
+    public function getModel(): PowerStationModel
+    {
+        return PowerStationModel::firstWhere('goodwe_id', $this->id());
     }
 }

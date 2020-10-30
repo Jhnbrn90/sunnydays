@@ -15,4 +15,11 @@ class PowerStation extends Model
     {
         return $this->hasMany(Powerlog::class);
     }
+
+    public function storeCurrentYield(int $currentYield)
+    {
+        $this->powerlogs()->create([
+            'current_power' => $currentYield
+        ]);
+    }
 }

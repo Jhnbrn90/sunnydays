@@ -2,10 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Services\GoodWeApi;
-use App\Models\Powerlog;
-use App\Models\PowerStation;
-use App\Services\YahooWeatherProvider;
+use App\Contracts\RetrieverInterface;
+use App\DTO\PowerStation as PowerStationDTO;
 use Illuminate\Console\Command;
 
 class StoreCurrentYield extends Command
@@ -16,32 +14,23 @@ class StoreCurrentYield extends Command
 
     private $retriever;
 
-    private $yahoo;
-
-    public function __construct(GoodWeApi $retriever, YahooWeatherProvider $yahoo)
+    public function __construct(RetrieverInterface $retriever)
     {
         parent::__construct();
+
         $this->retriever = $retriever;
-        $this->yahoo = $yahoo;
     }
 
     public function handle(): void
     {
-        $weather = $this->yahoo->condition();
-        $powerStations = $this->retriever->getPowerStations();
+        $powerStations = collect($this->retriever->getPowerStations());
 
-        $powerStations->each(function (PowerStation $powerStation) use ($weather) {
-           if ($powerStation->isWorking()) {
-               Powerlog::create([
-                   'current_power' => $powerStation->nowGenerating(),
-                   'user' => $powerStation->owner(),
-                   'weather_condition' => $weather['text'],
-                   'temperature' => $weather['temperature'],
-                   'weather_condition_code' => $weather['code']
-               ]);
-           }
+        $activePowerStations = $powerStations->filter(function (PowerStationDTO $powerStation) {
+            return $powerStation->isWorking();
         });
 
-        $this->info('Done');
+        $activePowerStations->each(function (PowerStationDTO $powerStation) {
+            $powerStation->getModel()->storeCurrentYield($powerStation->nowGenerating());
+        });
     }
 }

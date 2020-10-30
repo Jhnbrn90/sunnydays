@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Contracts\RetrieverInterface;
 use App\Services\GoodWeApi;
 use App\Services\YahooWeatherApi;
 use App\Services\YahooWeatherProvider;
@@ -26,10 +27,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(GoodWeApi::class, function ($app) {
-            return new GoodWeApi(
-                config('goodwe.account'), config('goodwe.password')
-            );
+        $this->app->bind(RetrieverInterface::class, function ($app) {
+            return new GoodWeApi;
         });
 
         $this->app->singleton(YahooWeatherApi::class, function ($app) {

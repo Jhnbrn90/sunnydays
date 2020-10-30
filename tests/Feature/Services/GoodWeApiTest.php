@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Services;
 
-use App\Models\PowerStation;
+use App\DTO\PowerStation;
 use App\Services\GoodWeApi;
 use Illuminate\Support\Collection;
 use Mockery;
@@ -10,7 +10,6 @@ use Tests\TestCase;
 
 class GoodWeApiTest extends TestCase
 {
-    /** @test */
     function setUp(): void
     {
         parent::setUp();

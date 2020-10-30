@@ -2,11 +2,12 @@
 
 namespace App\Services;
 
+use App\Contracts\RetrieverInterface;
 use App\DTO\PowerStation;
 use Illuminate\Support\Facades\Cache;
 use Zttp\Zttp;
 
-class GoodWeApi
+class GoodWeApi implements RetrieverInterface
 {
     const LOGIN_URL = 'https://globalapi.sems.com.cn/api/v1/Common/CrossLogin';
     const RESOURCE_URL = 'https://euapi.sems.com.cn/api/PowerStationMonitor/QueryPowerStationMonitorForApp';
@@ -14,10 +15,10 @@ class GoodWeApi
     protected $account;
     protected $password;
 
-    public function __construct(string $account, string $password)
+    public function __construct()
     {
-        $this->account = $account;
-        $this->password = $password;
+        $this->account = config('goodwe.account');
+        $this->password = config('goodwe.password');
     }
 
     public function getPowerStations()
