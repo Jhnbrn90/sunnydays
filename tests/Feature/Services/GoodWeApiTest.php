@@ -3,6 +3,7 @@
 namespace Tests\Feature\Services;
 
 use App\DTO\PowerStation;
+use App\Models\PowerStation as PowerStationModel;
 use App\Services\GoodWeApi;
 use Illuminate\Support\Collection;
 use Mockery;
@@ -14,9 +15,10 @@ class GoodWeApiTest extends TestCase
     {
         parent::setUp();
 
-        config(['goodwe.users' => [
-            'TEST' => 'fake-powerstation-id'
-        ]]);
+        PowerStationModel::factory()->create([
+            'name' => 'TEST',
+            'goodwe_id' => 'fake-powerstation-id'
+        ]);
     }
 
     /** @test */

@@ -25,9 +25,7 @@ class StoreCurrentYield extends Command
     {
         $powerStations = collect($this->retriever->getPowerStations());
 
-        $activePowerStations = $powerStations->filter(function (PowerStationDTO $powerStation) {
-            return $powerStation->isWorking();
-        });
+        $activePowerStations = $powerStations->registered()->working();
 
         $activePowerStations->each(function (PowerStationDTO $powerStation) {
             $powerStation->getModel()->storeCurrentYield($powerStation->nowGenerating());

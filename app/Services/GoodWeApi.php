@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Contracts\RetrieverInterface;
 use App\DTO\PowerStation;
+use App\DTO\PowerStationDTOCollection;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Zttp\Zttp;
 
@@ -21,7 +23,7 @@ class GoodWeApi implements RetrieverInterface
         $this->password = config('goodwe.password');
     }
 
-    public function getPowerStations()
+    public function getPowerStations(): PowerStationDTOCollection
     {
         if (Cache::has('all-powerstations')) {
             return Cache::get('all-powerstations');
@@ -29,9 +31,10 @@ class GoodWeApi implements RetrieverInterface
 
         $response = $this->makeRequest();
 
-        $powerStations = collect($response['data'])->map(function (array $powerStation) {
-            return new PowerStation($powerStation);
-        });
+        $powerStations = (new PowerStationDTOCollection($response['data']))
+            ->map(function (array $powerStation) {
+                return new PowerStation($powerStation);
+            });
 
         Cache::put('all-powerstations', $powerStations, 120);
 

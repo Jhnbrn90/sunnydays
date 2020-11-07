@@ -2,7 +2,9 @@
 
 namespace App\Contracts;
 
+use App\DTO\PowerStationDTOCollection;
+
 interface RetrieverInterface
 {
-    public function getPowerStations();
+    public function getPowerStations(): PowerStationDTOCollection;
 }

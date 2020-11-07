@@ -31,11 +31,7 @@ class PowerStation
      */
     public function owner(): string
     {
-        $userMap = array_flip(
-            config('goodwe.users')
-        );
-
-        return $userMap[$this->id()];
+        return $this->getModel()->name;
     }
 
     /**
@@ -71,8 +67,13 @@ class PowerStation
         return $this->nowGenerating() > $thresholdInWatts;
     }
 
-    public function getModel(): PowerStationModel
+    public function getModel(): ?PowerStationModel
     {
         return PowerStationModel::firstWhere('goodwe_id', $this->id());
+    }
+
+    public function shouldRetrieveData()
+    {
+        return $this->getModel() !== null;
     }
 }

@@ -4,6 +4,7 @@ namespace Tests\Feature\Commands;
 
 use App\Contracts\RetrieverInterface;
 use App\DTO\PowerStation as PowerStationDTO;
+use App\Mail\StatisticsMail;
 use App\Models\PowerStation as PowerStationModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
@@ -41,6 +42,9 @@ class StoreDailyYieldTest extends TestCase
     {
         Mail::fake();
 
-        //
+        // act
+
+        // assert
+        Mail::assertSent(StatisticsMail::class);
     }
 }

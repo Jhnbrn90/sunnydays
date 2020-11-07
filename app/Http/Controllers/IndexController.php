@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\RetrieverInterface;
 use App\DailyLiveGraph;
 
 class IndexController
 {
-    public function __invoke()
+    public function __invoke(RetrieverInterface $retriever)
     {
+//        $retriever->getPowerStations();
+
         return view('welcome', [
-            'goodweIds' => json_encode(collect(config('services.goodwe'))),
             'liveGraphData' => DailyLiveGraph::for('today'),
         ]);
     }

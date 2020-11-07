@@ -49,7 +49,7 @@ export default {
       liveChart: {},
       date: moment(this.initialDate, 'DD-MM-YYYY'),
       chartInterval: null,
-      updateFrequency: 10000, // update frequency in ms
+      updateFrequency: 30000, // update frequency in ms
       dateFormat: "dddd DD MMMM YYYY"
     };
   },

@@ -2,8 +2,7 @@
     <div>
         <div class="w-full pt-5 mb-5">
             <solar-energy
-                :goodwe-ids="{{ $goodweIds }}"
-                api="{{ config('app.url') }}">
+                endpoint="{{ route('powerstations') }}">
             </solar-energy>
         </div>
 

@@ -1710,6 +1710,71 @@ module.exports = function isBuffer (obj) {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Aggregates/Now.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/Aggregates/Now.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['powerStations']
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Aggregates/Today.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/Aggregates/Today.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['powerStations']
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LiveChart.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/LiveChart.vue?vue&type=script&lang=js& ***!
@@ -1772,7 +1837,7 @@ __webpack_require__.r(__webpack_exports__);
       liveChart: {},
       date: moment__WEBPACK_IMPORTED_MODULE_1___default()(this.initialDate, 'DD-MM-YYYY'),
       chartInterval: null,
-      updateFrequency: 10000,
+      updateFrequency: 30000,
       // update frequency in ms
       dateFormat: "dddd DD MMMM YYYY"
     };
@@ -1942,59 +2007,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['goodweIds', 'api'],
+  props: ['endpoint'],
   components: {
     BreedingRhombusSpinner: epic_spinners__WEBPACK_IMPORTED_MODULE_0__["BreedingRhombusSpinner"]
   },
   data: function data() {
     return {
       loading: true,
-      energy: {
-        JL: '',
-        MB: '',
-        BE: '',
-        RB: ''
-      },
+      powerStations: {},
       average: {}
     };
   },
@@ -2002,32 +2024,29 @@ __webpack_require__.r(__webpack_exports__);
     this.initialize();
   },
   mounted: function mounted() {
-    setInterval(this.initialize, 20 * 1000);
+    setInterval(this.initialize, 7000);
   },
   methods: {
     initialize: function initialize() {
       var _this = this;
 
-      this.getAverage();
-      axios.get('/api/powerstations').then(function (response) {
-        _this.energy = response.data;
+      // this.getAverage();
+      axios.get(this.endpoint).then(function (response) {
+        _this.powerStations = response.data;
         _this.loading = false;
       });
     },
-    getAverage: function getAverage() {
-      var _this2 = this;
-
-      axios.get('/api/average-yield').then(function (_ref) {
-        var data = _ref.data;
-        _this2.average = data;
-      });
-    },
+    // getAverage() {
+    //   axios.get('/api/average-yield').then(({data}) => {
+    //     this.average = data;
+    //   });
+    // },
     classes: function classes(goodweId) {
       return 'number' + ' ' + goodweId;
-    },
-    nowGenerating: function nowGenerating(user) {
-      return Math.round(this.energy[user].pac);
-    }
+    } // nowGenerating(user) {
+    //   return Math.round(this.energy[user].pac);
+    // }
+
   }
 });
 
@@ -18777,25 +18796,6 @@ exports = module.exports = __webpack_require__(/*! ../../../../css-loader/lib/cs
 
 // module
 exports.push([module.i, ".trinity-rings-spinner[data-v-e647c006], .trinity-rings-spinner *[data-v-e647c006] {\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n}\n.trinity-rings-spinner[data-v-e647c006] {\n  height: 66px;\n  width: 66px;\n  padding: 3px;\n  position: relative;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  overflow: hidden;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n}\n.trinity-rings-spinner .circle[data-v-e647c006] {\n  position:absolute;\n  display:block;\n  border-radius:50%;\n  border: 3px solid #ff1d5e;\n  opacity: 1;\n}\n.trinity-rings-spinner .circle[data-v-e647c006]:nth-child(1) {\n  height: 60px;\n  width: 60px;\n  -webkit-animation : trinity-rings-spinner-circle1-animation-data-v-e647c006 1.5s infinite linear;\n          animation : trinity-rings-spinner-circle1-animation-data-v-e647c006 1.5s infinite linear;\n  border-width: 3px;\n}\n.trinity-rings-spinner .circle[data-v-e647c006]:nth-child(2) {\n  height: calc(60px * 0.65);\n  width: calc(60px * 0.65);\n  -webkit-animation : trinity-rings-spinner-circle2-animation-data-v-e647c006 1.5s infinite linear;\n          animation : trinity-rings-spinner-circle2-animation-data-v-e647c006 1.5s infinite linear;\n  border-width: 2px;\n}\n.trinity-rings-spinner .circle[data-v-e647c006]:nth-child(3) {\n  height: calc(60px * 0.1);\n  width: calc(60px * 0.1);\n  -webkit-animation:trinity-rings-spinner-circle3-animation-data-v-e647c006 1.5s infinite linear;\n          animation:trinity-rings-spinner-circle3-animation-data-v-e647c006 1.5s infinite linear;\n  border-width: 1px;\n}\n@-webkit-keyframes trinity-rings-spinner-circle1-animation-data-v-e647c006{\n0% {\n    -webkit-transform: rotateZ(20deg) rotateY(0deg);\n            transform: rotateZ(20deg) rotateY(0deg);\n}\n100% {\n    -webkit-transform: rotateZ(100deg) rotateY(360deg);\n            transform: rotateZ(100deg) rotateY(360deg);\n}\n}\n@keyframes trinity-rings-spinner-circle1-animation-data-v-e647c006{\n0% {\n    -webkit-transform: rotateZ(20deg) rotateY(0deg);\n            transform: rotateZ(20deg) rotateY(0deg);\n}\n100% {\n    -webkit-transform: rotateZ(100deg) rotateY(360deg);\n            transform: rotateZ(100deg) rotateY(360deg);\n}\n}\n@-webkit-keyframes trinity-rings-spinner-circle2-animation-data-v-e647c006{\n0% {\n    -webkit-transform: rotateZ(100deg) rotateX(0deg);\n            transform: rotateZ(100deg) rotateX(0deg);\n}\n100% {\n    -webkit-transform: rotateZ(0deg) rotateX(360deg);\n            transform: rotateZ(0deg) rotateX(360deg);\n}\n}\n@keyframes trinity-rings-spinner-circle2-animation-data-v-e647c006{\n0% {\n    -webkit-transform: rotateZ(100deg) rotateX(0deg);\n            transform: rotateZ(100deg) rotateX(0deg);\n}\n100% {\n    -webkit-transform: rotateZ(0deg) rotateX(360deg);\n            transform: rotateZ(0deg) rotateX(360deg);\n}\n}\n@-webkit-keyframes trinity-rings-spinner-circle3-animation-data-v-e647c006{\n0% {\n    -webkit-transform: rotateZ(100deg) rotateX(-360deg);\n            transform: rotateZ(100deg) rotateX(-360deg);\n}\n100% {\n    -webkit-transform: rotateZ(-360deg) rotateX(360deg);\n            transform: rotateZ(-360deg) rotateX(360deg);\n}\n}\n@keyframes trinity-rings-spinner-circle3-animation-data-v-e647c006{\n0% {\n    -webkit-transform: rotateZ(100deg) rotateX(-360deg);\n            transform: rotateZ(100deg) rotateX(-360deg);\n}\n100% {\n    -webkit-transform: rotateZ(-360deg) rotateX(360deg);\n            transform: rotateZ(-360deg) rotateX(360deg);\n}\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/SolarEnergy.vue?vue&type=style&index=0&lang=css&":
-/*!************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/SolarEnergy.vue?vue&type=style&index=0&lang=css& ***!
-  \************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, ".JL {\n  color: rgb(255, 165, 120);\n}\n.MB {\n  color: rgb(2, 158, 227);\n}\n.BE {\n  color: rgb(0, 153, 51)\n}\n.RB {\n  color: rgb(95, 66, 244);\n}\n", ""]);
 
 // exports
 
@@ -42950,36 +42950,6 @@ if(false) {}
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/SolarEnergy.vue?vue&type=style&index=0&lang=css&":
-/*!****************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/SolarEnergy.vue?vue&type=style&index=0&lang=css& ***!
-  \****************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./SolarEnergy.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/SolarEnergy.vue?vue&type=style&index=0&lang=css&");
-
-if(typeof content === 'string') content = [[module.i, content, '']];
-
-var transform;
-var insertInto;
-
-
-
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
-
-/***/ }),
-
 /***/ "./node_modules/style-loader/lib/addStyles.js":
 /*!****************************************************!*\
   !*** ./node_modules/style-loader/lib/addStyles.js ***!
@@ -46047,6 +46017,106 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Aggregates/Now.vue?vue&type=template&id=a5d05d9c&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/Aggregates/Now.vue?vue&type=template&id=a5d05d9c& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "div",
+      { staticClass: "py-2 px-4 sm:p-4 text-center" },
+      [
+        _c(
+          "span",
+          {
+            staticClass:
+              "font-semibold sm:font-medium block text-lg sm:text-2xl tracking-wider"
+          },
+          [_vm._v("\n      Now\n    ")]
+        ),
+        _vm._v(" "),
+        _c("span", { staticClass: "font-hairline" }, [_vm._v("W")]),
+        _vm._v(" "),
+        _vm._l(_vm.powerStations, function(powerStation) {
+          return _c("div", { staticClass: "sm:text-2xl text-xl font-thin" }, [
+            _c("span", [
+              _vm._v(
+                "\n        " + _vm._s(powerStation.generating) + "\n      "
+              )
+            ])
+          ])
+        })
+      ],
+      2
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Aggregates/Today.vue?vue&type=template&id=ac0411c6&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/Aggregates/Today.vue?vue&type=template&id=ac0411c6& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "py-2 px-4 text-center" },
+    [
+      _c(
+        "span",
+        {
+          staticClass:
+            "font-semibold sm:font-medium block text-lg sm:text-2xl tracking-wider"
+        },
+        [_vm._v("\n    Today\n  ")]
+      ),
+      _vm._v(" "),
+      _c("span", { staticClass: "font-hairline" }, [_vm._v("kWh")]),
+      _vm._v(" "),
+      _vm._l(_vm.powerStations, function(powerStation) {
+        return _c("div", { staticClass: "sm:text-2xl text-xl font-thin" }, [
+          _c("span", [
+            _vm._v("\n      " + _vm._s(powerStation.today) + "\n    ")
+          ])
+        ])
+      })
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/LiveChart.vue?vue&type=template&id=2f679daa&":
 /*!*******************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/LiveChart.vue?vue&type=template&id=2f679daa& ***!
@@ -46146,235 +46216,57 @@ var render = function() {
           "sm:w-1/2 w-full sm:mx-auto flex items-center justify-center"
       },
       [
-        _c("div", { staticClass: "flex-1 flex justify-center" }, [
-          _c(
-            "div",
-            { staticClass: "py-2 px-4 text-center" },
-            [
-              _c(
-                "span",
-                {
-                  staticClass:
-                    "font-semibold sm:font-medium block text-lg sm:text-2xl tracking-wider"
-                },
-                [_vm._v("\n          Today\n        ")]
-              ),
-              _vm._v(" "),
-              _c("span", { staticClass: "font-hairline" }, [
-                _vm._v("\n          kWh\n        ")
-              ]),
-              _vm._v(" "),
-              _vm.loading
-                ? _c(
-                    "div",
-                    { staticClass: "py-6 w-full flex justify-center" },
-                    [
-                      _c("breeding-rhombus-spinner", {
-                        attrs: {
-                          "animation-duration": 2000,
-                          size: 30,
-                          color: "#029ee3"
-                        }
-                      })
-                    ],
-                    1
-                  )
-                : _vm._l(Object.keys(_vm.goodweIds), function(user) {
-                    return _c(
-                      "div",
-                      { staticClass: "sm:text-2xl text-xl font-thin" },
-                      [
-                        _c("span", { class: _vm.classes(user) }, [
-                          _vm._v(
-                            "\n            " +
-                              _vm._s(
-                                _vm.energy[user] ? _vm.energy[user].eday : "..."
-                              ) +
-                              "\n          "
-                          )
-                        ])
-                      ]
-                    )
-                  })
-            ],
-            2
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "flex-1 flex justify-center" }, [
-          _c("div", [
-            _c(
-              "div",
-              { staticClass: "py-2 px-4 sm:p-4 text-center" },
-              [
-                _c(
-                  "span",
-                  {
-                    staticClass:
-                      "font-semibold sm:font-medium block text-lg sm:text-2xl tracking-wider"
-                  },
-                  [_vm._v("\n          Now\n        ")]
-                ),
-                _vm._v(" "),
-                _c("span", { staticClass: "font-hairline" }, [
-                  _vm._v("\n          W\n        ")
-                ]),
-                _vm._v(" "),
-                _vm.loading
-                  ? _c(
-                      "div",
-                      { staticClass: "py-6 w-full flex justify-center" },
-                      [
-                        _c("breeding-rhombus-spinner", {
-                          attrs: {
-                            "animation-duration": 2000,
-                            size: 30,
-                            color: "#ffa578"
-                          }
-                        })
-                      ],
-                      1
-                    )
-                  : _vm._l(Object.keys(_vm.goodweIds), function(user) {
-                      return _c(
-                        "div",
-                        { staticClass: "sm:text-2xl text-xl font-thin" },
-                        [
-                          _c("span", { class: _vm.classes(user) }, [
-                            _vm._v(
-                              "\n              " +
-                                _vm._s(_vm.nowGenerating(user)) +
-                                "\n            "
-                            )
-                          ])
-                        ]
-                      )
+        _c(
+          "div",
+          { staticClass: "flex-1 flex justify-center" },
+          [
+            _vm.loading
+              ? _c(
+                  "div",
+                  { staticClass: "py-6 w-full flex justify-center" },
+                  [
+                    _c("breeding-rhombus-spinner", {
+                      attrs: {
+                        "animation-duration": 2000,
+                        size: 30,
+                        color: "#029ee3"
+                      }
                     })
-              ],
-              2
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "flex-1 flex justify-center" }, [
-          _c("div", [
-            _c(
-              "div",
-              { staticClass: "py-2 px-4 sm:p-4 text-center" },
-              [
-                _c(
-                  "span",
-                  {
-                    staticClass:
-                      "font-semibold sm:font-medium block text-lg sm:text-2xl tracking-wider"
-                  },
-                  [_vm._v("\n            Total\n          ")]
-                ),
-                _vm._v(" "),
-                _c("span", { staticClass: "font-hairline" }, [
-                  _vm._v("\n            kWh\n          ")
-                ]),
-                _vm._v(" "),
-                _vm.loading
-                  ? _c(
-                      "div",
-                      { staticClass: "py-6 w-full flex justify-center" },
-                      [
-                        _c("breeding-rhombus-spinner", {
-                          attrs: {
-                            "animation-duration": 2000,
-                            size: 30,
-                            color: "#009933"
-                          }
-                        })
-                      ],
-                      1
-                    )
-                  : _vm._l(Object.keys(_vm.goodweIds), function(user) {
-                      return _c(
-                        "div",
-                        { staticClass: "sm:text-2xl text-xl font-thin" },
-                        [
-                          _c("span", { class: _vm.classes(user) }, [
-                            _vm._v(
-                              "\n              " +
-                                _vm._s(
-                                  _vm.energy[user]
-                                    ? _vm.energy[user].etotal
-                                    : "..."
-                                ) +
-                                "\n            "
-                            )
-                          ])
-                        ]
-                      )
-                    })
-              ],
-              2
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "flex-1 flex justify-center" }, [
-          _c("div", [
-            _c(
-              "div",
-              { staticClass: "py-2 px-4 text-center" },
-              [
-                _c(
-                  "span",
-                  {
-                    staticClass:
-                      "font-semibold sm:font-medium block text-lg sm:text-2xl tracking-wider"
-                  },
-                  [_vm._v("\n            Average\n          ")]
-                ),
-                _vm._v(" "),
-                _c("span", { staticClass: "font-hairline" }, [
-                  _vm._v("\n            kWh /day\n          ")
-                ]),
-                _vm._v(" "),
-                _vm.loading
-                  ? _c(
-                      "div",
-                      { staticClass: "py-6 w-full flex justify-center" },
-                      [
-                        _c("breeding-rhombus-spinner", {
-                          attrs: {
-                            "animation-duration": 2000,
-                            size: 30,
-                            color: "#992300"
-                          }
-                        })
-                      ],
-                      1
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm._l(Object.keys(_vm.goodweIds), function(user) {
-                  return !_vm.loading
-                    ? _c(
-                        "div",
-                        { staticClass: "sm:text-2xl text-xl font-thin" },
-                        [
-                          _c("span", { class: _vm.classes(user) }, [
-                            _vm._v(
-                              "\n              " +
-                                _vm._s(
-                                  _vm.average[user] ? _vm.average[user] : ""
-                                ) +
-                                "\n            "
-                            )
-                          ])
-                        ]
-                      )
-                    : _vm._e()
+                  ],
+                  1
+                )
+              : _c("solar-energy-today", {
+                  attrs: { powerStations: _vm.powerStations }
                 })
-              ],
-              2
-            )
-          ])
-        ])
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "flex-1 flex justify-center" },
+          [
+            _vm.loading
+              ? _c(
+                  "div",
+                  { staticClass: "py-6 w-full flex justify-center" },
+                  [
+                    _c("breeding-rhombus-spinner", {
+                      attrs: {
+                        "animation-duration": 2000,
+                        size: 30,
+                        color: "#ffa578"
+                      }
+                    })
+                  ],
+                  1
+                )
+              : _c("solar-energy-now", {
+                  attrs: { powerStations: _vm.powerStations }
+                })
+          ],
+          1
+        )
       ]
     )
   ])
@@ -58641,6 +58533,8 @@ Vue.component("weather-time", __webpack_require__(/*! ./components/WeatherTime.v
 Vue.component("solar-energy", __webpack_require__(/*! ./components/SolarEnergy.vue */ "./resources/assets/js/components/SolarEnergy.vue")["default"]);
 Vue.component("live-chart", __webpack_require__(/*! ./components/LiveChart.vue */ "./resources/assets/js/components/LiveChart.vue")["default"]);
 Vue.component("weekly-graph", __webpack_require__(/*! ./components/WeeklyGraph.vue */ "./resources/assets/js/components/WeeklyGraph.vue")["default"]);
+Vue.component("solar-energy-today", __webpack_require__(/*! ./components/Aggregates/Today.vue */ "./resources/assets/js/components/Aggregates/Today.vue")["default"]);
+Vue.component("solar-energy-now", __webpack_require__(/*! ./components/Aggregates/Now.vue */ "./resources/assets/js/components/Aggregates/Now.vue")["default"]);
 var app = new Vue({
   el: "#app"
 });
@@ -58689,6 +58583,145 @@ var LiveChartOptions = {
     display: true
   }
 };
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/Aggregates/Now.vue":
+/*!***********************************************************!*\
+  !*** ./resources/assets/js/components/Aggregates/Now.vue ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Now_vue_vue_type_template_id_a5d05d9c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Now.vue?vue&type=template&id=a5d05d9c& */ "./resources/assets/js/components/Aggregates/Now.vue?vue&type=template&id=a5d05d9c&");
+/* harmony import */ var _Now_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Now.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/Aggregates/Now.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Now_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Now_vue_vue_type_template_id_a5d05d9c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Now_vue_vue_type_template_id_a5d05d9c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/Aggregates/Now.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/Aggregates/Now.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/assets/js/components/Aggregates/Now.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Now_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Now.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Aggregates/Now.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Now_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/Aggregates/Now.vue?vue&type=template&id=a5d05d9c&":
+/*!******************************************************************************************!*\
+  !*** ./resources/assets/js/components/Aggregates/Now.vue?vue&type=template&id=a5d05d9c& ***!
+  \******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Now_vue_vue_type_template_id_a5d05d9c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Now.vue?vue&type=template&id=a5d05d9c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Aggregates/Now.vue?vue&type=template&id=a5d05d9c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Now_vue_vue_type_template_id_a5d05d9c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Now_vue_vue_type_template_id_a5d05d9c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/Aggregates/Today.vue":
+/*!*************************************************************!*\
+  !*** ./resources/assets/js/components/Aggregates/Today.vue ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Today_vue_vue_type_template_id_ac0411c6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Today.vue?vue&type=template&id=ac0411c6& */ "./resources/assets/js/components/Aggregates/Today.vue?vue&type=template&id=ac0411c6&");
+/* harmony import */ var _Today_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Today.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/Aggregates/Today.vue?vue&type=script&lang=js&");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Today_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Today_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Today_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Today_vue_vue_type_template_id_ac0411c6___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Today_vue_vue_type_template_id_ac0411c6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/components/Aggregates/Today.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/Aggregates/Today.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************!*\
+  !*** ./resources/assets/js/components/Aggregates/Today.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Today_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Today.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Aggregates/Today.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Today_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/Aggregates/Today.vue?vue&type=template&id=ac0411c6&":
+/*!********************************************************************************************!*\
+  !*** ./resources/assets/js/components/Aggregates/Today.vue?vue&type=template&id=ac0411c6& ***!
+  \********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Today_vue_vue_type_template_id_ac0411c6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Today.vue?vue&type=template&id=ac0411c6& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/Aggregates/Today.vue?vue&type=template&id=ac0411c6&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Today_vue_vue_type_template_id_ac0411c6___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Today_vue_vue_type_template_id_ac0411c6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 
@@ -58772,9 +58805,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _SolarEnergy_vue_vue_type_template_id_7ed126c2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SolarEnergy.vue?vue&type=template&id=7ed126c2& */ "./resources/assets/js/components/SolarEnergy.vue?vue&type=template&id=7ed126c2&");
 /* harmony import */ var _SolarEnergy_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SolarEnergy.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/SolarEnergy.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _SolarEnergy_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SolarEnergy.vue?vue&type=style&index=0&lang=css& */ "./resources/assets/js/components/SolarEnergy.vue?vue&type=style&index=0&lang=css&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -58782,7 +58813,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _SolarEnergy_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _SolarEnergy_vue_vue_type_template_id_7ed126c2___WEBPACK_IMPORTED_MODULE_0__["render"],
   _SolarEnergy_vue_vue_type_template_id_7ed126c2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -58811,22 +58842,6 @@ component.options.__file = "resources/assets/js/components/SolarEnergy.vue"
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SolarEnergy_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./SolarEnergy.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/SolarEnergy.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SolarEnergy_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/SolarEnergy.vue?vue&type=style&index=0&lang=css&":
-/*!*****************************************************************************************!*\
-  !*** ./resources/assets/js/components/SolarEnergy.vue?vue&type=style&index=0&lang=css& ***!
-  \*****************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SolarEnergy_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./SolarEnergy.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/SolarEnergy.vue?vue&type=style&index=0&lang=css&");
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SolarEnergy_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SolarEnergy_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SolarEnergy_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SolarEnergy_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SolarEnergy_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
