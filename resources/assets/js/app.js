@@ -10,6 +10,7 @@ Vue.component("weekly-graph", require("./components/WeeklyGraph.vue").default);
 
 Vue.component("solar-energy-today", require("./components/Aggregates/Today.vue").default);
 Vue.component("solar-energy-now", require("./components/Aggregates/Now.vue").default);
+Vue.component("solar-energy-total", require("./components/Aggregates/Total.vue").default);
 
 const app = new Vue({
   el: "#app"

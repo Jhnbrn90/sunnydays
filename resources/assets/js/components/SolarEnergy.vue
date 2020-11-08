@@ -23,32 +23,21 @@
         <solar-energy-now :powerStations="powerStations" v-else />
       </div>
 
-<!--      <div class="flex-1 flex justify-center">-->
-<!--        <div>-->
-<!--          <div class="py-2 px-4 sm:p-4 text-center">-->
-<!--            <span class="font-semibold sm:font-medium block text-lg sm:text-2xl tracking-wider">-->
-<!--              Total-->
-<!--            </span>-->
-<!--            <span class="font-hairline">-->
-<!--              kWh-->
-<!--            </span>-->
+      <div class="flex-1 flex justify-center">
+        <div class="py-6 w-full flex justify-center" v-if="loading">
+          <breeding-rhombus-spinner :animation-duration="2000" :size="30" color="#009933"/>
+        </div>
+        <solar-energy-total :powerStations="powerStations" v-else />
+      </div>
 
-<!--            <div class="py-6 w-full flex justify-center" v-if="loading">-->
-<!--              <breeding-rhombus-spinner-->
-<!--                  :animation-duration="2000"-->
-<!--                  :size="30"-->
-<!--                  color="#009933"-->
-<!--              />-->
-<!--            </div>-->
+      <div class="flex-1 flex justify-center">
+        <div class="py-6 w-full flex justify-center" v-if="loading">
+          <breeding-rhombus-spinner :animation-duration="2000" :size="30" color="#992300"/>
+        </div>
+        <solar-energy-averages :powerStations="powerStations" v-else />
+      </div>
 
-<!--            <div class="sm:text-2xl text-xl font-thin" v-for="user in Object.keys(goodweIds)" v-else>-->
-<!--              <span :class="classes(user)">-->
-<!--                {{ energy[user] ? energy[user].etotal : '...' }}-->
-<!--              </span>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
+
 
 <!--      <div class="flex-1 flex justify-center">-->
 <!--        <div>-->
@@ -112,8 +101,6 @@ export default {
 
   methods: {
     initialize() {
-      // this.getAverage();
-
       axios.get(this.endpoint).then(response => {
         this.powerStations = response.data
         this.loading = false;
@@ -121,20 +108,9 @@ export default {
 
     },
 
-    // getAverage() {
-    //   axios.get('/api/average-yield').then(({data}) => {
-    //     this.average = data;
-    //   });
-    // },
-
     classes(goodweId) {
       return 'number' + ' ' + goodweId;
     },
-
-    // nowGenerating(user) {
-    //   return Math.round(this.energy[user].pac);
-    // }
-
   }
 };
 </script>

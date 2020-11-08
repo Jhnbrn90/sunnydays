@@ -22,4 +22,9 @@ class PowerStation extends Model
             'current_power' => $currentYield
         ]);
     }
+
+    public function dailyProductionLogs()
+    {
+        return $this->hasMany(DailyProductionLog::class);
+    }
 }

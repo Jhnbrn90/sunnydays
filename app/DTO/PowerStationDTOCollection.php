@@ -12,9 +12,11 @@ class PowerStationDTOCollection extends Collection
         $body = $this->map(function (PowerStation $powerStation) {
             return [
                 'name' => $powerStation->owner(),
+                'working' => $powerStation->isWorking(),
                 'generating' => $powerStation->nowGenerating(),
                 'today' => $powerStation->energyProducedToday(),
-                'working' => $powerStation->isWorking(),
+                'month' => $powerStation->energyProducedThisMonth(),
+                'total' => $powerStation->energyProducedTotal(),
             ];
         })->all();
 

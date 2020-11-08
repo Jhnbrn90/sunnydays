@@ -55,6 +55,26 @@ class PowerStation
     }
 
     /**
+     * Returns the energy produced this month in kWh.
+     *
+     * @return int
+     */
+    public function energyProducedThisMonth(): int
+    {
+        return $this->rawData['emonth'];
+    }
+
+    /**
+     * Returns the total produced energy in kWh.
+     *
+     * @return int
+     */
+    public function energyProducedTotal(): int
+    {
+        return $this->rawData['etotal'];
+    }
+
+    /**
      * Determine if the power station is currently working,
      * by comparing the currently generated energy to a threshold.
      *
