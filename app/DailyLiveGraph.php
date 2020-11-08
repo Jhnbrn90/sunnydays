@@ -9,7 +9,7 @@ class DailyLiveGraph
 {
     public static function for(string $date = null)
     {
-        return PowerStation::all()->map(function ($powerStation) use ($date) {
+        return PowerStation::all()->map(function (PowerStation $powerStation) use ($date) {
             $date = $date ? Carbon::parse($date) : Carbon::today();
 
             $logs = $powerStation->powerlogs()->whereDate('created_at', $date)->get();

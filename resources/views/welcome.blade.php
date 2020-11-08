@@ -2,7 +2,7 @@
     <div>
         <div class="w-full pt-5 mb-5">
             <solar-energy
-                endpoint="{{ route('powerstations') }}">
+                endpoint="{{ route('power_stations') }}">
             </solar-energy>
         </div>
 

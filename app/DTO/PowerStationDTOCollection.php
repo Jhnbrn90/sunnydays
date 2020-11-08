@@ -9,14 +9,18 @@ class PowerStationDTOCollection extends Collection
 {
     public function toJson($options = 0)
     {
-        $body = $this->map(function (PowerStation $powerStation) {
+        $body = $this->map(function (PowerStationDTO $powerStation) {
             return [
-                'name' => $powerStation->owner(),
+                'owner' => [
+                    'name' => $powerStation->owner(),
+                    'color' => $powerStation->ownerColor()
+                ],
                 'working' => $powerStation->isWorking(),
                 'generating' => $powerStation->nowGenerating(),
                 'today' => $powerStation->energyProducedToday(),
                 'month' => $powerStation->energyProducedThisMonth(),
                 'total' => $powerStation->energyProducedTotal(),
+                'average' => $powerStation->dailyProductionAverage(),
             ];
         })->all();
 
@@ -25,7 +29,7 @@ class PowerStationDTOCollection extends Collection
 
     public function registered(): self
     {
-        return $this->filter(function (PowerStation  $powerStation) {
+        return $this->filter(function (PowerStationDTO  $powerStation) {
             return $powerStation->shouldRetrieveData();
         });
     }

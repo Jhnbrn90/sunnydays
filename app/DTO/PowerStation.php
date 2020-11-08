@@ -35,6 +35,16 @@ class PowerStation
     }
 
     /**
+     * Get the accent color for a specific Power Station.
+     *
+     * @return string
+     */
+    public function ownerColor(): string
+    {
+        return $this->getModel()->line_color;
+    }
+
+    /**
      * Returns the energy currently being produced in W.
      *
      * @return int
@@ -87,12 +97,34 @@ class PowerStation
         return $this->nowGenerating() > $thresholdInWatts;
     }
 
+    /**
+     * Return the corresponding Power Station Eloquent model.
+     *
+     * @return PowerStationModel|null
+     */
     public function getModel(): ?PowerStationModel
     {
         return PowerStationModel::firstWhere('goodwe_id', $this->id());
     }
 
-    public function shouldRetrieveData()
+    /**
+     * Get the calculated average yield of energy produced per day,
+     * via the corresponding model.
+     *
+     * @return float|null
+     */
+    public function dailyProductionAverage(): ?float
+    {
+        return optional($this->getModel())->daily_average;
+    }
+
+    /**
+     * Determine if this Power Station is tracked, meaning
+     * it has a corresponding model in the database.
+     *
+     * @return bool
+     */
+    public function shouldRetrieveData(): bool
     {
         return $this->getModel() !== null;
     }
