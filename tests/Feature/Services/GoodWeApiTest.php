@@ -3,6 +3,7 @@
 namespace Tests\Feature\Services;
 
 use App\DTO\PowerStation;
+use App\DTO\PowerStationDTOCollection;
 use App\Models\PowerStation as PowerStationModel;
 use App\Services\GoodWeApi;
 use Illuminate\Support\Collection;
@@ -17,12 +18,13 @@ class GoodWeApiTest extends TestCase
 
         PowerStationModel::factory()->create([
             'name' => 'TEST',
-            'goodwe_id' => 'fake-powerstation-id'
+            'goodwe_id' => 'fake-powerstation-id',
+            'line_color' => '41, 50, 33'
         ]);
     }
 
     /** @test */
-    function it_keys_results_by_powerstation_owner()
+    function it_returns_all_power_stations()
     {
         $goodWeApiService = Mockery::mock(GoodWeApi::class);
 
@@ -30,7 +32,7 @@ class GoodWeApiTest extends TestCase
 
         $goodWeApiService
             ->shouldReceive('getPowerStations')
-            ->andReturn(new Collection([
+            ->andReturn(new PowerStationDTOCollection([
                 new PowerStation($this->validParams([
                     'powerstation_id' => 'fake-powerstation-id',
                 ]))
@@ -38,10 +40,17 @@ class GoodWeApiTest extends TestCase
 
         $apiResult = $this->get('/api/powerstations');
 
-        $apiResult->assertJson([
-            'TEST' => $this->validParams([
-                'powerstation_id' => 'fake-powerstation-id'
-            ])
+        $apiResult->assertJsonFragment([
+            'owner' => [
+                'name' => 'TEST',
+                'color' => '41, 50, 33'
+            ],
+            'working' => false,
+            'generating' => 1,
+            'today' => 2,
+            'month' => 3,
+            'total' => 4,
+            'average' => 0
         ]);
     }
 

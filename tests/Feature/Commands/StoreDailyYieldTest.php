@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Commands;
 
+use App\Console\Commands\StoreDailyYield;
 use App\Contracts\RetrieverInterface;
 use App\DTO\PowerStation as PowerStationDTO;
-use App\Mail\StatisticsMail;
+use App\Models\DailyProductionLog;
 use App\Models\PowerStation as PowerStationModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Mail;
 use Tests\Feature\Services\FakeRetriever;
 use Tests\TestCase;
 
@@ -15,9 +15,8 @@ class StoreDailyYieldTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $retriever;
     private $powerStation;
-    private $powerStationDTO;
+    private array $yield;
 
     protected function setUp(): void
     {
@@ -25,26 +24,37 @@ class StoreDailyYieldTest extends TestCase
 
         $this->powerStation = PowerStationModel::factory()->create();
 
-        $this->powerStationDTO = new PowerStationDTO([
+        $this->yield = [
+            'kWh' => 10,
+            'W' => 10000,
+        ];
+
+        $powerStationDTO = new PowerStationDTO([
             'powerstation_id' => $this->powerStation->goodwe_id,
             'pac' => 100,
-            'eday' => 1000,
+            'eday' => $this->yield['kWh'],
         ]);
 
-        $this->retriever = new FakeRetriever;
-        $this->swap(RetrieverInterface::class, $this->retriever);
+        $retriever = new FakeRetriever;
+        $this->swap(RetrieverInterface::class, $retriever);
 
-        $this->retriever->returnPowerStation($this->powerStationDTO);
+        $retriever->returnPowerStation($powerStationDTO);
     }
 
     /** @test */
-    function it_sends_an_email()
+    public function it_stores_the_daily_yield()
     {
-        Mail::fake();
+        $this->assertCount(0, DailyProductionLog::all());
 
-        // act
+        $this->artisan(StoreDailyYield::class);
 
-        // assert
-        Mail::assertSent(StatisticsMail::class);
+        $this->assertCount(1, DailyProductionLog::all());
+
+        $this->assertDatabaseHas('daily_production_logs', [
+            'total_production' => $this->yield['W'],
+            'power_station_id' => $this->powerStation->id,
+        ]);
+
+        $this->assertTrue(DailyProductionLog::first()->powerStation->is($this->powerStation));
     }
 }

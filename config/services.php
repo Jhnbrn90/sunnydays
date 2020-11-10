@@ -34,11 +34,4 @@ return [
         'key'    => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
-
-    'goodwe' => [
-        'JL'    => env('GOODWE_ID'),
-        'MB'    => env('GOODWE_ID_MB'),
-        'BE'    => env('GOODWE_ID_BE'),
-        'RB'    => env('GOODWE_ID_RB'),
-    ],
 ];

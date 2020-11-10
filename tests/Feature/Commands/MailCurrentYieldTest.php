@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\Commands;
 
+use App\Console\Commands\MailCurrentYield;
 use App\Contracts\RetrieverInterface;
 use App\DTO\PowerStation as PowerStationDTO;
 use App\Mail\HeartbeatMail;
+use App\Models\PowerStation;
 use App\Models\PowerStation as PowerStationModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
@@ -15,9 +17,8 @@ class MailCurrentYieldTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $retriever;
-    private $powerStation;
-    private $powerStationDTO;
+    private PowerStation $powerStation;
+    private PowerStationDTO $powerStationDTO;
 
     protected function setUp(): void
     {
@@ -31,10 +32,10 @@ class MailCurrentYieldTest extends TestCase
             'eday' => 1000,
         ]);
 
-        $this->retriever = new FakeRetriever;
-        $this->swap(RetrieverInterface::class, $this->retriever);
+        $retriever = new FakeRetriever;
+        $this->swap(RetrieverInterface::class, $retriever);
 
-        $this->retriever->returnPowerStation($this->powerStationDTO);
+        $retriever->returnPowerStation($this->powerStationDTO);
     }
 
     /** @test */
@@ -42,7 +43,7 @@ class MailCurrentYieldTest extends TestCase
     {
         Mail::fake();
 
-        $this->artisan('sunnydays:mail-snapshot');
+        $this->artisan(MailCurrentYield::class);
 
         Mail::assertSent(HeartbeatMail::class, function ($mail) {
             return collect($mail->values)->has($this->powerStation->name)

@@ -3,8 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Contracts\RetrieverInterface;
-use App\Models\DailyProductionLog;
-use App\Models\PowerStation;
+use App\DTO\PowerStation as PowerStationDTO;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
@@ -27,11 +26,11 @@ class StoreDailyYield extends Command
     {
         $powerStations = $this->retriever->getPowerStations();
 
-        $powerStations->each(function (PowerStation $powerStation) {
-            $log = DailyProductionLog::firstOrNew([
-                'created_at' => Carbon::today(),
-                'user' => $powerStation->owner(),
-            ]);
+        $powerStations->registered()->each(function (PowerStationDTO $powerStation) {
+            $log = $powerStation
+                ->getModel()
+                ->dailyProductionLogs()
+                ->firstOrNew(['created_at' => Carbon::today()]);
 
             $log->total_production = $powerStation->energyProducedToday() * 1000;
 

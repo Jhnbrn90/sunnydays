@@ -12,23 +12,13 @@ class StatisticsMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $logs;
+    public Collection $logs;
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
     public function __construct(Collection $logs)
     {
         $this->logs = $logs;
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
     public function build()
     {
         return $this

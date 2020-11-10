@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Commands;
 
+use App\Console\Commands\StoreCurrentYield;
 use App\Contracts\RetrieverInterface;
 use App\DTO\PowerStation as PowerStationDTO;
 use App\Models\Powerlog;
@@ -14,7 +15,7 @@ class StoreCurrentYieldTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $retriever;
+    private FakeRetriever $retriever;
     private $powerStation;
 
     protected function setUp(): void
@@ -38,7 +39,7 @@ class StoreCurrentYieldTest extends TestCase
 
         $this->assertCount(0, Powerlog::all());
 
-        $this->artisan('sunnydays:store-snapshot');
+        $this->artisan(StoreCurrentYield::class);
 
         $this->assertCount(1, Powerlog::all());
 

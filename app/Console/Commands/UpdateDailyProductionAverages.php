@@ -12,13 +12,9 @@ class UpdateDailyProductionAverages extends Command
 
     protected $description = 'Calculate and update daily production averages';
 
-    private $offset;
-
     public function __construct()
     {
         parent::__construct();
-
-        $this->offset = '01-09-2020'; // extract to config / ENV variable
     }
 
     public function handle()
@@ -28,12 +24,8 @@ class UpdateDailyProductionAverages extends Command
         $powerStations->each(function ($powerStation) {
             $query = $powerStation->dailyProductionLogs();
 
-            $query->when($this->offset !== null, function ($query) {
-                return $query->where(
-                    'created_at',
-                    '>',
-                    Carbon::createFromFormat('d-m-Y', $this->offset)
-                );
+            $query->when(config('sunnydays.average.offset') !== null, function ($query) {
+                return $query->where('created_at', '>=', Carbon::createFromFormat('d-m-Y', config('sunnydays.average.offset')));
             });
 
             $logs = $query->get();

@@ -6,7 +6,7 @@ use App\Models\PowerStation as PowerStationModel;
 
 class PowerStation
 {
-    public $rawData;
+    public array $rawData;
 
     public function __construct(array $rawData)
     {

@@ -14,7 +14,9 @@ class AddPowerstationIdToPowerlogsTable extends Migration
      */
     public function up()
     {
-        (new \Database\Seeders\PowerStationTableSeeder)->run();
+        if (!app()->environment() == 'testing') {
+            (new \Database\Seeders\PowerStationTableSeeder)->run();
+        }
 
         Schema::table('powerlogs', function (Blueprint $table) {
             $table->foreignId('power_station_id')->default(1)

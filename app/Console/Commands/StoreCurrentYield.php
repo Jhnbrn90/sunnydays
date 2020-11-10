@@ -12,7 +12,7 @@ class StoreCurrentYield extends Command
 
     protected $description = 'Get the current power values from Goodwe';
 
-    private $retriever;
+    private RetrieverInterface $retriever;
 
     public function __construct(RetrieverInterface $retriever)
     {
@@ -23,7 +23,7 @@ class StoreCurrentYield extends Command
 
     public function handle(): void
     {
-        $powerStations = collect($this->retriever->getPowerStations());
+        $powerStations = $this->retriever->getPowerStations();
 
         $activePowerStations = $powerStations->registered()->working();
 
