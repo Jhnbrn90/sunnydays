@@ -57,9 +57,9 @@ class PowerStation
     /**
      * Returns the energy produced today in kWh.
      *
-     * @return int
+     * @return float
      */
-    public function energyProducedToday(): int
+    public function energyProducedToday(): float
     {
         return $this->rawData['eday'];
     }
@@ -67,9 +67,9 @@ class PowerStation
     /**
      * Returns the energy produced this month in kWh.
      *
-     * @return int
+     * @return float
      */
-    public function energyProducedThisMonth(): int
+    public function energyProducedThisMonth(): float
     {
         return $this->rawData['emonth'];
     }
