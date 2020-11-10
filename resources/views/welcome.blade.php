@@ -18,7 +18,9 @@
         </div>
 
         <div class="flex max-w-sm sm:max-w-full mx-auto justify-center pt-12 pb-10">
-            <weekly-graph></weekly-graph>
+            <weekly-graph
+                :data="{{ $weeklyGraphData }}"
+            ></weekly-graph>
         </div>
     </div>
 </x-layout>

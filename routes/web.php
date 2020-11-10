@@ -14,9 +14,9 @@ Route::get('/', IndexController::class);
 
 Route::prefix('api')->group(function () {
     Route::get('live-chart/{date}', ShowGraphForDate::class);
-
     Route::get('powerstations', ShowPowerStations::class)->name('power_stations');
-    Route::get('week-overview', ShowWeekOverview::class);
-    Route::get('average-yield', ShowAverageYield::class);
+
+    Route::get('week-overview', ShowWeekOverview::class)->name('week_overview');
+
     Route::get('weather', ShowCurrentWeather::class);
 });

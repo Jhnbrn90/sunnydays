@@ -2062,8 +2062,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var chart_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! chart.js */ "./node_modules/chart.js/dist/Chart.js");
 /* harmony import */ var chart_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(chart_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _charts_config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../charts/config */ "./resources/assets/js/charts/config.js");
 //
 //
 //
@@ -2073,123 +2072,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['data'],
   data: function data() {
     return {
-      powerObject: {},
-      days: [],
-      weeklyChart: ""
+      weeklyChart: {}
     };
-  },
-  created: function created() {
-    this.setDays();
-    this.getGraphData();
-  },
-  methods: {
-    getGraphData: function getGraphData() {
-      var _this = this;
-
-      axios.get("/api/week-overview").then(function (response) {
-        Object.keys(response.data).forEach(function (user) {
-          var powerArray = [];
-          var data = response.data[user];
-          Object.keys(data).forEach(function (day) {
-            powerArray.push({
-              x: day,
-              y: data[day]
-            });
-
-            if (user === "LJ") {
-              _this.days.push(day);
-            }
-          });
-          _this.powerObject[user] = powerArray;
-        });
-        _this.weeklyChart.data.labels = _this.days;
-
-        _this.weeklyChart.data.datasets.forEach(function (dataset, index) {
-          var user = Object.keys(_this.powerObject)[index];
-          dataset.data = _this.powerObject[user];
-        });
-
-        _this.weeklyChart.update();
-      });
-    },
-    setDays: function setDays() {
-      var startOfWeek = moment__WEBPACK_IMPORTED_MODULE_1___default()().subtract(7, "days");
-      var endOfWeek = moment__WEBPACK_IMPORTED_MODULE_1___default()();
-      var days = [];
-      var day = startOfWeek;
-
-      while (day <= endOfWeek) {
-        days.push(day.format("DD-MM-Y"));
-        day = day.clone().add(1, "d");
-      }
-
-      this.days = days;
-    }
   },
   mounted: function mounted() {
     this.weeklyChart = new chart_js__WEBPACK_IMPORTED_MODULE_0___default.a(this.$refs.weeklyChart, {
       type: "bar",
       data: {
-        labels: "",
-        datasets: [{
-          label: "(J&L)",
-          data: [],
-          fill: false,
-          backgroundColor: "rgba(255, 159, 64, 0.75)"
-        }, {
-          label: "(M&B)",
-          data: [],
-          fill: false,
-          backgroundColor: "rgba(2, 158, 227, 1)"
-        }, {
-          label: "(B&E)",
-          data: [],
-          fill: false,
-          backgroundColor: "rgba(0, 153, 51, 1)"
-        }, {
-          label: "(Ron)",
-          data: [],
-          fill: false,
-          backgroundColor: "rgba(95, 66, 244, 1)"
-        }]
+        datasets: this.data
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        title: {
-          display: true,
-          text: "Energy produced per day (in kWh)"
-        },
-        legend: {
-          display: true
-        },
-        tooltips: {
-          callbacks: {
-            label: function label(tooltipItem, data) {
-              return tooltipItem.yLabel + " kWh ";
-            }
-          }
-        },
-        scales: {
-          xAxes: [{// type: "time",
-            // time: {
-            //   unit: "day",
-            //   unitStepSize: 1,
-            //   displayFormats: {
-            //     day: "dd DD MMM"
-            //   }
-            // }
-          }],
-          yAxes: [{
-            display: true,
-            ticks: {
-              beginAtZero: true
-            }
-          }]
-        }
-      }
+      options: _charts_config__WEBPACK_IMPORTED_MODULE_1__["WeeklyGraphOptions"]
     });
   }
 });
@@ -58439,12 +58334,13 @@ var app = new Vue({
 /*!**********************************************!*\
   !*** ./resources/assets/js/charts/config.js ***!
   \**********************************************/
-/*! exports provided: LiveChartOptions */
+/*! exports provided: LiveChartOptions, WeeklyGraphOptions */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LiveChartOptions", function() { return LiveChartOptions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WeeklyGraphOptions", function() { return WeeklyGraphOptions; });
 var LiveChartOptions = {
   responsive: true,
   maintainAspectRatio: false,
@@ -58475,6 +58371,42 @@ var LiveChartOptions = {
   },
   legend: {
     display: true
+  }
+};
+var WeeklyGraphOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  title: {
+    display: true,
+    text: "Energy produced per day (in kWh)"
+  },
+  legend: {
+    display: true
+  },
+  tooltips: {
+    callbacks: {
+      label: function label(tooltipItem) {
+        return tooltipItem.yLabel + " kWh ";
+      }
+    }
+  },
+  scales: {
+    xAxes: [{
+      type: "time",
+      time: {
+        unit: "day",
+        unitStepSize: 1,
+        displayFormats: {
+          day: "DD-M-Y"
+        }
+      }
+    }],
+    yAxes: [{
+      display: true,
+      ticks: {
+        beginAtZero: true
+      }
+    }]
   }
 };
 

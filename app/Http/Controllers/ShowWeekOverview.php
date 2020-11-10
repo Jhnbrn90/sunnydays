@@ -3,21 +3,42 @@
 namespace App\Http\Controllers;
 
 use App\Models\DailyProductionLog;
+use App\Models\PowerStation;
 
 class ShowWeekOverview
 {
     public function __invoke()
     {
-        $users = array_keys(config('services.goodwe'));
+        return PowerStation::all()->flatMap(function (PowerStation $powerStation) {
+            $productionLogs = $powerStation
+                ->dailyProductionLogs()
+                ->thisWeek()
+                ->get()
+                ->flatMap(fn ($log) => [$this->date($log) => $this->value($log)]);
 
-        return collect($users)->flatMap(function ($user) {
-            $logs = DailyProductionLog::where('user', $user)->thisWeek()->get();
-
-            $data = $logs->flatMap(function ($log) {
-                return [(string) $log->created_at->format('m-d-Y') => $log->total_production / 1000];
-            });
-
-           return [$user => $data];
+            return [$powerStation->name => $productionLogs];
         });
+    }
+
+    /**
+     * Format the date of the logged production.
+     *
+     * @param DailyProductionLog $log
+     * @return string
+     */
+    private function date(DailyProductionLog $log): string
+    {
+        return (string) $log->created_at->format('m-d-Y');
+    }
+
+    /**
+     * Return the daily production value in kWh.
+     *
+     * @param DailyProductionLog $log
+     * @return float|int
+     */
+    private function value(DailyProductionLog $log)
+    {
+        return $log->total_production / 1000;
     }
 }
