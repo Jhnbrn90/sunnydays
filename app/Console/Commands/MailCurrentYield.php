@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Services\GoodWeApi;
-use App\Mail\HeartbeatMail;
-use App\Models\PowerStation;
+use App\Contracts\RetrieverInterface;
+use App\Mail\CurrentYieldMail;
+use App\DTO\PowerStation as PowerStationDTO;
 use App\Services\YahooWeatherProvider;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
@@ -19,7 +19,7 @@ class MailCurrentYield extends Command
 
     private $yahoo;
 
-    public function __construct(GoodWeApi $retriever, YahooWeatherProvider $yahoo)
+    public function __construct(RetrieverInterface $retriever, YahooWeatherProvider $yahoo)
     {
         parent::__construct();
 
@@ -30,13 +30,13 @@ class MailCurrentYield extends Command
     public function handle(): void
     {
         $weather = $this->yahoo->condition();
-        $powerStations = $this->retriever->getPowerStations();
+        $powerStations = collect($this->retriever->getPowerStations());
 
-        $currentStats = $powerStations->flatMap(function (PowerStation $powerStation) {
-            return [$powerStation->owner() => $powerStation->nowGenerating()];
+        $currentStats = $powerStations->flatMap(function (PowerStationDTO $powerStation) {
+            return [$powerStation->getModel()->name => $powerStation->nowGenerating()];
         });
 
-        Mail::to(config('app.mail'))->send(new HeartbeatMail($currentStats, $weather));
+        Mail::to(config('app.mail'))->send(new CurrentYieldMail($currentStats, $weather));
 
         $this->info('Done');
     }

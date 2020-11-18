@@ -6,23 +6,25 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Collection;
 
-class HeartbeatMail extends Mailable
+class CurrentYieldMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $values;
-    public $weather;
+    public Collection $currentYields;
+    public array $weatherCondition;
 
     /**
      * Create a new message instance.
      *
-     * @return void
+     * @param Collection $currentYields
+     * @param array $weatherCondition
      */
-    public function __construct($values, $weather)
+    public function __construct(Collection $currentYields, array $weatherCondition)
     {
-        $this->values = $values;
-        $this->weather = $weather ;
+        $this->currentYields = $currentYields;
+        $this->weatherCondition = $weatherCondition;
     }
 
     /**
@@ -34,6 +36,6 @@ class HeartbeatMail extends Mailable
     {
         return $this
             ->subject('Status - Sunny Days')
-            ->markdown('emails.heartbeat');
+            ->markdown('emails.current-yield');
     }
 }

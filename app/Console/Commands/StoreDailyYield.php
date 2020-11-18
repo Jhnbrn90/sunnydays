@@ -2,9 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Models\DailyProductionLog;
-use App\Services\GoodWeApi;
-use App\Models\PowerStation;
+use App\Contracts\RetrieverInterface;
+use App\DTO\PowerStation as PowerStationDTO;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
@@ -16,7 +15,7 @@ class StoreDailyYield extends Command
 
     private $retriever;
 
-    public function __construct(GoodWeApi $retriever)
+    public function __construct(RetrieverInterface $retriever)
     {
         parent::__construct();
 
@@ -27,11 +26,11 @@ class StoreDailyYield extends Command
     {
         $powerStations = $this->retriever->getPowerStations();
 
-        $powerStations->each(function (PowerStation $powerStation) {
-            $log = DailyProductionLog::firstOrNew([
-                'created_at' => Carbon::today(),
-                'user' => $powerStation->owner(),
-            ]);
+        $powerStations->registered()->each(function (PowerStationDTO $powerStation) {
+            $log = $powerStation
+                ->getModel()
+                ->dailyProductionLogs()
+                ->firstOrNew(['created_at' => Carbon::today()]);
 
             $log->total_production = $powerStation->energyProducedToday() * 1000;
 

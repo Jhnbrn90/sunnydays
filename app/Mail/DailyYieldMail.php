@@ -8,31 +8,21 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
 
-class StatisticsMail extends Mailable
+class DailyYieldMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $logs;
+    public Collection $logs;
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
     public function __construct(Collection $logs)
     {
         $this->logs = $logs;
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
     public function build()
     {
         return $this
             ->subject('Opbrengsten - SunnyDays')
-            ->markdown('emails.statistics');
+            ->markdown('emails.daily-yield');
     }
 }

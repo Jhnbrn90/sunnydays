@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class DailyProductionLog extends Model
 {
@@ -21,5 +22,10 @@ class DailyProductionLog extends Model
     public function scopePositiveValues($query)
     {
         return $query->where('total_production', '>', 0);
+    }
+
+    public function powerStation(): belongsTo
+    {
+        return $this->belongsTo(PowerStation::class);
     }
 }

@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
-use App\Models\PowerStation;
+use App\Contracts\RetrieverInterface;
+use App\DTO\PowerStation;
+use App\DTO\PowerStationDTOCollection;
 use Illuminate\Support\Facades\Cache;
-use Zttp\Zttp;
+use Illuminate\Support\Facades\Http;
 
-class GoodWeApi
+class GoodWeApi implements RetrieverInterface
 {
     const LOGIN_URL = 'https://globalapi.sems.com.cn/api/v1/Common/CrossLogin';
     const RESOURCE_URL = 'https://euapi.sems.com.cn/api/PowerStationMonitor/QueryPowerStationMonitorForApp';
@@ -14,13 +16,13 @@ class GoodWeApi
     protected $account;
     protected $password;
 
-    public function __construct(string $account, string $password)
+    public function __construct()
     {
-        $this->account = $account;
-        $this->password = $password;
+        $this->account = config('goodwe.account');
+        $this->password = config('goodwe.password');
     }
 
-    public function getPowerStations()
+    public function getPowerStations(): PowerStationDTOCollection
     {
         if (Cache::has('all-powerstations')) {
             return Cache::get('all-powerstations');
@@ -28,11 +30,12 @@ class GoodWeApi
 
         $response = $this->makeRequest();
 
-        $powerStations = collect($response['data'])->map(function (array $powerStation) {
-            return new PowerStation($powerStation);
-        });
+        $powerStations = (new PowerStationDTOCollection($response['data']))
+            ->map(function (array $powerStation) {
+                return new PowerStation($powerStation);
+            });
 
-        Cache::put('all-powerstations', $powerStations, 120);
+        Cache::put('all-powerstations', $powerStations, 360);
 
         return $powerStations;
     }
@@ -43,7 +46,7 @@ class GoodWeApi
             $this->login();
         }
 
-        $response = Zttp::withoutVerifying()->withHeaders($this->resourceHeaders())
+        $response = Http::withoutVerifying()->withHeaders($this->resourceHeaders())
             ->post(self::RESOURCE_URL, [
                 'page_index' => '1'
             ]);
@@ -76,7 +79,7 @@ class GoodWeApi
 
     private function login()
     {
-        $response = Zttp::withoutVerifying()->withHeaders($this->loginHeaders())
+        $response = Http::withoutVerifying()->withHeaders($this->loginHeaders())
             ->post(self::LOGIN_URL, ['account' => $this->account, 'pwd' => $this->password])
             ->json();
 
