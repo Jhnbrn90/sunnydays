@@ -1,7 +1,7 @@
 <div>
     <div class="w-full text-center mb-2">
         @foreach ($powerStations as $powerStation)
-        <span style="color: rgba({{ $powerStation['owner']['color'] }});">
+        <span class="font-medium" style="color: rgba({{ $powerStation['owner']['color'] }});">
             &mdash; {{ $powerStation['owner']['name'] }}
         </span>
         @endforeach

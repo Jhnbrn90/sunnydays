@@ -10,7 +10,7 @@
             </span>
 
             @foreach ($powerStations as $powerStation)
-            <div class="sm:text-2xl text-xl font-thin">
+            <div class="sm:text-2xl text-xl">
                 <span style="color: rgba({{ $powerStation['owner']['color'] }});">
                     {{ $powerStation[$property] }}
                 </span>
