@@ -14,7 +14,7 @@ class AddPowerstationIdToPowerlogsTable extends Migration
      */
     public function up()
     {
-        if (!app()->environment() == 'testing') {
+        if (app()->environment() !== 'testing') {
             (new \Database\Seeders\PowerStationTableSeeder)->run();
         }
 

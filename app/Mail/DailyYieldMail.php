@@ -8,7 +8,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
 
-class StatisticsMail extends Mailable
+class DailyYieldMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -23,6 +23,6 @@ class StatisticsMail extends Mailable
     {
         return $this
             ->subject('Opbrengsten - SunnyDays')
-            ->markdown('emails.statistics');
+            ->markdown('emails.daily-yield');
     }
 }

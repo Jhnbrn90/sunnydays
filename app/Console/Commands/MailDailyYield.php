@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Mail\StatisticsMail;
+use App\Mail\DailyYieldMail;
 use App\Models\DailyProductionLog;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -23,7 +23,7 @@ class MailDailyYield extends Command
     {
         $logs = DailyProductionLog::whereDate('created_at', Carbon::today())->get();
 
-        Mail::to(config('app.mail'))->send(new StatisticsMail($logs));
+        Mail::to(config('app.mail'))->send(new DailyYieldMail($logs));
 
         $this->info('Done');
     }

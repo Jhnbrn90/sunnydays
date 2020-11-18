@@ -6,12 +6,13 @@
     "type": "project",
     "require": {
         "php": "^7.4",
+        "ext-json": "*",
         "doctrine/dbal": "^2.12",
         "fideloper/proxy": "^4.0",
-        "kitetail/zttp": "^0.6.0",
+        "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
-      "ext-json": "*"
+        "livewire/livewire": "^2.3"
     },
     "require-dev": {
         "filp/whoops": "^2.0",

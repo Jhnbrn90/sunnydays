@@ -5,7 +5,7 @@ namespace Tests\Feature\Commands;
 use App\Console\Commands\MailCurrentYield;
 use App\Contracts\RetrieverInterface;
 use App\DTO\PowerStation as PowerStationDTO;
-use App\Mail\HeartbeatMail;
+use App\Mail\CurrentYieldMail;
 use App\Models\PowerStation;
 use App\Models\PowerStation as PowerStationModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -45,9 +45,9 @@ class MailCurrentYieldTest extends TestCase
 
         $this->artisan(MailCurrentYield::class);
 
-        Mail::assertSent(HeartbeatMail::class, function ($mail) {
-            return collect($mail->values)->has($this->powerStation->name)
-                && $mail->values[$this->powerStation->name] == $this->powerStationDTO->nowGenerating();
+        Mail::assertSent(CurrentYieldMail::class, function ($mail) {
+            return collect($mail->currentYields)->has($this->powerStation->name)
+                && $mail->currentYields[$this->powerStation->name] == $this->powerStationDTO->nowGenerating();
         });
     }
 }

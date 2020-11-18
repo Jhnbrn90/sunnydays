@@ -1,27 +1,24 @@
 <x-layout>
     <div>
         <div class="w-full pt-5 mb-5">
-            <solar-energy endpoint="{{ route('power_stations') }}"></solar-energy>
+            <livewire:summary />
         </div>
 
         <div class="w-full text-center mb-5">
-            <weather-time
-                endpoint="{{ route('weather') }}"
-                weather-city="Hoofddorp"
-            ></weather-time>
+            <livewire:weather />
         </div>
 
         <div class="w-full flex justify-center mb-5 pb-4">
             <live-chart
                 initial-date="{{ now()->format('d-m-Y') }}"
-                :data="{{ $liveGraphData }}">
+                :data="{{ $liveChartData }}">
             </live-chart>
         </div>
 
         <div class="flex max-w-sm sm:max-w-full mx-auto justify-center pt-12 pb-10">
-            <weekly-graph
-                :data="{{ $weeklyGraphData }}"
-            ></weekly-graph>
+            <week-chart
+                :data="{{ $weekChartData }}"
+            ></week-chart>
         </div>
     </div>
 </x-layout>

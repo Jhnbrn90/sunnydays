@@ -3,7 +3,7 @@
 namespace Tests\Feature\Commands;
 
 use App\Console\Commands\MailDailyYield;
-use App\Mail\StatisticsMail;
+use App\Mail\DailyYieldMail;
 use App\Models\PowerStation;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,7 +28,7 @@ class MailDailyYieldTest extends TestCase
 
         $this->artisan(MailDailyYield::class);
 
-        Mail::assertSent(StatisticsMail::class, function ($mail) use ($powerStation) {
+        Mail::assertSent(DailyYieldMail::class, function ($mail) use ($powerStation) {
             $log = $mail->logs[0];
             return $log->total_production === 1000
                 && $log->powerStation->is($powerStation)
@@ -55,7 +55,7 @@ class MailDailyYieldTest extends TestCase
 
         $this->artisan(MailDailyYield::class);
 
-        Mail::assertSent(StatisticsMail::class, function ($mail) use ($powerStations) {
+        Mail::assertSent(DailyYieldMail::class, function ($mail) use ($powerStations) {
             return $mail->logs->count() === 2
                 && $mail->logs[0]->power_station_id === $powerStations[0]->id
                 && $mail->logs[1]->power_station_id === $powerStations[1]->id

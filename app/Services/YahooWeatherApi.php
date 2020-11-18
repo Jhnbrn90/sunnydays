@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use Zttp\Zttp;
+use Illuminate\Support\Facades\Http;
 
 class YahooWeatherApi
 {
@@ -35,7 +35,7 @@ class YahooWeatherApi
     {
         [$url, $headers] = $this->prepareRequest();
 
-        $response = Zttp::withHeaders($headers)->get($url);
+        $response = Http::withHeaders($headers)->get($url);
 
         return $response->json();
     }

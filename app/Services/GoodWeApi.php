@@ -5,9 +5,8 @@ namespace App\Services;
 use App\Contracts\RetrieverInterface;
 use App\DTO\PowerStation;
 use App\DTO\PowerStationDTOCollection;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
-use Zttp\Zttp;
+use Illuminate\Support\Facades\Http;
 
 class GoodWeApi implements RetrieverInterface
 {
@@ -36,7 +35,7 @@ class GoodWeApi implements RetrieverInterface
                 return new PowerStation($powerStation);
             });
 
-        Cache::put('all-powerstations', $powerStations, 120);
+        Cache::put('all-powerstations', $powerStations, 360);
 
         return $powerStations;
     }
@@ -47,7 +46,7 @@ class GoodWeApi implements RetrieverInterface
             $this->login();
         }
 
-        $response = Zttp::withoutVerifying()->withHeaders($this->resourceHeaders())
+        $response = Http::withoutVerifying()->withHeaders($this->resourceHeaders())
             ->post(self::RESOURCE_URL, [
                 'page_index' => '1'
             ]);
@@ -80,7 +79,7 @@ class GoodWeApi implements RetrieverInterface
 
     private function login()
     {
-        $response = Zttp::withoutVerifying()->withHeaders($this->loginHeaders())
+        $response = Http::withoutVerifying()->withHeaders($this->loginHeaders())
             ->post(self::LOGIN_URL, ['account' => $this->account, 'pwd' => $this->password])
             ->json();
 

@@ -1,29 +1,29 @@
 <template>
-  <div class="weekly-graph">
-    <canvas ref="weeklyChart"></canvas>
+  <div class="week-chart">
+    <canvas ref="weekChart"></canvas>
   </div>
 </template>
 
 <script>
 import Chart from "chart.js";
-import { WeeklyGraphOptions } from '../charts/config';
+import { WeekChartOptions } from '../charts/config';
 
 export default {
   props: ['data'],
 
   data() {
     return {
-      weeklyChart: {}
+      weekChart: {}
     };
   },
 
   mounted() {
-    this.weeklyChart = new Chart(this.$refs.weeklyChart, {
+    this.weekChart = new Chart(this.$refs.weekChart, {
       type: "bar",
       data: {
         datasets: this.data,
       },
-      options: WeeklyGraphOptions
+      options: WeekChartOptions
     });
   }
 };

@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Contracts\RetrieverInterface;
-use App\Mail\HeartbeatMail;
+use App\Mail\CurrentYieldMail;
 use App\DTO\PowerStation as PowerStationDTO;
 use App\Services\YahooWeatherProvider;
 use Illuminate\Console\Command;
@@ -36,7 +36,7 @@ class MailCurrentYield extends Command
             return [$powerStation->getModel()->name => $powerStation->nowGenerating()];
         });
 
-        Mail::to(config('app.mail'))->send(new HeartbeatMail($currentStats, $weather));
+        Mail::to(config('app.mail'))->send(new CurrentYieldMail($currentStats, $weather));
 
         $this->info('Done');
     }

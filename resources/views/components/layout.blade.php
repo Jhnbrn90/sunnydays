@@ -19,6 +19,7 @@
 
     <link rel="stylesheet" href="{{ mix("css/app.css") }}">
     <link rel="stylesheet" href="css/weather-icons.css">
+    @livewireStyles
 </head>
 
 <body class="bg-white">
@@ -27,5 +28,6 @@
     </div>
 
     <script src="{{ mix('js/app.js') }}"></script>
+    @livewireScripts
 </body>
 </html>

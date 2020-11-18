@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Services;
 
+use App\Contracts\RetrieverInterface;
 use App\DTO\PowerStation;
 use App\DTO\PowerStationDTOCollection;
 use App\Models\PowerStation as PowerStationModel;
 use App\Services\GoodWeApi;
-use Illuminate\Support\Collection;
 use Mockery;
 use Tests\TestCase;
 
@@ -29,6 +29,7 @@ class GoodWeApiTest extends TestCase
         $goodWeApiService = Mockery::mock(GoodWeApi::class);
 
         $this->app->instance(GoodWeApi::class, $goodWeApiService);
+        $this->app->instance(RetrieverInterface::class, $goodWeApiService);
 
         $goodWeApiService
             ->shouldReceive('getPowerStations')
@@ -38,20 +39,25 @@ class GoodWeApiTest extends TestCase
                 ]))
             ]));
 
-        $apiResult = $this->get(route('power_stations'));
+        $powerStations = app(RetrieverInterface::class)
+            ->getPowerStations()
+            ->registered()
+            ->toArray();
 
-        $apiResult->assertJsonFragment([
+        $expectedArray = [
             'owner' => [
                 'name' => 'TEST',
                 'color' => '41, 50, 33'
             ],
             'working' => false,
             'generating' => 1,
-            'today' => 2,
-            'month' => 3,
+            'today' => 2.0,
+            'month' => 3.0,
             'total' => 4,
-            'average' => 0
-        ]);
+            'average' => 0.0
+        ];
+
+        $this->assertEquals($expectedArray, $powerStations[0]);
     }
 
     private function validParams($overrides = [])

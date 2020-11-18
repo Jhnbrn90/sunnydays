@@ -1,4 +1,4 @@
-export let LiveChartOptions = {
+export const LiveChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     title: {
@@ -35,7 +35,7 @@ export let LiveChartOptions = {
     },
 }
 
-export let WeeklyGraphOptions = {
+export const WeekChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     title: {

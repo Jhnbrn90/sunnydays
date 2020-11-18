@@ -1,19 +1,12 @@
 <?php
 
-use App\Http\Controllers\IndexController;
-use App\Http\Controllers\ShowPowerStations;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ShowGraphForDate;
-use App\Http\Controllers\ShowCurrentWeather;
 use App\Http\Controllers\ShowWeekOverview;
-use Carbon\Carbon;
 
-Carbon::setTestNow('23 october 2020');
-
-Route::get('/', IndexController::class);
+Route::get('/', DashboardController::class);
 
 Route::prefix('api')->group(function () {
-    Route::get('live-chart/{date}', ShowGraphForDate::class);
-    Route::get('power-stations', ShowPowerStations::class)->name('power_stations');
+    Route::get('live-chart/{date}', ShowGraphForDate::class)->name('live-chart');
     Route::get('week-overview', ShowWeekOverview::class)->name('week_overview');
-    Route::get('weather', ShowCurrentWeather::class)->name('weather');
 });
