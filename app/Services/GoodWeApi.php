@@ -55,6 +55,11 @@ class GoodWeApi implements RetrieverInterface
             $response = $this->makeRequest();
         }
 
+        if (is_array($response)) {
+            sleep(5);
+            return $this->getPowerStations();
+        }
+
         return $response->json();
     }
 
