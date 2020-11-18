@@ -52,12 +52,13 @@ class GoodWeApi implements RetrieverInterface
             ]);
 
         if ($response->json()['data'] == null) {
-            $response = $this->makeRequest();
+            sleep(10);
+            return $this->makeRequest();
         }
 
         if (is_array($response)) {
-            sleep(5);
-            $response = $this->makeRequest();
+            sleep(10);
+            return $this->makeRequest();
         }
 
         return $response->json();
