@@ -35,7 +35,7 @@ class GoodWeApi implements RetrieverInterface
                 return new PowerStation($powerStation);
             });
 
-        Cache::put('all-powerstations', $powerStations, 360);
+        Cache::put('all-powerstations', $powerStations, 120);
 
         return $powerStations;
     }
