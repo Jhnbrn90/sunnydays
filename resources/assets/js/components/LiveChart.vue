@@ -49,7 +49,7 @@ export default {
       liveChart: {},
       date: moment(this.initialDate, 'DD-MM-YYYY'),
       chartInterval: null,
-      updateFrequency: 30000, // update frequency in ms
+      updateFrequency: 10000, // update frequency in ms
       dateFormat: "dddd DD MMMM YYYY"
     };
   },
@@ -115,7 +115,11 @@ export default {
 
     updateChart() {
       axios.get(this.endpoint).then(response => {
-        this.liveChart.data.datasets = response.data;
+
+        this.liveChart.data.datasets.forEach((dataset, index) => {
+          dataset.data = response.data[index].data
+        });
+
         this.liveChart.update();
       });
     },
