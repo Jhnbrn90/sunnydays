@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\DTO\PowerStation;
 use App\DTO\PowerStationDTOCollection;
 use App\Services\GoodWeApi;
-use Illuminate\Support\Collection;
 
 class ShowPowerStations
 {

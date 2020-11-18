@@ -38,7 +38,7 @@ class GoodWeApiTest extends TestCase
                 ]))
             ]));
 
-        $apiResult = $this->get('/api/powerstations');
+        $apiResult = $this->get(route('power_stations'));
 
         $apiResult->assertJsonFragment([
             'owner' => [

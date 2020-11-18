@@ -1828,7 +1828,7 @@ __webpack_require__.r(__webpack_exports__);
       liveChart: {},
       date: moment__WEBPACK_IMPORTED_MODULE_1___default()(this.initialDate, 'DD-MM-YYYY'),
       chartInterval: null,
-      updateFrequency: 30000,
+      updateFrequency: 10000,
       // update frequency in ms
       dateFormat: "dddd DD MMMM YYYY"
     };
@@ -1884,7 +1884,9 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get(this.endpoint).then(function (response) {
-        _this.liveChart.data.datasets = response.data;
+        _this.liveChart.data.datasets.forEach(function (dataset, index) {
+          dataset.data = response.data[index].data;
+        });
 
         _this.liveChart.update();
       });
@@ -2010,14 +2012,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['endpoint'],
   data: function data() {
     return {
       time: "",
@@ -2039,7 +2036,7 @@ __webpack_require__.r(__webpack_exports__);
     fetchWeather: function fetchWeather() {
       var _this = this;
 
-      axios.get('/api/weather').then(function (response) {
+      axios.get(this.endpoint).then(function (response) {
         _this.weather = {
           'temperature': response.data.temperature,
           'iconClass': "wi-yahoo-".concat(response.data.code)
@@ -46100,16 +46097,12 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("h3", { staticClass: "text-lg font-medium" }, [
-      _vm._v("\n      " + _vm._s(_vm.time) + "\n    ")
+      _vm._v(_vm._s(_vm.time))
     ]),
     _vm._v(" "),
-    _c("span", { staticClass: "block" }, [
-      _vm._v("\n    " + _vm._s(_vm.date) + "\n  ")
-    ]),
+    _c("span", { staticClass: "block" }, [_vm._v(_vm._s(_vm.date))]),
     _vm._v(" "),
-    _c("span", [
-      _vm._v("\n    " + _vm._s(_vm.weather.temperature) + " °C\n  ")
-    ]),
+    _c("span", [_vm._v(_vm._s(_vm.weather.temperature) + " °C")]),
     _vm._v(" "),
     _c("i", { staticClass: "wi", class: _vm.weather.iconClass })
   ])

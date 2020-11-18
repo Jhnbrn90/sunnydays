@@ -1,13 +1,14 @@
 <x-layout>
     <div>
         <div class="w-full pt-5 mb-5">
-            <solar-energy
-                endpoint="{{ route('power_stations') }}">
-            </solar-energy>
+            <solar-energy endpoint="{{ route('power_stations') }}"></solar-energy>
         </div>
 
         <div class="w-full text-center mb-5">
-            <weather-time weather-city="Hoofddorp"></weather-time>
+            <weather-time
+                endpoint="{{ route('weather') }}"
+                weather-city="Hoofddorp"
+            ></weather-time>
         </div>
 
         <div class="w-full flex justify-center mb-5 pb-4">

@@ -12,7 +12,7 @@ class IndexController
     {
 //        $retriever->getPowerStations();
 
-        return view('welcome', [
+        return view('dashboard', [
             'liveGraphData' => DailyLiveGraph::for('today'),
             'weeklyGraphData' => WeeklyGraph::thisWeek(),
         ]);

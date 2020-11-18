@@ -1,16 +1,10 @@
 <template>
     <div>
-        <h3 class="text-lg font-medium">
-          {{ time }}
-        </h3>
+      <h3 class="text-lg font-medium">{{ time }}</h3>
 
-      <span class="block">
-        {{ date }}
-      </span>
+      <span class="block">{{ date }}</span>
 
-      <span>
-        {{ weather.temperature }} &deg;C
-      </span>
+      <span>{{ weather.temperature }} &deg;C</span>
 
       <i class="wi" :class="weather.iconClass"></i>
     </div>
@@ -20,6 +14,7 @@
 import moment from "moment";
 
 export default {
+  props: ['endpoint'],
 
   data() {
     return {
@@ -47,14 +42,13 @@ export default {
     },
 
     fetchWeather() {
-      axios.get('/api/weather').then(response => {
+      axios.get(this.endpoint).then(response => {
         this.weather = {
           'temperature': response.data.temperature,
           'iconClass': `wi-yahoo-${response.data.code}`
         };
       });
     }
-
   }
 };
 </script>
