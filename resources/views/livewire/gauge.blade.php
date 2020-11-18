@@ -11,7 +11,7 @@
 
             @foreach ($powerStations as $powerStation)
             <div class="sm:text-2xl text-xl">
-                <span style="color: rgba({{ $powerStation['owner']['color'] }});">
+                <span class="font-normal sm:font-hairline" style="color: rgb({{ $powerStation['owner']['color'] }});">
                     {{ $powerStation[$property] }}
                 </span>
             </div>

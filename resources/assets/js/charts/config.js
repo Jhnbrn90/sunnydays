@@ -56,11 +56,12 @@ export const WeekChartOptions = {
         xAxes: [
             {
                 type: "time",
+                offset: true,
                 time: {
                   unit: "day",
                   unitStepSize: 1,
                   displayFormats: {
-                    day: "DD-M-Y"
+                    day: "D-M-Y"
                   }
                 }
             }
