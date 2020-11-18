@@ -16,6 +16,7 @@ The application is built with the following technologies.
 - Laravel
 - Vue
 - ChartJS
+- Livewire
 
 ## Landing page
 ### Overview
