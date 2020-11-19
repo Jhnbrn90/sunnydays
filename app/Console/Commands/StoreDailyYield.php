@@ -35,8 +35,6 @@ class StoreDailyYield extends Command
             $log->total_production = $powerStation->energyProducedToday() * 1000;
 
             $log->save();
-
-            dd($log);
         });
 
         $this->info('Done');
