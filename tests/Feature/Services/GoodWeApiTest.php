@@ -7,11 +7,14 @@ use App\DTO\PowerStation;
 use App\DTO\PowerStationDTOCollection;
 use App\Models\PowerStation as PowerStationModel;
 use App\Services\GoodWeApi;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
 use Tests\TestCase;
 
 class GoodWeApiTest extends TestCase
 {
+    use RefreshDatabase;
+
     function setUp(): void
     {
         parent::setUp();

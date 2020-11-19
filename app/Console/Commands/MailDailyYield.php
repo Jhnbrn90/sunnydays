@@ -21,7 +21,7 @@ class MailDailyYield extends Command
 
     public function handle()
     {
-        $logs = DailyProductionLog::whereDate('created_at', Carbon::today())->get();
+        $logs = DailyProductionLog::with('powerStation')->whereDate('created_at', Carbon::today())->get();
 
         Mail::to(config('app.mail'))->send(new DailyYieldMail($logs));
 

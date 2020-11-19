@@ -25,7 +25,7 @@ class AddUserToPowerlogs extends Migration
     public function down()
     {
         Schema::table('powerlogs', function ($table) {
-            $table->dropColumn('paid');
+            $table->dropColumn('user');
         });
     }
 }

@@ -1,9 +1,9 @@
 @component('mail::message')
-# Op dit moment 
-* J & L: {{ $currentYields['JL'] }} W
-* M & B: {{ $currentYields['MB'] }} W
-* B & E: {{ $currentYields['BE'] }} W
-* RB: {{ $currentYields['RB'] }} W
+# Op dit moment
+
+@foreach ($currentYields as $powerStationName => $yield)
+* {{ $powerStationName }}: {{ $yield }} W
+@endforeach
 
 # Weer
 {{ $weatherCondition['text'] }}, {{ $weatherCondition['temperature'] }} &deg;C

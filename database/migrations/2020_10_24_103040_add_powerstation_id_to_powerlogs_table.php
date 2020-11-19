@@ -14,18 +14,12 @@ class AddPowerstationIdToPowerlogsTable extends Migration
      */
     public function up()
     {
-        if (app()->environment() !== 'testing') {
-            (new \Database\Seeders\PowerStationTableSeeder)->run();
-        }
-
         Schema::table('powerlogs', function (Blueprint $table) {
             $table->foreignId('power_station_id')->default(1)
                 ->references('id')
                 ->on('power_stations')
                 ->onDelete('cascade');
         });
-
-        (new \Database\Seeders\PowerStationIdSeeder)->run();
 
         Schema::table('powerlogs', function (Blueprint $table) {
             $table->string('user')->nullable()->change();
