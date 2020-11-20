@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Services\YahooWeatherProvider;
+use App\Services\WeatherProvider;
 use Livewire\Component;
 
 class Weather extends Component
@@ -10,7 +10,7 @@ class Weather extends Component
     public string $temperature;
     public string $iconClass;
 
-    public function mount(YahooWeatherProvider $yahoo)
+    public function mount(WeatherProvider $yahoo)
     {
         $this->temperature = $yahoo->condition()['temperature'];
         $this->iconClass = $yahoo->condition()['code'];

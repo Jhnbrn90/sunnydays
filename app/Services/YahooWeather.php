@@ -2,9 +2,10 @@
 
 namespace App\Services;
 
+use App\Contracts\WeatherInterface;
 use Illuminate\Support\Facades\Http;
 
-class YahooWeatherApi
+class YahooWeather implements WeatherInterface
 {
     private $appId;
     private $baseUrl;
@@ -31,7 +32,7 @@ class YahooWeatherApi
         $this->weatherLocation = $weatherLocation;
     }
 
-    public function fetch()
+    public function fetch(): array
     {
         [$url, $headers] = $this->prepareRequest();
 

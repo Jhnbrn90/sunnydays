@@ -2,12 +2,14 @@
 
 namespace App\Services;
 
-class YahooWeatherProvider
-{
-    private $api;
-    private $data;
+use App\Contracts\WeatherInterface;
 
-    public function __construct(YahooWeatherApi $api)
+class WeatherProvider
+{
+    private WeatherInterface $api;
+    private array $data;
+
+    public function __construct(WeatherInterface $api)
     {
         $this->api = $api;
     }

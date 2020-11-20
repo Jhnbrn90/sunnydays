@@ -3,9 +3,10 @@
 namespace App\Providers;
 
 use App\Contracts\RetrieverInterface;
+use App\Contracts\WeatherInterface;
 use App\Services\GoodWeApi;
-use App\Services\YahooWeatherApi;
-use App\Services\YahooWeatherProvider;
+use App\Services\YahooWeather;
+use App\Services\WeatherProvider;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,8 +22,8 @@ class AppServiceProvider extends ServiceProvider
             return new GoodWeApi;
         });
 
-        $this->app->singleton(YahooWeatherApi::class, function ($app) {
-            return new YahooWeatherApi(
+        $this->app->bind(WeatherInterface::class, function ($app) {
+            return new YahooWeather(
                 $appId = config('yahoo.app_id'),
                 $baseUrl = config('yahoo.url'),
                 $consumerKey = config('yahoo.consumer_key'),
@@ -32,9 +33,9 @@ class AppServiceProvider extends ServiceProvider
             );
         });
 
-        $this->app->singleton(YahooWeatherProvider::class, function ($app) {
-            return new YahooWeatherProvider(
-                $app->make(YahooWeatherApi::class)
+        $this->app->bind(WeatherProvider::class, function ($app) {
+            return new WeatherProvider(
+                $app->make(WeatherInterface::class)
             );
         });
     }
