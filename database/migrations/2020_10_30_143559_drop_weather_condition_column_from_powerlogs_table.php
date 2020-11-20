@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class DropWeatherColumnsFromPowerlogsTable extends Migration
+class DropWeatherConditionColumnFromPowerLogsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,8 +15,6 @@ class DropWeatherColumnsFromPowerlogsTable extends Migration
     {
         Schema::table('powerlogs', function (Blueprint $table) {
             $table->dropColumn('weather_condition');
-            $table->dropColumn('weather_condition_code');
-            $table->dropColumn('temperature');
         });
     }
 

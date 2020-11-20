@@ -30,7 +30,8 @@ class MailDailyYieldTest extends TestCase
 
         Mail::assertSent(DailyYieldMail::class, function ($mail) use ($powerStation) {
             $log = $mail->logs[0];
-            return $log->total_production === 1000
+
+            return (int) $log->total_production === 1000
                 && $log->powerStation->is($powerStation)
                 && $log->created_at->isToday();
         });
@@ -56,11 +57,12 @@ class MailDailyYieldTest extends TestCase
         $this->artisan(MailDailyYield::class);
 
         Mail::assertSent(DailyYieldMail::class, function ($mail) use ($powerStations) {
+
             return $mail->logs->count() === 2
-                && $mail->logs[0]->power_station_id === $powerStations[0]->id
-                && $mail->logs[1]->power_station_id === $powerStations[1]->id
-                && $mail->logs[0]->total_production === 1000
-                && $mail->logs[1]->total_production === 2000;
+                && (int) $mail->logs[0]->power_station_id === $powerStations[0]->id
+                && (int) $mail->logs[1]->power_station_id === $powerStations[1]->id
+                && (int) $mail->logs[0]->total_production === 1000
+                && (int) $mail->logs[1]->total_production === 2000;
         });
     }
 }
