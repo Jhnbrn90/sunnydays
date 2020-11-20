@@ -18,6 +18,7 @@ class CreatePowerStationsTable extends Migration
             $table->string('name');
             $table->string('goodwe_id');
             $table->string('line_color');
+            $table->unsignedDouble('daily_average')->default(0);
             $table->timestamps();
         });
     }

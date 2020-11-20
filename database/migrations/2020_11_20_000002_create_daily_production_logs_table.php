@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePowerlogsTable extends Migration
+class CreateDailyProductionLogsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreatePowerlogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('powerlogs', function (Blueprint $table) {
+        Schema::create('daily_production_logs', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('current_power');
-            $table->string('weather_condition');
-            $table->unsignedInteger('weather_condition_code');
-            $table->integer('temperature');
+            $table->integer('total_production');
+            $table->foreignId('power_station_id')->default(1)
+                ->references('id')
+                ->on('power_stations')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreatePowerlogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('powerlogs');
+        Schema::dropIfExists('daily_production_logs');
     }
 }
