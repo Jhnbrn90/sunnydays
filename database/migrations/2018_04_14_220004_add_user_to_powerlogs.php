@@ -13,7 +13,7 @@ class AddUserToPowerlogs extends Migration
     public function up()
     {
         Schema::table('powerlogs', function ($table) {
-            $table->string('user');
+            $table->string('user')->nullable();
         });
     }
 

@@ -14,7 +14,7 @@ class AddUserToDailyProductionLogs extends Migration
     public function up()
     {
         Schema::table('daily_production_logs', function (Blueprint $table) {
-            $table->string('user');
+            $table->string('user')->nullable();
         });
     }
 
