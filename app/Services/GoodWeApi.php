@@ -35,7 +35,7 @@ class GoodWeApi implements RetrieverInterface
                 return new PowerStation($powerStation);
             });
 
-        Cache::put('all-powerstations', $powerStations, 120);
+        Cache::put('all-powerstations', $powerStations, now()->addMinutes(2));
 
         return $powerStations;
     }
@@ -89,9 +89,9 @@ class GoodWeApi implements RetrieverInterface
             ->post(self::LOGIN_URL, ['account' => $this->account, 'pwd' => $this->password])
             ->json();
 
-        Cache::put('token', $response['data']['token'], 120);
-        Cache::put('uid', $response['data']['uid'], 120);
-        Cache::put('timestamp', $response['data']['timestamp'], 120);
+        Cache::put('token', $response['data']['token'], now()->addMinutes(2));
+        Cache::put('uid', $response['data']['uid'], now()->addMinutes(2));
+        Cache::put('timestamp', $response['data']['timestamp'], now()->addMinutes(2));
     }
 
     private function loginHeaders()
