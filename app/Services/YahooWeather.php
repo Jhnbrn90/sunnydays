@@ -7,30 +7,14 @@ use Illuminate\Support\Facades\Http;
 
 class YahooWeather implements WeatherInterface
 {
-    private $appId;
-    private $baseUrl;
-    private $consumerKey;
-    private $consumerSecret;
-    private $temperatureUnit;
-    private $weatherLocation;
-
     public function __construct(
-        string $appId,
-        string $baseUrl,
-        string $consumerKey,
-        string $consumerSecret,
-        string $temperatureUnit,
-        string $weatherLocation
-    )
-    {
-
-        $this->appId = $appId;
-        $this->baseUrl = $baseUrl;
-        $this->consumerKey = $consumerKey;
-        $this->consumerSecret = $consumerSecret;
-        $this->temperatureUnit = $temperatureUnit;
-        $this->weatherLocation = $weatherLocation;
-    }
+        private string $appId,
+        private string $baseUrl,
+        private string $consumerKey,
+        private string $consumerSecret,
+        private string $temperatureUnit,
+        private string $weatherLocation
+    ) {}
 
     public function fetch(): array
     {
@@ -41,7 +25,7 @@ class YahooWeather implements WeatherInterface
         return $response->json();
     }
 
-    private function prepareRequest()
+    private function prepareRequest(): array
     {
         $parameters = [
             'format' => 'json',
@@ -55,7 +39,7 @@ class YahooWeather implements WeatherInterface
         return [$url, $headers];
     }
 
-    private function buildHeaders(array $parameters)
+    private function buildHeaders(array $parameters): array
     {
         return [
             'Authorization' => $this->buildAuthorizationHeader($parameters),
@@ -63,7 +47,7 @@ class YahooWeather implements WeatherInterface
         ];
     }
 
-    private function buildAuthorizationHeader(array $parameters)
+    private function buildAuthorizationHeader(array $parameters): string
     {
         $prefix = 'OAuth ';
 
@@ -84,7 +68,7 @@ class YahooWeather implements WeatherInterface
         return $prefix . implode(' ,', $encodedValues);
     }
 
-    private function buildOauthSignature(array $oauth, array $parameters)
+    private function buildOauthSignature(array $oauth, array $parameters): string
     {
         $encodedRequestUrl = $this->buildEncodedRequestUrl($oauth, $parameters);
         $compositeKey = $this->buildCompositeKey();
@@ -92,7 +76,7 @@ class YahooWeather implements WeatherInterface
         return $this->buildSignature($encodedRequestUrl, $compositeKey);
     }
 
-    private function buildEncodedRequestUrl(array $oauth, array $parameters)
+    private function buildEncodedRequestUrl(array $oauth, array $parameters): string
     {
         $method = 'GET';
         $baseUrl = rawurlencode($this->baseUrl);
@@ -107,12 +91,12 @@ class YahooWeather implements WeatherInterface
         return implode('&', $urlComponents);
     }
 
-    private function buildCompositeKey()
+    private function buildCompositeKey(): string
     {
         return rawurlencode($this->consumerSecret) . '&';
     }
 
-    private function buildSignature(string $encodedRequestUrl, string $compositeKey)
+    private function buildSignature(string $encodedRequestUrl, string $compositeKey): string
     {
         return base64_encode(
             hash_hmac('sha1', $encodedRequestUrl, $compositeKey, true)
