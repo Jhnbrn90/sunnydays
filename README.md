@@ -4,7 +4,7 @@
 
 This repo contains the code for a hobby project which shows the solar energy produced for the solar panels of myself and my family and puts them together in a single graph.
 
-This site is available at https://sunnydays.johnny.digital.
+This site is available at https://sunnydays.jbn.app
 
 Since we all have GoodWe converters, the API in this project uses their API to collect the data.
 

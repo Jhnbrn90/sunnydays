@@ -8,7 +8,7 @@
 # Weer
 {{ $weatherCondition['text'] }}, {{ $weatherCondition['temperature'] }} &deg;C
 
-@component('mail::button', ['url' => 'https://sunnydays.johnny.digital'])
+@component('mail::button', ['url' => config('app.url')])
 Check de site
 @endcomponent
 
