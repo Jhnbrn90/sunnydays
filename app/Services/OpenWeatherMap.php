@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Contracts\WeatherInterface;
+use App\DTO\WeatherCondition;
 use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Support\Facades\Http;
 
@@ -20,17 +21,20 @@ class OpenWeatherMap implements WeatherInterface
     }
 
     /**
-     * @return array
+     * @return WeatherCondition
      * @throws HttpClientException
      */
-    public function condition(): array
+    public function condition(): WeatherCondition
     {
         $data = $this->fetch();
 
-        return [
-            'temperature' => $data['main']['temp'],
-            'iconUrl' => $this->generateIconUrl($data['weather'][0]['icon'])
-        ];
+        $temperature = $data['main']['temp'];
+        $iconUrl = $this->generateIconUrl($data['weather'][0]['icon']);
+
+        return new WeatherCondition(
+            temperature: $temperature,
+            iconUrl: $iconUrl,
+        );
     }
 
     private function buildUrl(): string

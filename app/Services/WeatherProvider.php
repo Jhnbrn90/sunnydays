@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Contracts\WeatherConditionInterface;
 use App\Contracts\WeatherInterface;
+use App\DTO\NullWeatherCondition;
 use Illuminate\Http\Client\HttpClientException;
 
 class WeatherProvider
@@ -14,17 +16,14 @@ class WeatherProvider
         $this->api = $api;
     }
 
-    public function condition(): array
+    public function condition(): WeatherConditionInterface
     {
         try {
             $condition = $this->api->condition();
         } catch (HttpClientException) {
-            return [];
+            return new NullWeatherCondition();
         }
 
-        return [
-            'temperature' => $condition['temperature'],
-            'iconUrl' => $condition['iconUrl'],
-        ];
+        return $condition;
     }
 }

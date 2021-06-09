@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use App\DTO\NullWeatherCondition;
+use App\DTO\WeatherCondition;
 use App\Services\WeatherProvider;
 use Livewire\Component;
 
@@ -14,9 +16,14 @@ class Weather extends Component
     {
         $currentCondition = $weatherProvider->condition();
 
-        if ($currentCondition !== null) {
-            $this->temperature = number_format($currentCondition ['temperature'], 0);
-            $this->iconUrl = $currentCondition['iconUrl'];
+        if ($currentCondition instanceof NullWeatherCondition) {
+            $this->temperature = 'N/A';
+            $this->iconUrl = url('favicon-32x32.png');
+        }
+
+        if ($currentCondition instanceof WeatherCondition) {
+            $this->temperature = number_format($currentCondition->getTemperature(), 0);
+            $this->iconUrl = $currentCondition->getIconUrl();
         }
     }
 
