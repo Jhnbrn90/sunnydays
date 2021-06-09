@@ -11,5 +11,5 @@
         {{ $temperature }} &deg;C
     </span>
 
-    <i class="wi wi-yahoo-{{ $iconClass }}"></i>
+    <img class="inline-block" width="50px" height="50px" src="{{ $iconUrl }}">
 </div>

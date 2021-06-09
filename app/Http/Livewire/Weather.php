@@ -8,12 +8,16 @@ use Livewire\Component;
 class Weather extends Component
 {
     public string $temperature;
-    public string $iconClass;
+    public string $iconUrl;
 
-    public function mount(WeatherProvider $yahoo)
+    public function mount(WeatherProvider $weatherProvider)
     {
-        $this->temperature = $yahoo->condition()['temperature'];
-        $this->iconClass = $yahoo->condition()['code'];
+        $currentCondition = $weatherProvider->condition();
+
+        if ($currentCondition !== null) {
+            $this->temperature = number_format($currentCondition ['temperature'], 0);
+            $this->iconUrl = $currentCondition['iconUrl'];
+        }
     }
 
     public function render()

@@ -2,10 +2,8 @@
 
 namespace App\Console;
 
-use App\Console\Commands\MailDailyYield;
 use App\Console\Commands\StoreCurrentYield;
 use App\Console\Commands\StoreDailyYield;
-use App\Console\Commands\MailCurrentYield;
 use App\Console\Commands\UpdateDailyProductionAverages;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -15,7 +13,6 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         StoreCurrentYield::class,
         StoreDailyYield::class,
-        MailCurrentYield::class,
         UpdateDailyProductionAverages::class,
     ];
 
@@ -44,22 +41,6 @@ class Kernel extends ConsoleKernel
             ->command(UpdateDailyProductionAverages::class)
             ->timezone('Europe/Amsterdam')
             ->dailyAt('23:00');
-
-        /**
-         * Send (daily) e-mail report of the total produced energy for each system.
-         */
-        $schedule
-            ->command(MailDailyYield::class)
-            ->timezone('Europe/Amsterdam')
-            ->dailyAt('23:00');
-
-        /**
-         * Send (daily) e-mail to check that all systems are operational.
-         */
-        $schedule
-            ->command(MailCurrentYield::class)
-            ->timezone('Europe/Amsterdam')
-            ->dailyAt('12:00');
     }
 
     protected function commands()
