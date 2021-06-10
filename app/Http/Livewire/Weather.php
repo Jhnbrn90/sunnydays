@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\DTO\NullWeatherCondition;
 use App\DTO\WeatherCondition;
 use App\Services\WeatherProvider;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 class Weather extends Component
@@ -14,7 +15,7 @@ class Weather extends Component
 
     public function mount(WeatherProvider $weatherProvider)
     {
-        $currentCondition = $weatherProvider->condition();
+        $currentCondition = Cache::remember('current_weather', now()->addMinutes(2), fn() => $weatherProvider->condition());
 
         if ($currentCondition instanceof NullWeatherCondition) {
             $this->temperature = 'N/A';

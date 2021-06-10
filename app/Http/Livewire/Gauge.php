@@ -14,7 +14,10 @@ class Gauge extends Component
     public function render()
     {
         return view('livewire.gauge', [
-            'powerStations' => app(RetrieverInterface::class)->getPowerStations()->registered()->toArray(),
+            'powerStations' => app(RetrieverInterface::class)
+                ->getPowerStations()
+                ->registered()
+                ->toArray(),
         ]);
     }
 }

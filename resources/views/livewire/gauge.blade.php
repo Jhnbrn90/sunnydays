@@ -1,4 +1,4 @@
-<div class="flex-1 flex justify-center" wire:poll.7s>
+<div class="flex-1 flex justify-center" wire:poll.2s>
     <div>
         <div class="py-2 px-4 sm:p-4 text-center">
             <span class="font-semibold sm:font-medium block text-lg sm:text-2xl tracking-wider">

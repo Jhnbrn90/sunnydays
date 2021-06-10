@@ -1,5 +1,5 @@
 <div>
-    <h3 class="text-lg font-medium" wire:poll.10s>
+    <h3 class="text-lg font-medium" wire:poll.2s>
         {{ $time }}
     </h3>
 

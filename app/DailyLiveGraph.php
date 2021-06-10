@@ -4,14 +4,33 @@ namespace App;
 
 use App\Models\PowerStation;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
 
 class DailyLiveGraph
 {
     public static function for(string $date = null)
     {
-        return PowerStation::all()->map(function (PowerStation $powerStation) use ($date) {
-            $date = $date ? Carbon::parse($date) : Carbon::today();
+        $date = $date ? Carbon::parse($date) : Carbon::today();
+        $formattedDate = $date->format('d-m-Y');
+        $cacheKey = "graph.{$formattedDate}";
 
+        if (Cache::has($cacheKey)) {
+            return Cache::get($cacheKey);
+        }
+
+        $powerStationData = static::getPowerStationDataForDate($date);
+
+        if (! $date->isToday()) {
+            Cache::forever($cacheKey, $powerStationData);
+        }
+
+        return $powerStationData;
+    }
+
+    public static function getPowerStationDataForDate(Carbon $date)
+    {
+        return PowerStation::all()->map(function (PowerStation $powerStation) use ($date) {
             $logs = $powerStation->powerlogs()->whereDate('created_at', $date)->get();
 
             $dataPoints = $logs->map(function ($log) {
