@@ -92,7 +92,7 @@ class PowerStation
      */
     public function isWorking(): bool
     {
-        $thresholdInWatts = 50;
+        $thresholdInWatts = config('sunnydays.power_stations.working_threshold');
 
         return $this->nowGenerating() > $thresholdInWatts;
     }
