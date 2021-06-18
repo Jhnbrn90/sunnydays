@@ -20,17 +20,19 @@ class DailyLiveGraph
         }
 
         if ($carbonDate->isToday()) {
-            return self::getPowerStationDataForToday();
+            return self::getPowerStationDataForToday($carbonDate, $cacheKey);
         }
 
-        return self::getPowerStationDataForDate($carbonDate);
+        $powerStationData = self::getPowerStationDataForDate($carbonDate);
+
+        self::populateCache($cacheKey, $powerStationData);
+
+        return $powerStationData;
     }
 
     public static function getPowerStationDataForDate(Carbon $date)
     {
-        $cacheKey = self::getCacheKeyFor($date);
-
-        $powerStationData = PowerStation::all()->map(function (PowerStation $powerStation) use ($date) {
+        return PowerStation::all()->map(function (PowerStation $powerStation) use ($date) {
             $logs = $powerStation->powerlogs()->whereDate('created_at', $date)->get();
 
             $dataPoints = $logs->map(function ($log) {
@@ -48,21 +50,13 @@ class DailyLiveGraph
                 'backgroundColor' => 'rgba(255, 255, 255, 0.1)'
             ];
         });
-
-        self::populateCache($cacheKey, $powerStationData);
-
-        return $powerStationData;
     }
 
-    private static function getPowerStationDataForToday()
+    private static function getPowerStationDataForToday(Carbon $date, string $cacheKey)
     {
-        $today = Carbon::today();
-        $cacheKey = self::getCacheKeyFor($today);
-        $ttl = now()->addMinutes(5);
+        $powerStationData = self::getPowerStationDataForDate($date);
 
-        $powerStationData = self::getPowerStationDataForDate($today);
-
-        self::populateCache($cacheKey, $powerStationData, $ttl);
+        self::populateCache($cacheKey, $powerStationData, now()->addMinutes(5));
 
         return $powerStationData;
     }
