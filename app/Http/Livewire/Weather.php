@@ -15,7 +15,7 @@ class Weather extends Component
 
     public function mount(WeatherProvider $weatherProvider)
     {
-        $currentCondition = Cache::remember('current_weather', now()->addMinutes(2), fn() => $weatherProvider->condition());
+        $currentCondition = Cache::remember('current_weather', now()->addMinutes(15), fn() => $weatherProvider->condition());
 
         if ($currentCondition instanceof NullWeatherCondition) {
             $this->temperature = 'N/A';

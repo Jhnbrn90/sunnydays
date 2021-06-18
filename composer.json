@@ -16,6 +16,7 @@
         "predis/predis": "^1.1"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.6",
         "brianium/paratest": "^6.1",
         "facade/ignition": "^2.3.6",
         "filp/whoops": "^2.0",

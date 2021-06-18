@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Contracts\RetrieverInterface;
+use App\Services\LiveStatistics;
 use Livewire\Component;
 
 class Gauge extends Component
@@ -14,10 +15,7 @@ class Gauge extends Component
     public function render()
     {
         return view('livewire.gauge', [
-            'powerStations' => app(RetrieverInterface::class)
-                ->getPowerStations()
-                ->registered()
-                ->toArray(),
+            'powerStations' => LiveStatistics::getActivePowerStations(),
         ]);
     }
 }
