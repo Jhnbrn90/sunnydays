@@ -26,7 +26,7 @@ class DailyLiveGraph
         return self::getPowerStationDataForDate($carbonDate);
     }
 
-    public static function getPowerStationDataForDate(Carbon $date): array
+    public static function getPowerStationDataForDate(Carbon $date): Collection|array|\Illuminate\Support\Collection
     {
         $cacheKey = self::getCacheKeyFor($date);
 
@@ -54,7 +54,7 @@ class DailyLiveGraph
         return $powerStationData;
     }
 
-    private static function getPowerStationDataForToday(): array
+    private static function getPowerStationDataForToday(): Collection|array|\Illuminate\Support\Collection
     {
         $today = Carbon::today();
         $cacheKey = self::getCacheKeyFor($today);

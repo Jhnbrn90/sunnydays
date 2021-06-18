@@ -18,7 +18,6 @@
     <title>Sunny Days🌤 </title>
 
     <link rel="stylesheet" href="{{ mix("css/app.css") }}">
-    <link rel="stylesheet" href="css/weather-icons.css">
     @livewireStyles
 </head>
 
