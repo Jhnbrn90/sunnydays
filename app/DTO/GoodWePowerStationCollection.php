@@ -2,15 +2,13 @@
 
 namespace App\DTO;
 
-use App\DTO\PowerStation as PowerStationDTO;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
 
-class PowerStationDTOCollection extends Collection
+class GoodWePowerStationCollection extends Collection
 {
     public function toArray(): array
     {
-        return $this->map(function (PowerStationDTO $powerStation) {
+        return $this->map(function (GoodWePowerStation $powerStation) {
             return [
                 'owner' => [
                     'name' => $powerStation->owner(),
@@ -28,14 +26,14 @@ class PowerStationDTOCollection extends Collection
 
     public function registered(): self
     {
-        return $this->filter(function (PowerStationDTO $powerStation) {
+        return $this->filter(function (GoodWePowerStation $powerStation) {
             return $powerStation->shouldRetrieveData();
         });
     }
 
     public function working(): self
     {
-        return $this->filter(function (PowerStationDTO $powerStation) {
+        return $this->filter(function (GoodWePowerStation $powerStation) {
             return $powerStation->isWorking();
         });
     }

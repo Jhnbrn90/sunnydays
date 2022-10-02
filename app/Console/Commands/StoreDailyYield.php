@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Contracts\RetrieverInterface;
-use App\DTO\PowerStation as PowerStationDTO;
+use App\DTO\GoodWePowerStation as PowerStationDTO;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 

@@ -4,7 +4,7 @@ namespace App\DTO;
 
 use App\Models\PowerStation as PowerStationModel;
 
-class PowerStation
+class GoodWePowerStation
 {
     public array $rawData;
 

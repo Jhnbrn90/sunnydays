@@ -3,8 +3,8 @@
 namespace Tests\Feature\Services;
 
 use App\Contracts\RetrieverInterface;
-use App\DTO\PowerStation;
-use App\DTO\PowerStationDTOCollection;
+use App\DTO\GoodWePowerStation;
+use App\DTO\GoodWePowerStationCollection;
 use App\Models\PowerStation as PowerStationModel;
 use App\Services\GoodWeApi;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -36,8 +36,8 @@ class GoodWeApiTest extends TestCase
 
         $goodWeApiService
             ->shouldReceive('getPowerStations')
-            ->andReturn(new PowerStationDTOCollection([
-                new PowerStation($this->validParams([
+            ->andReturn(new GoodWePowerStationCollection([
+                new GoodWePowerStation($this->validParams([
                     'powerstation_id' => 'fake-powerstation-id',
                 ]))
             ]));
