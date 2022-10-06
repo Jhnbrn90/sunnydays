@@ -2,9 +2,10 @@
 
 namespace App\DTO;
 
+use App\Contracts\PowerStationInterface;
 use App\Models\PowerStation as PowerStationModel;
 
-class GoodWePowerStation
+class GoodWePowerStation implements PowerStationInterface
 {
     public array $rawData;
 
@@ -62,16 +63,6 @@ class GoodWePowerStation
     public function energyProducedToday(): float
     {
         return $this->rawData['eday'];
-    }
-
-    /**
-     * Returns the energy produced this month in kWh.
-     *
-     * @return float
-     */
-    public function energyProducedThisMonth(): float
-    {
-        return $this->rawData['emonth'];
     }
 
     /**

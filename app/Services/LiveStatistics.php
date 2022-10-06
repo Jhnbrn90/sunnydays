@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Contracts\RetrieverInterface;
+use App\DTO\SmartMeterPowerStationCollection;
+use App\Models\PowerStation;
 use Illuminate\Support\Facades\Cache;
 
 class LiveStatistics
@@ -20,10 +22,16 @@ class LiveStatistics
 
     private static function populateCache(): void
     {
-        $powerStations = app(RetrieverInterface::class)
+        $goodWePowerStations = app(RetrieverInterface::class)
                 ->getPowerStations()
                 ->registered()
                 ->toArray();
+        
+        $smartMeterPowerStations = SmartMeterPowerStationCollection::fromEloquentCollection(
+            PowerStation::where('type', 'push')->get()
+        )->toArray();
+        
+        $powerStations = array_merge($goodWePowerStations, $smartMeterPowerStations);
 
         Cache::put(self::LIVE_CACHE_KEY, $powerStations, now()->addMinutes(5));
     }
