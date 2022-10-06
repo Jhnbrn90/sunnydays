@@ -4,7 +4,7 @@ namespace Tests\Feature\Commands;
 
 use App\Console\Commands\StoreDailyYield;
 use App\Contracts\RetrieverInterface;
-use App\DTO\PowerStation as PowerStationDTO;
+use App\DTO\GoodWePowerStation as PowerStationDTO;
 use App\Models\DailyProductionLog;
 use App\Models\PowerStation as PowerStationModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;

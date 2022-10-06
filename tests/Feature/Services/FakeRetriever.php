@@ -3,19 +3,19 @@
 namespace Tests\Feature\Services;
 
 use App\Contracts\RetrieverInterface;
-use App\DTO\PowerStation as PowerStationDTO;
-use App\DTO\PowerStationDTOCollection;
+use App\DTO\GoodWePowerStation as PowerStationDTO;
+use App\DTO\GoodWePowerStationCollection;
 
 class FakeRetriever implements RetrieverInterface
 {
-    private PowerStationDTOCollection $powerStations;
+    private GoodWePowerStationCollection $powerStations;
 
     public function __construct()
     {
-        $this->powerStations = new PowerStationDTOCollection([]);
+        $this->powerStations = new GoodWePowerStationCollection([]);
     }
 
-    public function getPowerStations(): PowerStationDTOCollection
+    public function getPowerStations(): GoodWePowerStationCollection
     {
         return $this->powerStations;
     }
