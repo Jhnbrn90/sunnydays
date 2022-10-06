@@ -26,6 +26,12 @@ class SmartMeterPowerStation implements PowerStationInterface
 
     public function nowGenerating(): int
     {
+        $powerlog = $this->model->powerlogs()->latest()->first();
+        
+        if ($powerlog->created_at->diffInMinutes(now()) >= 60) {
+            return '0';
+        }
+        
         return $this->model->powerlogs()->latest()->first()->current_power;
     }
     
