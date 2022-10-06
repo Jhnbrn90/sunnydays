@@ -55,7 +55,6 @@ class GoodWeApiTest extends TestCase
             'working' => false,
             'generating' => 1,
             'today' => 2.0,
-            'month' => 3.0,
             'total' => 4,
             'average' => 0.0
         ];
@@ -70,7 +69,6 @@ class GoodWeApiTest extends TestCase
             'stationname' => 'TEST',
             'pac' => 1,
             'eday' => 2,
-            'emonth' => 3,
             'etotal' => 4,
             'pac_kw' => 5,
             'is_stored' => false,
