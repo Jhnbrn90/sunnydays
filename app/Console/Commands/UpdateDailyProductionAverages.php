@@ -29,13 +29,14 @@ class UpdateDailyProductionAverages extends Command
             });
 
             $logs = $query->get();
-
             $yield = $logs->sum('total_production') / 1000;
-
             $dataPoints = $logs->count();
+            
+            $sumOfDailyProductionYields = $powerStation->dailyProductionLogs()->sum('total_production');
 
             $powerStation->update([
-                'daily_average' => number_format($yield / $dataPoints, 1)
+                'daily_average' => number_format($yield / $dataPoints, 1),
+                'total_energy' => $sumOfDailyProductionYields / 1000,
             ]);
         });
 

@@ -48,7 +48,8 @@ class SmartMeterPowerStation implements PowerStationInterface
 
     public function energyProducedTotal(): int
     {
-         return $this->model->powerlogs()->latest()->first()->kwh_total;
+        $accumulated = $this->model->total_energy;
+        return $accumulated + $this->model->powerlogs()->latest()->first()->kwh_today;
     }
 
     public function dailyProductionAverage(): ?float

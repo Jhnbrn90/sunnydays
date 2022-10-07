@@ -27,7 +27,6 @@ class IngestionController
         $powerStation->powerlogs()->create([
            'current_power' => $request->power,
            'kwh_today' => $request->kwh_today,
-           'kwh_total' => $request->kwh_total,
         ]);
         
         $dailyProductionLog = $powerStation->dailyProductionLogs()->firstOrNew(['created_at' => Carbon::today()]);
