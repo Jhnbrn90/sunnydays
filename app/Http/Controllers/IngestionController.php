@@ -18,11 +18,6 @@ class IngestionController
             ], 401);
         }
 
-        if ($request->power < config('sunnydays.power_stations.working_threshold')) {
-            return ['message' => 'Input discarded, as the currently yielded power is below threshold.'];
-        }
-        
-        
         $powerStation = PowerStation::findOrfail($request->powerstation_id);
         $powerStation->powerlogs()->create([
            'current_power' => $request->power,
