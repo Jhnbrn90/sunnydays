@@ -25,7 +25,7 @@ export const LiveChartOptions = {
             {
                 ticks: {
                     beginAtZero: true,
-                    max: 3500
+                    max: 5000
                 }
             }
         ]
